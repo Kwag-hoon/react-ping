@@ -7,7 +7,7 @@ import './styles/base.css';  //초기화 및 기본 스타일 가이드
 import Main from './pages/Main';
 // 컴포넌트
 import Header from './components/layout/header/Header';
-import Footer from './components/layout/footer/Footer';
+import Footer from './components/layout/Footer';
 
 
 

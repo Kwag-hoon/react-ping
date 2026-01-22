@@ -1,11 +1,17 @@
 import React from 'react';
+import HeroSection from './HeroSection';
+import FeedbackExplorer from './FeedbackExplorer';
+import RecentArchivesSection from './RecentArchivesSection';
+import FeedbackAchive from './FeedbackAchive';
+import '../styles/main.css';
 
-function Main() {
+function Main(props) {
   return (
     <main>
-
-      <img src={`${process.env.PUBLIC_URL}/images/hero.png`} alt="메인 히어로" />
-
+      <HeroSection />
+      <FeedbackExplorer />
+      <RecentArchivesSection />
+      <FeedbackAchive />
     </main>
   );
 }
