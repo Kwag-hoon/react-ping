@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../style/upload.scss';
+import '../styles/upload.scss';
 
 function Upload(props) {
 
