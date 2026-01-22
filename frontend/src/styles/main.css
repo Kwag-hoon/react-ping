@@ -127,10 +127,24 @@ html {
          column-gap: 36px;
   }
 }
-@media screen and (min-width: 1024px) and (max-width: 1919px) {
+/* 1440 ~ 1919 — Desktop */
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+  .container {
+    max-width: 100%;
+    padding: 0 48px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    -moz-column-gap: 32px;
+         column-gap: 32px;
+  }
+}
+/* 1024 ~ 1439 — Tablet Landscape / Small Laptop */
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
   .container {
     max-width: 1024px;
-    padding: 0 48px;
+    padding: 0 32px;
   }
   .grid {
     display: grid;
@@ -139,6 +153,7 @@ html {
          column-gap: 24px;
   }
 }
+/* 768 ~ 1023px (TABLET) */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
   .container {
     max-width: 768px;
@@ -151,6 +166,7 @@ html {
          column-gap: 20px;
   }
 }
+/* 0 ~ 767px (MOBILE) */
 @media screen and (max-width: 767px) {
   .container {
     max-width: 390px;
@@ -435,35 +451,39 @@ select {
   vertical-align: middle;
 }
 
-.main_hero-section {
-  background: linear-gradient(120deg, #FF6E79 0%, #7a5fa3 25%, #023FA1 50%, #1976a3 75%, #43ECAC 100%);
-}
-.main_hero-section .grid {
-  padding: 100px 0;
-}
-.main_hero-section .grid .top-text {
-  color: #ffffff;
-}
-.main_hero-section .grid .top-text h2 {
+main article h2 {
   font-family: "KoreaInstituteOfMachineryAndMaterials";
   font-size: 64px;
   font-weight: 700;
   line-height: 130%;
   letter-spacing: 0;
 }
-.main_hero-section .grid .top-text p {
+main article p {
   font-family: "KoreaInstituteOfMachineryAndMaterials";
   font-size: 30px;
   font-weight: 700;
   line-height: 130%;
   letter-spacing: 0;
 }
+
+.main_hero-section {
+  background: linear-gradient(120deg, #FF6E79 0%, #7a5fa3 25%, #023FA1 50%, #1976a3 75%, #43ECAC 100%);
+}
+.main_hero-section .grid {
+  padding: 120px 0;
+  align-items: center;
+}
+.main_hero-section .grid .top-text {
+  color: #ffffff;
+}
 .main_hero-section .grid .hero-image {
   width: 380px;
+  justify-self: end;
 }
 .main_hero-section .grid .hero-btns {
   display: flex;
   gap: 15px;
+  margin-top: 28px;
 }
 .main_hero-section .grid .hero-btns .achive-btn {
   display: inline-flex;
@@ -539,8 +559,7 @@ select {
 .main_feedback-explorer .explorer_aside .menu_btn {
   border: 0;
   background: transparent;
-  padding: 20px 0px;
-  text-indent: 50px;
+  padding: 20px 30px;
   width: 100%;
   cursor: pointer;
   text-align: left;
@@ -599,10 +618,18 @@ select {
   transform: translateY(-1px);
   box-shadow: 0 14px 26px rgba(17, 24, 39, 0.14), inset 0 2px 8px rgba(255, 255, 255, 0.9);
 }
+.main_feedback-explorer .explorer_aside .main_item.is-open .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.main_feedback-explorer .explorer_aside .main_item.is-open .chip_arrow {
+  padding-top: 4px;
+  height: 20px;
+}
 .main_feedback-explorer .explorer_aside .main_item.is-open .chip.is-active {
   color: #1F2937;
   position: relative;
-  padding-right: 44px;
 }
 
 .feedbackcons {
@@ -612,10 +639,26 @@ select {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 28px;
+  min-height: 300px;
+  position: relative;
 }
-.feedbackcons .cards p {
+.feedbackcons .cards .empty {
   position: absolute;
-  left: 55%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #6D7280;
+  font-family: "Inter";
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: -0.02em;
+}
+.feedbackcons .cards:has(.empty) {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
 }
 .feedbackcons .more_wrap {
   display: flex;
@@ -794,6 +837,9 @@ select {
   letter-spacing: -0.02em;
 }
 
+.main_feedback-archive {
+  background-color: rgba(0, 0, 0, 0.8);
+}
 .main_feedback-archive .grid {
   padding: 160px 0;
 }
@@ -836,26 +882,86 @@ select {
   background: #43ECAC;
 }
 
-/* ✅ 반응형: 화면 줄어들면 컬럼 수 줄이기 */
-@media (max-width: 1400px) {
+/* 1440 ~ 1919 */
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+  .main_hero-section .col-8 {
+    grid-column: span 6;
+  }
+  .main_hero-section .col-4 {
+    grid-column: span 4;
+  }
+  .main_hero-section .grid {
+    padding: 150px 0;
+  }
+  .main_hero-section .grid .hero-image {
+    width: 360px;
+  }
   .gallery-masonry {
     -moz-column-count: 5;
          column-count: 5;
   }
 }
-@media (max-width: 1200px) {
+/* 1024 ~ 1439 */
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+  .main_hero-section .col-8 {
+    grid-column: span 5;
+  }
+  .main_hero-section .col-4 {
+    grid-column: span 3;
+  }
+  .main_hero-section .grid {
+    padding: 100px 0;
+  }
+  .main_hero-section .grid .hero-image {
+    width: 320px;
+  }
   .gallery-masonry {
     -moz-column-count: 4;
          column-count: 4;
   }
 }
-@media (max-width: 900px) {
+@media (max-width: 1023px) {
+  .main_hero-section .col-8,
+  .main_hero-section .col-4 {
+    grid-column: 1/-1;
+  }
+  .main_hero-section .hero-image {
+    justify-self: center;
+    margin: 0 auto;
+  }
+}
+/* 768 ~ 1023 */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .main_hero-section .grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    row-gap: 40px;
+  }
   .gallery-masonry {
     -moz-column-count: 3;
          column-count: 3;
   }
 }
-@media (max-width: 600px) {
+/* 0 ~ 767 */
+@media screen and (max-width: 767px) {
+  .main_hero-section .grid {
+    grid-template-columns: 1fr;
+    text-align: left;
+    padding: 70px 0;
+    row-gap: 32px;
+  }
+  .main_hero-section .grid .top-text h2 {
+    width: 260px;
+    font-family: "KoreaInstituteOfMachineryAndMaterials";
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 130%;
+    letter-spacing: 0;
+  }
+  .main_hero-section .grid .top-text p {
+    font-family: "KoreaInstituteOfMachineryAndMaterials";
+    font-size: 18px;
+  }
   .gallery-masonry {
     -moz-column-count: 2;
          column-count: 2;

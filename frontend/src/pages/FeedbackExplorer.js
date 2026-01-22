@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import FeedbackCard from './FeedbackCard';
+import arrow from "../assets/arrow_right.svg";
 
 const CATEGORY_DATA = {
   '정보구조': ['정보 위계', '내비게이션 구조', '컨텐츠 조직', '라벨링/명명'],
@@ -62,6 +63,12 @@ function FeedbackExplorer() {
                     onClick={() => handleMainClick(main)}
                   >
                     {main}
+
+                    {isOpen && (
+                      <img
+                        src={arrow} alt="arrow" className="menu_arrow"
+                      />
+                    )}
                   </button>
 
                   {isOpen && (
@@ -74,7 +81,9 @@ function FeedbackExplorer() {
                           className={`chip ${activeSub === '전체' ? 'is-active' : ''}`}
                           onClick={() => setActiveSub('전체')}
                         >
-                          전체
+                          전체  {activeSub === "전체" && (
+                            <img src={arrow} alt="arrow" className="chip_arrow" />
+                          )}
                         </button>
                         {subs.map((sub) => (
                           <button
@@ -84,6 +93,10 @@ function FeedbackExplorer() {
                             onClick={() => setActiveSub(sub)}
                           >
                             {sub}
+
+                            {activeSub === sub && (
+                              <img src={arrow} alt="arrow" className="chip_arrow" />
+                            )}
                           </button>
                         ))}
                       </div>
