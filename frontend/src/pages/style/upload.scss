@@ -1,0 +1,207 @@
+
+@use'../../styles/base' as * ; 
+
+/* upload.js 서식 */
+.upload{
+  padding: 80px 0px 120px;
+  background:#fafafa;
+}
+.upload section{
+  width: 800px;
+  margin: 0 auto;
+}
+
+/* 상단 타이틀 부분 */
+.upload_header{
+  margin-bottom: 48px;
+}
+.upload_title{
+  margin-bottom: 12px;
+}
+.upload_sub{
+  color: #666;
+
+}
+
+
+
+/* 드래그 앤 드롭 존 영역 */
+.upload_dropzone{
+  position: relative;
+  border: 2px dashed #ddd;
+  border-radius: 16px;
+  padding: 48px 24px;
+  text-align: center;
+  background-color: #fff;
+  cursor: pointer;
+  transition: border-color 0;
+}
+.upload_dropzoneInner{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+.upload_icon{
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color:#999;
+}
+.upload_dropText{
+  font-size: 16px;
+  color:#333;
+}
+.upload_dropStrong{
+  font-weight: 600;
+  margin-right: 4px;
+}
+.upload_dropHint{
+  font-size: 14px;
+  color: #999;
+}
+.upload_file{
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* 폼 서식   */
+.upload_form{
+  display: flex;
+  flex-direction: column;
+  gap:40px;
+}
+.upload_filed{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.upload_label{
+  font-size: 14px;
+  font-weight: 600;
+  color:#111;
+}
+.upload_input,.upload_textarea{
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  font-family: "Inter";
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.upload_input:focus,
+.upload_textarea:focus{
+  outline:none;
+  border-color: #111;
+}
+.upload_textarea{
+  resize: none;
+}
+
+/* 문제 유형 선택 */
+.upload_row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.upload_counter{
+  font-size: 13px;
+  color:#999;
+}
+.upload_helper{
+  margin-top: 4px;
+  font-size: 14px;
+  color: #777;
+}
+.upload_issueBox{
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.upload_issueGroup{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.upload_groupTitle{
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #999;
+}
+.upload_chips{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.upload_chip{
+  @include btn($size: "sm", // lg, md, sm
+  $type: "custom", // primary, outline, fixed, custom
+  $shadow: true, // 그림자 유무
+  $bg: transparent, // 배경색 직접 지정
+  $color: $main_gray_800, // 글자색 직접 지정
+  $border: $main_gray_50 // border 색 직접 지정
+  )
+  // padding: 10px 14px;
+  // border-radius: 999px;
+  // border: 1px solid #ddd;
+  // background: #fff;
+  // font-size: 13px;
+  // cursor: pointer;
+  // transition: all 0.2s;
+}
+.upload_chip:hover{
+  border-color:#0047ff ;
+  color: #111;
+}
+
+.upload_chip.active{
+  background: #0047ff;
+  color:#fff;
+
+}
+
+/* 하단 안내박스 */
+.upload_note{
+  padding: 24px;
+  border-radius: 16px;
+  background: #f4f4f4;
+}
+.upload_noteTitle{
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.upload_noteText{
+  font-size: 14px;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* 다음 버튼  */
+.upload_next{
+  margin-top:16px;
+  padding: 16px;
+  border-radius: 14px;
+  border: none;
+  background: #0047ff;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.upload_next:hover{
+  background: #7098fd;
+  
+}

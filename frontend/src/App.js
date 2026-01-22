@@ -10,6 +10,7 @@ import Footer from './components/layout/Footer';
 // 페이지
 import Main from './pages/Main';
 import Detail from './pages/design/Detail';
+import Upload from "./pages/upload/Upload";
 
 function App() {
   return (
@@ -18,7 +19,9 @@ function App() {
         <Header />
 
         <Routes>
+          
           <Route path="/" element={<Main />} />
+          <Route path="/upload" element={<Upload />} />
           <Route path={'/detail'} element={<Detail />}></Route>
         </Routes>
 
