@@ -1,0 +1,84 @@
+// 아카이브 scss
+@use '../../styles/base' as *;
+
+.archive {
+
+  article {
+
+    h2 {
+      @include typo("displayMd", $bold);
+      color: $main_gray_900;
+    }
+
+    p {
+      @include typo("headingMd", $regular);
+      color: $main_gray_600
+    }
+
+    .filters {
+      grid-column: 1 / -1;
+
+      span {
+        display: block;
+        margin: 25px 0px;
+        @include typo("headingMd", $medium);
+        color: $main_gray_600;
+      }
+
+      .archive-navi {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        >li {
+          @include btn($type: "custom",
+            $shadow: true,
+            $bg: transparent,
+            $color: $main_gray_800,
+            $border: 1px solid $main_gray_300 );
+          border-radius: 30px;
+        }
+      }
+    }
+  }
+}
+
+.detail {
+  .detail_box {
+    .detail-box_left {
+      border: 1px solid #333;
+
+      h2 {
+        @include typo("displayMd", $bold);
+        color: $main_gray_900;
+      }
+
+      p {
+        @include typo("headingMd", $regular);
+        color: $main_gray_600
+      }
+
+      .badge-btn {
+
+        >li {
+          @include btn($size: "sm",
+            $type: "custom",
+            $shadow: true,
+            $bg: transparent,
+            $color: $main_gray_800,
+            $border: 1px solid $main_gray_300 );
+          border-radius: 30px;
+        }
+      }
+
+      img {
+        width:100%;
+      }
+    }
+    .detail-box_right{
+      box-sizing: border-box;
+      padding:0px 24px;
+      border:1px solid #333;
+    }
+  }
+}
