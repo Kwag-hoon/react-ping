@@ -10,6 +10,17 @@ main {
       @include typo("displaySm", $bold);
     }
   }
+
+  section {
+    h2 {
+      @include typo("displayMd", $bold);
+    }
+
+    p {
+      @include typo("headingMd", $regular);
+      color: $main_gray_500;
+    }
+  }
 }
 
 .main_hero-section {
@@ -51,14 +62,7 @@ main {
   }
 
   .explorer_aside {
-    h2 {
-      @include typo("displayMd", $bold);
-    }
 
-    p {
-      @include typo("headingMd", $regular);
-      color: $main_gray_500;
-    }
 
     .menu_list {
       margin-top: 30px;
@@ -195,7 +199,7 @@ main {
   }
 }
 
-/* 카드 디자인 */
+/* 피드백 카드 디자인 */
 .feedback_card {
   background: $main-white;
   border-radius: 22px;
@@ -259,16 +263,7 @@ main {
 }
 
 /* DesignGrid.scss */
-.main_recent-archives {
-  h2 {
-    @include typo("displayMd", $bold);
-  }
-
-  p {
-    @include typo("headingMd", $regular);
-    color: $main_gray_500;
-  }
-}
+.main_recent-archives {}
 
 .gallery-masonry {
   padding-top: 40px;
@@ -341,10 +336,6 @@ main {
     text-align: center;
     gap: 30px;
 
-    h2 {
-      @include typo("displayMd", $bold)
-    }
-
     button {
       @include btn("md", "fixed", false);
     }
@@ -401,27 +392,18 @@ main {
   }
 }
 
-@media (max-width: 1023px) {
-  .main_hero-section {
-
-    .col-8,
-    .col-4 {
-      grid-column: 1 / -1;
-    }
-
-    .hero-image {
-      justify-self: center;
-      margin: 0 auto;
-    }
-  }
-}
+@media (max-width: 1023px) {}
 
 /* 768 ~ 1023 */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
-  .main_hero-section .grid {
-    grid-template-columns: 1fr;
-    text-align: center;
-    row-gap: 40px;
+  .main_hero-section {
+    .col-8 {
+      grid-column: span 4;
+    }
+
+    .col-4 {
+      grid-column: span 2;
+    }
   }
 
   .gallery-masonry {
@@ -431,23 +413,152 @@ main {
 
 /* 0 ~ 767 */
 @media screen and (max-width: 767px) {
-  .main_hero-section .grid {
-    grid-template-columns: 1fr; // ✅ 모바일도 스택 고정
-    text-align: left;
-    padding: 70px 0;
-    row-gap: 32px;
-  }
+  main {
+    article {
+      h2 {
+        width: 350px;
+        @include typo("displaySm", $bold);
+      }
 
-  .main_hero-section .grid .top-text {
-
-    h2 {
-      width: 260px;
-      @include typo("displaySm", $bold);
+      p {
+        font-family: $font-family-kimm;
+        font-weight: 300;
+        font-size: 18px;
+      }
     }
 
-    p {
-      font-family: $font-family-kimm;
-      font-size: 18px;
+    section {
+      h2 {
+        @include typo("displaySm", $bold);
+      }
+
+      p {
+        @include typo("bodytextLg", $regular);
+        color: $main_gray_500;
+      }
+    }
+
+    .mo-br {
+      display: block;
+      /* 모바일에서만 줄바꿈 */
+    }
+  }
+
+  .main_hero-section {
+    .grid {
+      .col-8 {
+        grid-column: span 4;
+      }
+
+      .col-4 {
+        grid-column: span 4;
+      }
+
+      padding: 16px 0;
+
+      .top-text {
+
+        h2 {
+          margin-bottom: 10px;
+        }
+
+        p {
+          display: block;
+          width: 350px;
+        }
+      }
+
+      .hero-image {
+        grid-column: 1 / -1;
+        display: block;
+        justify-self: center;
+        align-self: center;
+        max-width: 100%;
+        width: 160px;
+        height: auto;
+      }
+
+      .hero-btns {
+        gap: 15px;
+        margin-top: 10px;
+        grid-column: 1 / -1;
+        min-width: 0;
+        flex-wrap: wrap;
+        justify-content: center;
+
+        .achive-btn {
+          @include btn(md, "fixedMo", false);
+        }
+
+        .sample-btn {
+          @include btn("md", "fixedMo", false, #fff, $main_gray_600);
+        }
+      }
+    }
+  }
+
+  .main_feedback-explorer {
+    .grid {
+      gap: 30px;
+      padding: 20px 0;
+
+      .col-8 {
+        grid-column: span 4;
+      }
+    }
+
+    .explorer_aside {
+      .menu_btn {
+        padding: 14px 20px;
+        @include typo('bodytextLg', $bold);
+      }
+
+      .main_item {
+        &.is-open {
+          .chip {
+            padding: 6px 12px;
+            @include typo('bodytextMd', $bold);
+          }
+
+          .chip_arrow {
+            padding-top: 4px;
+            height: 14px;
+          }
+
+          .chip_row {
+            gap: 10px;
+            padding: 0px 14px;
+          }
+        }
+      }
+    }
+
+    .feedbackcons {
+      .cards {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        min-height: 200px;
+
+        .feedback_card {
+          min-height: 120px;
+          gap: 10px;
+
+          .card-title {
+            @include typo('bodytextLg', bold)
+          }
+
+          .badge, .bottom {
+
+            .date,
+            .pins span {
+              @include typo ('bodytextMd')
+            }
+          }
+
+          .badge {
+            padding: 2px 8px;
+          }
+        }
+      }
     }
   }
 

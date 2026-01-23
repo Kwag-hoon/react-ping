@@ -40,9 +40,82 @@ html {
 .container {
   margin: 0 auto;
   width: 100%;
+  box-sizing: border-box;
 }
 
 @media screen and (min-width: 1920px) {
+  .pc-col-start-1 {
+    grid-column-start: 1;
+  }
+  .pc-col-1 {
+    grid-column: span 1;
+  }
+  .pc-col-start-2 {
+    grid-column-start: 2;
+  }
+  .pc-col-2 {
+    grid-column: span 2;
+  }
+  .pc-col-start-3 {
+    grid-column-start: 3;
+  }
+  .pc-col-3 {
+    grid-column: span 3;
+  }
+  .pc-col-start-4 {
+    grid-column-start: 4;
+  }
+  .pc-col-4 {
+    grid-column: span 4;
+  }
+  .pc-col-start-5 {
+    grid-column-start: 5;
+  }
+  .pc-col-5 {
+    grid-column: span 5;
+  }
+  .pc-col-start-6 {
+    grid-column-start: 6;
+  }
+  .pc-col-6 {
+    grid-column: span 6;
+  }
+  .pc-col-start-7 {
+    grid-column-start: 7;
+  }
+  .pc-col-7 {
+    grid-column: span 7;
+  }
+  .pc-col-start-8 {
+    grid-column-start: 8;
+  }
+  .pc-col-8 {
+    grid-column: span 8;
+  }
+  .pc-col-start-9 {
+    grid-column-start: 9;
+  }
+  .pc-col-9 {
+    grid-column: span 9;
+  }
+  .pc-col-start-10 {
+    grid-column-start: 10;
+  }
+  .pc-col-10 {
+    grid-column: span 10;
+  }
+  .pc-col-start-11 {
+    grid-column-start: 11;
+  }
+  .pc-col-11 {
+    grid-column: span 11;
+  }
+  .pc-col-start-12 {
+    grid-column-start: 12;
+  }
+  .pc-col-12 {
+    grid-column: span 12;
+  }
   .container {
     max-width: 1920px;
     padding: 0 72px;
@@ -54,10 +127,24 @@ html {
          column-gap: 36px;
   }
 }
-@media screen and (min-width: 1024px) and (max-width: 1919px) {
+/* 1440 ~ 1919 — Desktop */
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
   .container {
-    max-width: 1024px;
+    max-width: 100%;
     padding: 0 48px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    -moz-column-gap: 32px;
+         column-gap: 32px;
+  }
+}
+/* 1024 ~ 1439 — Tablet Landscape / Small Laptop */
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+  .container {
+    max-width: 100%;
+    padding: 0 32px;
   }
   .grid {
     display: grid;
@@ -66,9 +153,10 @@ html {
          column-gap: 24px;
   }
 }
+/* 768 ~ 1023px (TABLET) */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
   .container {
-    max-width: 768px;
+    max-width: 100%;
     padding: 0 16px;
   }
   .grid {
@@ -78,9 +166,10 @@ html {
          column-gap: 20px;
   }
 }
+/* 0 ~ 767px (MOBILE) */
 @media screen and (max-width: 767px) {
   .container {
-    max-width: 390px;
+    max-width: 100%;
     padding: 0 16px;
   }
   .grid {
@@ -417,8 +506,25 @@ select {
   border-radius: 30px;
 }
 
+.card-box, .detail .detail_box .detail-box_right .box-right_card ul li:not(:first-child) {
+  border: 1px solid #9CA3AF;
+  border-radius: 12px;
+  padding: 16px 30px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+
 .detail .detail_box .detail-box_left {
-  border: 1px solid #333;
+  border: 1px solid #D2D5DA;
+  border-radius: 16px;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+}
+.detail .detail_box .detail-box_left a {
+  cursor: pointer;
+  display: block;
+  padding: 10px 0px;
 }
 .detail .detail_box .detail-box_left h2 {
   font-family: "KoreaInstituteOfMachineryAndMaterials";
@@ -427,6 +533,7 @@ select {
   line-height: 130%;
   letter-spacing: 0;
   color: #111827;
+  padding-bottom: 10px;
 }
 .detail .detail_box .detail-box_left p {
   font-family: "Inter";
@@ -435,6 +542,36 @@ select {
   line-height: 130%;
   letter-spacing: -0.02em;
   color: #4B5563;
+  padding-bottom: 20px;
+}
+.detail .detail_box .detail-box_left .desc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.detail .detail_box .detail-box_left .desc-row .user-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid #9CA3AF;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 14px;
+  color: #333;
+}
+.detail .detail_box .detail-box_left .desc-row .user-badge img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: block;
+}
+.detail .detail_box .detail-box_left .badge-btn {
+  display: flex;
+  gap: 10px;
 }
 .detail .detail_box .detail-box_left .badge-btn > li {
   display: inline-flex;
@@ -456,11 +593,156 @@ select {
   border: 1px solid 1px solid #D2D5DA;
   border-radius: 30px;
 }
-.detail .detail_box .detail-box_left img {
+.detail .detail_box .detail-box_left .img_box {
+  padding: 50px 0px;
+}
+.detail .detail_box .detail-box_left .img_box img {
   width: 100%;
+  height: auto;
+  display: block;
 }
 .detail .detail_box .detail-box_right {
   box-sizing: border-box;
-  padding: 0px 24px;
-  border: 1px solid #333;
+  padding: 50px 24px;
+  border: 1px solid #D2D5DA;
+  border-radius: 16px;
+}
+.detail .detail_box .detail-box_right .pin-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Inter";
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: -0.02em;
+  color: #1F2937;
+}
+.detail .detail_box .detail-box_right .pin-label .pin-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 2px 10px;
+  background: #FF6E79;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.detail .detail_box .detail-box_right span {
+  font-family: "Inter";
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 26px;
+  letter-spacing: -0.02em;
+  color: #4B5563;
+}
+.detail .detail_box .detail-box_right .box-right_card {
+  width: 100%;
+}
+.detail .detail_box .detail-box_right .box-right_card ul {
+  width: 100%;
+}
+.detail .detail_box .detail-box_right .box-right_card ul li:first-child {
+  font-family: "Inter";
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: -0.02em;
+  color: #4B5563;
+  margin-bottom: 30px;
+}
+.detail .detail_box .detail-box_right .box-right_card ul li:not(:first-child) {
+  font-family: "Inter";
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.02em;
+  color: #1F2937;
+}
+.detail .detail_box .detail-box_right .box-right_card ul li:not(:first-child) span {
+  font-size: 13px;
+}
+.detail .detail_box .detail-box_right .box-right_card textarea {
+  width: 100%;
+  min-height: 120px;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  background: transparent;
+  border: 1px solid #9CA3AF;
+}
+.detail .detail_box .detail-box_right .box-right_card button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  text-align: center;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  box-shadow: inset 2px 2px 10px #ffffff, inset -2px -2px 20px rgba(156, 163, 175, 0.4), -2px -2px 10px rgba(229, 231, 235, 0.2);
+  padding: 12px 24px;
+  font-family: "Inter";
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: -0.02em;
+  background: #023FA1;
+  color: #ffffff;
+  border: 1px solid;
+  margin-top: 30px;
+  width: 100%;
+  border: none;
+  /* typo 덮어쓰기 */
+  font: inherit;
+}
+.detail .detail_box .detail-box_right .box-right_memo {
+  padding: 0px 10px;
+}
+.detail .detail_box .detail-box_right .box-right_memo p {
+  font-family: "Inter";
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 26px;
+  letter-spacing: -0.02em;
+  color: #4B5563;
+}
+.detail .detail_box .detail-box_right .box-right_memo textarea {
+  margin-top: 30px;
+  width: 100%;
+  min-height: 120px;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  background: transparent;
+  border: 1px solid #9CA3AF;
+}
+.detail .detail_box .detail-box_right .box-right_memo button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  text-align: center;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  box-shadow: inset 2px 2px 10px #ffffff, inset -2px -2px 20px rgba(156, 163, 175, 0.4), -2px -2px 10px rgba(229, 231, 235, 0.2);
+  padding: 12px 24px;
+  font-family: "Inter";
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: -0.02em;
+  background: #023FA1;
+  color: #ffffff;
+  border: 1px solid;
+  margin-top: 30px;
+  width: 100%;
+  border: none;
+  /* typo 덮어쓰기 */
+  font: inherit;
 }/*# sourceMappingURL=archive.css.map */

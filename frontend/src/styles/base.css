@@ -143,7 +143,7 @@ html {
 /* 1024 ~ 1439 — Tablet Landscape / Small Laptop */
 @media screen and (min-width: 1024px) and (max-width: 1439px) {
   .container {
-    max-width: 1024px;
+    max-width: 100%;
     padding: 0 32px;
   }
   .grid {
@@ -156,7 +156,7 @@ html {
 /* 768 ~ 1023px (TABLET) */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
   .container {
-    max-width: 768px;
+    max-width: 100%;
     padding: 0 16px;
   }
   .grid {
@@ -169,7 +169,7 @@ html {
 /* 0 ~ 767px (MOBILE) */
 @media screen and (max-width: 767px) {
   .container {
-    max-width: 390px;
+    max-width: 100%;
     padding: 0 16px;
   }
   .grid {
