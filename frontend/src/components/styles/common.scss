@@ -1,21 +1,69 @@
 @use '../../styles/base.scss' as *;
 
+
 // 헤더
+.header {
+  position: relative;
+}
+
+// 1. 로그인 전  HeaderGuest
+
+.header-wrapper {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  z-index: 1000;
+  transform: translateX(-50%);
+  width: 600px;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.70);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+
+}
+.header-wrapper h1{
+  padding-left: 8px;
+}
+.header-wrapper nav ul {
+  display: flex;
+  width: 155px;
+  justify-content: center;
+  align-items: center;
+  gap: 36px;
+}
+
+.header-wrapper nav ul li {
+  color: var(--Gray-800, #1F2937);
+  text-align: center;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 32px;
+  /* 177.778% */
+  letter-spacing: -0.36px;
+}
 
 // 푸터
-footer {
+.footer {
   background-color: $main_gray_800;
   color: $main_gray_100;
   width: 100%;
 }
+
 .footer-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
+
   max-width: 1776px;
   margin: 0 auto;
   padding: 24px 72px;
+
   @media (max-width: 1023px) {
     padding: 20px 16px;
     // flex-direction: column;
@@ -25,11 +73,12 @@ footer {
 }
 
 /* 왼쪽 영역 */
-.footer-wrapper > div:first-child {
+.footer-wrapper>div:first-child {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
+
 .footer-wrapper ul {
   display: flex;
   gap: 24px;

@@ -451,7 +451,53 @@ select {
   vertical-align: middle;
 }
 
-footer {
+.header {
+  position: relative;
+}
+
+.header-wrapper {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  z-index: 1000;
+  transform: translateX(-50%);
+  width: 600px;
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+}
+
+.header-wrapper h1 {
+  padding-left: 8px;
+}
+
+.header-wrapper nav ul {
+  display: flex;
+  width: 155px;
+  justify-content: center;
+  align-items: center;
+  gap: 36px;
+}
+
+.header-wrapper nav ul li {
+  color: var(--Gray-800, #1F2937);
+  text-align: center;
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 32px;
+  /* 177.778% */
+  letter-spacing: -0.36px;
+}
+
+.footer {
   background-color: #1F2937;
   color: #F3F4F6;
   width: 100%;

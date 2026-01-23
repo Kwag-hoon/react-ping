@@ -27,7 +27,7 @@ function App() {
           <Route path='/detail' element={<Detail />}></Route>
           <Route path='/archive' element={<Archive />}></Route>
           <Route path="/upload/pineditor" element={<PinEditor />} />
-c        </Routes>
+       </Routes>
 
         <Footer />
 
