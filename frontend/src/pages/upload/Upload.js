@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import '../styles/upload.scss';
+import { useNavigate } from 'react-router-dom';
 
 function Upload(props) {
 
   // 선택된 문제유형 클래스 변경을 위한 함수 설정 
   const [selectedIssues , setSelectedIssues] = useState([]);
+
+  // 페이지간 이동을 위한 url관리
+  const navigate = useNavigate();
 
   // 클릭 핸들러 함수 설정 
   const handleIssueClick = (issue) =>{

@@ -12,6 +12,7 @@ import Main from './pages/Main';
 import Detail from './pages/design/Detail';
 import Upload from "./pages/upload/Upload";
 import Archive from './pages/design/Archive';
+import PinEditor from "./pages/upload/PinEditor";
 
 function App() {
   return (
@@ -25,7 +26,8 @@ function App() {
           <Route path="/upload" element={<Upload />} />
           <Route path='/detail' element={<Detail />}></Route>
           <Route path='/archive' element={<Archive />}></Route>
-        </Routes>
+          <Route path="/upload/pineditor" element={<PinEditor />} />
+c        </Routes>
 
         <Footer />
 
