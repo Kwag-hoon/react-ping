@@ -3,7 +3,7 @@ import HeroSection from './HeroSection';
 import FeedbackExplorer from './FeedbackExplorer';
 import RecentArchivesSection from './RecentArchivesSection';
 import FeedbackAchive from './FeedbackAchive';
-import '../styles/main.css';
+import '../styles/main.scss';
 
 function Main(props) {
   return (

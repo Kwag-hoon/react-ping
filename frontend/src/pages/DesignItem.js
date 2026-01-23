@@ -2,9 +2,9 @@
 export default function DesignItem({ item }) {
   return (
     <article className="design-item">
-      <div className="thumb-wrap" style={{ height: item.height }}>
-        <img className="thumb" src={item.url} alt="" loading="lazy" />
-      </div>
+      <div className="thumb-wrap" style={{ "--ratio": item.ratio }}>
+  <img className="thumb" src={item.url} alt="" loading="lazy" />
+</div>
 
       <div className="meta">
         <h3>{item.title}</h3>
