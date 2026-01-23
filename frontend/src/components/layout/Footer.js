@@ -5,7 +5,7 @@ import Logowhite from '../../assets/Logo_white.svg';
 
 function Footer(props) {
   return (
-    <footer>
+    <footer className="footer">
       <div className="footer-wrapper">
         <div>
           <ul>
@@ -13,7 +13,7 @@ function Footer(props) {
             <li>개인정보처리방침</li>
             <li>공지사항</li>
           </ul>
-          <p>CopyRight PING. 2025 All Right Reserved.</p>
+          <p>CopyRight PING. 2026 All Right Reserved.</p>
         </div>
         <div className='footer-logo'>
           <img src={Logowhite} alt="핑로고" />
