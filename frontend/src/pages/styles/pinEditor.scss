@@ -8,7 +8,7 @@
 .pineditor_root{
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 64px);
+  height:100%;
 }
 
 // 상단 영역 
@@ -100,27 +100,35 @@
 }
 
 // 캔버스 영역 
-.pineditor_canvas{
-  flex:1;
+/* 캔버스 영역 */
+.pineditor_canvas {
+  flex: 1;
   overflow: auto;
   background: rgba(243, 244, 246, 0.6);
-  padding: 32px;
+  padding: 0;
 }
-.canvas_outer{
+
+.canvas_outer {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100%;
+  padding: 16px;
 }
-.canvas_image{
-  width: 100%;
+
+.canvas_image_wrap {
+  position: relative;
+  width: fit-content;
+}
+
+.canvas_image {
+  max-width: 100%;
   height: auto;
   display: block;
   user-select: none;
 }
 
-//  핀영역
-.pin_marker{
+/* 핀 */
+.pin_marker {
   position: absolute;
   width: 32px;
   height: 32px;
@@ -133,17 +141,20 @@
   align-items: center;
   justify-content: center;
   transform: translate(-50%, -50%);
+  pointer-events: auto; // 클릭 방해 방지
+  cursor: pointer;
   animation: pulse 1.5s infinite;
 }
-@keyframes pulse{
-  0%{
-    box-shadow: 0 0 0 0 rgba(37,99, 235, 0.4);
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4);
   }
-  70%{
-    box-shadow: 0 0 0 10px rgba(37,99, 235, 0);
+  70% {
+    box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
   }
-  100%{
-    box-shadow: 0 0 0 0 rgba(37,99, 235, 0);
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
   }
 }
 
@@ -170,7 +181,22 @@
   font-size: 12px;
   color:#9ca3af;
 }
+.btn_pin_delete {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 13px;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
 
+.pineditor_guide {
+  text-align: center;
+  color: #6b7280;
+  font-size: 14px;
+}
 // 사이드바 컨텐츠
 .sidebar_content{
   flex: 1;
@@ -254,4 +280,24 @@
   font-weight: 600;
 }
 
+// 반응형을 위한 구조 서식 
+// 태블릿
+@media screen and (max-width: 1023px) {
 
+  .pineditor_body {
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden; 
+  }
+
+  .pineditor_canvas {
+    width: 100%;
+
+  }
+
+  .pineditor_sidebar {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid #e5e7eb;
+  }
+}

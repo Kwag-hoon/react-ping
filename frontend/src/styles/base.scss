@@ -277,7 +277,7 @@ $typo-styles: (
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(12, 1fr);
     column-gap: 32px;
   }
 }
@@ -291,7 +291,7 @@ $typo-styles: (
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(12, 1fr);
     column-gap: 24px;
   }
 }
@@ -305,7 +305,7 @@ $typo-styles: (
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     column-gap: 20px;
   }
 }

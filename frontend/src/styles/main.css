@@ -135,7 +135,7 @@ html {
   }
   .grid {
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(12, 1fr);
     -moz-column-gap: 32px;
          column-gap: 32px;
   }
@@ -148,7 +148,7 @@ html {
   }
   .grid {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(12, 1fr);
     -moz-column-gap: 24px;
          column-gap: 24px;
   }
@@ -161,7 +161,7 @@ html {
   }
   .grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(8, 1fr);
     -moz-column-gap: 20px;
          column-gap: 20px;
   }
@@ -451,6 +451,11 @@ select {
   vertical-align: middle;
 }
 
+/* =========================================================
+  Typography (main / section)
+  - main 안의 article/section 기본 타이포 세팅
+  - 디자인 유지: 기존 include / 컬러 그대로
+========================================================= */
 main article h2 {
   font-family: "KoreaInstituteOfMachineryAndMaterials";
   font-size: 64px;
@@ -481,12 +486,23 @@ main section p {
   color: #6D7280;
 }
 
+/* =========================================================
+  HERO SECTION
+  - 상단 그라데이션 + 텍스트/이미지/버튼 영역
+========================================================= */
 .main_hero-section {
   background: linear-gradient(120deg, #FF6E79 0%, #7a5fa3 25%, #023FA1 50%, #1976a3 75%, #43ECAC 100%);
 }
 .main_hero-section .grid {
   padding: 120px 0;
   align-items: center;
+  /* hero 텍스트/버튼 영역(좌) + 이미지(우) 배치용 */
+  /* 우측 히어로 이미지 */
+  /* CTA 버튼 묶음 */
+}
+.main_hero-section .grid .col-12 {
+  display: flex;
+  justify-content: space-between;
 }
 .main_hero-section .grid .top-text {
   color: #ffffff;
@@ -547,8 +563,16 @@ main section p {
   background: #43ECAC;
 }
 
+/* =========================================================
+  FEEDBACK EXPLORER (좌측 메뉴/칩 + 우측 카드 리스트)
+========================================================= */
 .main_feedback-explorer .grid {
   padding: 100px 0;
+}
+.main_feedback-explorer .explorer_aside {
+  /* 좌측 메뉴 리스트 */
+  /* 메뉴 버튼(접힘/열림 공통) */
+  /* 메뉴 아이템 열림 상태 */
 }
 .main_feedback-explorer .explorer_aside .menu_list {
   margin-top: 30px;
@@ -580,6 +604,10 @@ main section p {
   background: #F9FAFB;
   border-radius: 28px;
   box-shadow: inset 5px 5px 10px #D2D5DA, inset -5px -5px 10px #ffffff, 3px 3px 20px #E5E7EB;
+  /* 열림 상태에선 버튼이 상단 헤더처럼 보이도록 */
+  /* 칩(카테고리) 라인 */
+  /* 칩 기본 스타일 (중복 정의는 여기로 합침) */
+  /* 선택된 칩 */
 }
 .main_feedback-explorer .explorer_aside .main_item.is-open .menu_btn {
   opacity: 1;
@@ -611,17 +639,16 @@ main section p {
   font-weight: 700;
   line-height: 28px;
   letter-spacing: -0.02em;
+  /* 칩 레이아웃(기존 .chip 중복 정의 병합) */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   box-shadow: 0 10px 22px rgba(17, 24, 39, 0.12), inset 0 2px 6px rgba(255, 255, 255, 0.9);
   transition: transform 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
 }
 .main_feedback-explorer .explorer_aside .main_item.is-open .chip:hover {
   transform: translateY(-1px);
   box-shadow: 0 14px 26px rgba(17, 24, 39, 0.14), inset 0 2px 8px rgba(255, 255, 255, 0.9);
-}
-.main_feedback-explorer .explorer_aside .main_item.is-open .chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
 }
 .main_feedback-explorer .explorer_aside .main_item.is-open .chip_arrow {
   padding-top: 4px;
@@ -632,8 +659,13 @@ main section p {
   position: relative;
 }
 
+/* =========================================================
+  FEEDBACK LIST (cards 영역)
+  - 카드 그리드 + empty 상태 + 더보기 버튼
+========================================================= */
 .feedbackcons {
   min-width: 0;
+  /* empty가 있을 땐 그리드 대신 중앙정렬로 보여주기 */
 }
 .feedbackcons .cards {
   display: grid;
@@ -641,6 +673,7 @@ main section p {
   gap: 28px;
   min-height: 300px;
   position: relative;
+  /* 데이터 없을 때 중앙 안내 문구 */
 }
 .feedbackcons .cards .empty {
   position: absolute;
@@ -688,7 +721,9 @@ main section p {
   background: #43ECAC;
 }
 
-/* 피드백 카드 디자인 */
+/* =========================================================
+  FEEDBACK CARD (개별 카드)
+========================================================= */
 .feedback_card {
   background: #ffffff;
   border-radius: 22px;
@@ -718,8 +753,10 @@ main section p {
   line-height: 130%;
   letter-spacing: -0.02em;
   color: #111827;
+  /* 2줄 말줄임 */
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -755,6 +792,9 @@ main section p {
   color: #9CA3AF;
 }
 
+/* =========================================================
+  RECENT ARCHIVES (Masonry)
+========================================================= */
 /* DesignGrid.scss */
 .gallery-masonry {
   padding-top: 40px;
@@ -779,6 +819,7 @@ main section p {
 .thumb-wrap {
   width: 100%;
   overflow: hidden;
+  aspect-ratio: var(--ratio, 4/5);
 }
 
 .thumb {
@@ -821,8 +862,15 @@ main section p {
   letter-spacing: -0.02em;
 }
 
+/* =========================================================
+  ARCHIVE CTA SECTION (배경 이미지 + 중앙 버튼)
+========================================================= */
 .main_feedback-archive {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(0, 0, 0, 0.65);
+  background-blend-mode: darken;
 }
 .main_feedback-archive .grid {
   padding: 160px 0;
@@ -834,6 +882,14 @@ main section p {
   align-items: center;
   text-align: center;
   gap: 30px;
+}
+.main_feedback-archive .col-12 h2 {
+  color: #ffffff;
+  font-family: "KoreaInstituteOfMachineryAndMaterials";
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: 0;
 }
 .main_feedback-archive .col-12 button {
   display: inline-flex;
@@ -859,32 +915,54 @@ main section p {
   background: #43ECAC;
 }
 
-/* 1440 ~ 1919 */
-@media screen and (min-width: 1440px) and (max-width: 1919px) {
-  .main_hero-section .col-8 {
-    grid-column: span 6;
+/* =========================================================
+  RESPONSIVE
+========================================================= */
+/* -------------------- 1439 이하: 줄바꿈 유틸 -------------------- */
+@media (max-width: 1439px) {
+  .tab-br {
+    display: block;
+    /* 태블릿 아래에서만 줄바꿈 */
   }
-  .main_hero-section .col-4 {
+}
+/* -------------------- 1440 ~ 1919 -------------------- */
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+  .main_feedback-explorer .col-4 {
     grid-column: span 4;
   }
-  .main_hero-section .grid {
-    padding: 150px 0;
+  .main_feedback-explorer .col-8 {
+    grid-column: span 8;
   }
-  .main_hero-section .grid .hero-image {
-    width: 360px;
+  .main_feedback-explorer .feedbackcons .cards {
+    gap: 28px;
+    min-height: 190px;
   }
   .gallery-masonry {
     -moz-column-count: 5;
          column-count: 5;
+    -moz-column-gap: 32px;
+         column-gap: 32px;
   }
 }
-/* 1024 ~ 1439 */
+/* -------------------- 1024 ~ 1439 -------------------- */
 @media screen and (min-width: 1024px) and (max-width: 1439px) {
-  .main_hero-section .col-8 {
-    grid-column: span 5;
+  /* 섹션 타이포만 변경(디자인 유지) */
+  main section h2 {
+    font-size: 36px;
+  }
+  main section p {
+    font-family: "Inter";
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: -0.02em;
+    color: #6D7280;
+  }
+  .col-12 {
+    grid-column: span 12;
   }
   .main_hero-section .col-4 {
-    grid-column: span 3;
+    grid-column: span 6;
   }
   .main_hero-section .grid {
     padding: 100px 0;
@@ -892,28 +970,164 @@ main section p {
   .main_hero-section .grid .hero-image {
     width: 320px;
   }
+  .main_feedback-explorer .col-4 {
+    grid-column: span 4;
+  }
+  .main_feedback-explorer .col-8 {
+    grid-column: span 8;
+  }
+  .main_feedback-explorer .feedbackcons .cards {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 28px;
+    min-height: 190px;
+  }
+  .main_feedback-explorer .feedback_card {
+    min-height: 190px;
+  }
+  .main_feedback-archive .grid {
+    padding: 40px 0;
+  }
+  .main_feedback-archive .grid .col-12 img {
+    height: 200px;
+  }
+  .main_feedback-archive .grid .col-12 h2 {
+    font-family: "KoreaInstituteOfMachineryAndMaterials";
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 130%;
+    letter-spacing: 0;
+  }
   .gallery-masonry {
     -moz-column-count: 4;
          column-count: 4;
+    -moz-column-gap: 24px;
+         column-gap: 24px;
   }
 }
-/* 768 ~ 1023 */
+/* -------------------- 768 ~ 1023 -------------------- */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
-  .main_hero-section .col-8 {
-    grid-column: span 4;
+  main article h2 {
+    font-family: "KoreaInstituteOfMachineryAndMaterials";
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 130%;
+    letter-spacing: 0;
+  }
+  main section h2 {
+    font-family: "KoreaInstituteOfMachineryAndMaterials";
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 130%;
+    letter-spacing: 0;
+  }
+  main section p {
+    font-family: "Inter";
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: -0.02em;
+    color: #6D7280;
+  }
+  .main_hero-section .col-12 {
+    grid-column: span 8;
   }
   .main_hero-section .col-4 {
-    grid-column: span 2;
+    grid-column: span 5;
+  }
+  .main_hero-section .grid {
+    /* 태블릿에서 버튼 가운데 정렬 */
+  }
+  .main_hero-section .grid .hero-image {
+    width: 300px;
+  }
+  .main_hero-section .grid .hero-btns {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 28px;
+  }
+  .main_feedback-explorer .grid {
+    gap: 30px;
+    padding: 20px 0;
+  }
+  .main_feedback-explorer .grid .col-4 {
+    grid-column: span 8;
+  }
+  .main_feedback-explorer .grid .col-8 {
+    grid-column: span 8;
+  }
+  .main_feedback-explorer .explorer_aside .menu_btn {
+    padding: 10px 30px 10px 30px;
+  }
+  .main_feedback-explorer .explorer_aside .main_item.is-open .active_panel {
+    margin-bottom: 6px;
+  }
+  .main_feedback-explorer .explorer_aside .main_item.is-open .chip {
+    padding: 6px 12px;
+  }
+  .main_feedback-explorer .explorer_aside .main_item.is-open .chip_arrow {
+    padding-top: 4px;
+    height: 14px;
+  }
+  .main_feedback-explorer .explorer_aside .main_item.is-open .chip_row {
+    gap: 10px;
+    padding: 0px 14px;
+  }
+  .main_feedback-explorer .feedbackcons .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    min-height: 120px;
+  }
+  .main_feedback-explorer .feedbackcons .cards .feedback_card {
+    min-height: 120px;
+    gap: 10px;
+    /* badge / bottom 내부의 date, pins 타이포 조정 */
+  }
+  .main_feedback-explorer .feedbackcons .cards .feedback_card .card-title {
+    font-family: "Inter";
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 26px;
+    letter-spacing: -0.02em;
+  }
+  .main_feedback-explorer .feedbackcons .cards .feedback_card .badge .date,
+  .main_feedback-explorer .feedbackcons .cards .feedback_card .badge .pins span,
+  .main_feedback-explorer .feedbackcons .cards .feedback_card .bottom .date,
+  .main_feedback-explorer .feedbackcons .cards .feedback_card .bottom .pins span {
+    font-family: "Inter";
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.02em;
+  }
+  .main_feedback-explorer .feedbackcons .cards .feedback_card .badge {
+    padding: 2px 8px;
+  }
+  .main_feedback-archive .grid {
+    padding: 40px 0;
+  }
+  .main_feedback-archive .grid .col-12 img {
+    height: 160px;
+  }
+  .main_feedback-archive .grid .col-12 h2 {
+    font-family: "KoreaInstituteOfMachineryAndMaterials";
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 130%;
+    letter-spacing: 0;
   }
   .gallery-masonry {
     -moz-column-count: 3;
          column-count: 3;
+    -moz-column-gap: 20px;
+         column-gap: 20px;
   }
 }
-/* 0 ~ 767 */
+/* -------------------- 0 ~ 767 (Mobile) -------------------- */
 @media screen and (max-width: 767px) {
+  main article {
+    /* 모바일에서 article p는 기존 커스텀 폰트/두께/크기 유지 */
+  }
   main article h2 {
-    width: 350px;
     font-family: "KoreaInstituteOfMachineryAndMaterials";
     font-size: 30px;
     font-weight: 700;
@@ -946,9 +1160,12 @@ main section p {
   }
   .main_hero-section .grid {
     padding: 16px 0;
+    /* 모바일 이미지 중앙 */
+    /* 모바일 버튼: 줄바꿈 허용 + 중앙정렬 */
   }
-  .main_hero-section .grid .col-8 {
+  .main_hero-section .grid .col-12 {
     grid-column: span 4;
+    flex-direction: column;
   }
   .main_hero-section .grid .col-4 {
     grid-column: span 4;
@@ -1056,7 +1273,7 @@ main section p {
   }
   .main_feedback-explorer .feedbackcons .cards {
     grid-template-columns: repeat(1, minmax(0, 1fr));
-    min-height: 200px;
+    min-height: 120px;
   }
   .main_feedback-explorer .feedbackcons .cards .feedback_card {
     min-height: 120px;
@@ -1070,7 +1287,8 @@ main section p {
     letter-spacing: -0.02em;
   }
   .main_feedback-explorer .feedbackcons .cards .feedback_card .badge .date,
-  .main_feedback-explorer .feedbackcons .cards .feedback_card .badge .pins span, .main_feedback-explorer .feedbackcons .cards .feedback_card .bottom .date,
+  .main_feedback-explorer .feedbackcons .cards .feedback_card .badge .pins span,
+  .main_feedback-explorer .feedbackcons .cards .feedback_card .bottom .date,
   .main_feedback-explorer .feedbackcons .cards .feedback_card .bottom .pins span {
     font-family: "Inter";
     font-size: 14px;
@@ -1084,5 +1302,43 @@ main section p {
   .gallery-masonry {
     -moz-column-count: 2;
          column-count: 2;
+    -moz-column-gap: 20px;
+         column-gap: 20px;
+  }
+  .main_feedback-archive .grid {
+    padding: 40px 0;
+  }
+  .main_feedback-archive .grid .col-12 img {
+    height: 160px;
+  }
+  .main_feedback-archive .grid .col-12 h2 {
+    font-family: "KoreaInstituteOfMachineryAndMaterials";
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 130%;
+    letter-spacing: 0;
+  }
+  .main_feedback-archive .grid .col-12 button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    text-align: center;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    box-shadow: none;
+    width: 160px;
+    height: 50px;
+    font-family: "Inter";
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 26px;
+    letter-spacing: -0.02em;
+    background: #FF6E79;
+    color: #ffffff;
+    border: 1px solid transparent;
+  }
+  .main_feedback-archive .grid .col-12 button:hover, .main_feedback-archive .grid .col-12 button:focus-visible {
+    background: #43ECAC;
   }
 }/*# sourceMappingURL=main.css.map */
