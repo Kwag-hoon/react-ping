@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/common.css';
+import '../styles/common.scss';
 import Logowhite from '../../assets/Logo_white.svg';
 
 

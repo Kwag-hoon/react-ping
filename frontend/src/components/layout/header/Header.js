@@ -5,7 +5,7 @@ import HeaderUser from './HeaderUser';
 import HeaderGuest from './HeaderGuest';
 
 // css
-import '../../styles/common.css';
+import '../../styles/common.scss';
 
 
 const Header = () => {

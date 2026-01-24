@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './styles/base.scss';  //초기화 및 기본 스타일 가이드
 
 // 컴포넌트
-import Header from './components/layout/header/Header';
+
 import Footer from './components/layout/Footer';
 
 // 페이지
@@ -14,11 +14,16 @@ import Upload from "./pages/upload/Upload";
 import Archive from './pages/design/Archive';
 import PinEditor from "./pages/upload/PinEditor";
 
+// import HeaderGuest from "./components/layout/header/HeaderGuest";
+import HeaderUser from './components/layout/header/HeaderUser';  // 나중에 Header로 바꿀것
+import TabBar from './components/layout/tabbar/TabBar';
+// import TabBarUser from './components/layout/tabbar/TabBarUser';
+
 function App() {
   return (
     < >
       <BrowserRouter>
-        <Header />
+        <HeaderUser />
 
         <Routes>
           
@@ -30,6 +35,9 @@ function App() {
        </Routes>
 
         <Footer />
+        {/* <TabBarUser /> */}
+        <TabBar />
+
 
       </BrowserRouter>
     </>
