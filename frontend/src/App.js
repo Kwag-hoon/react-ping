@@ -9,6 +9,8 @@ import Footer from './components/layout/Footer';
 
 // 페이지
 import Main from './pages/Main';
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
 import Detail from './pages/design/Detail';
 import Upload from "./pages/upload/Upload";
 import Archive from './pages/design/Archive';
@@ -28,6 +30,8 @@ function App() {
         <Routes>
           
           <Route path="/" element={<Main />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/upload" element={<Upload />} />
           <Route path='/detail' element={<Detail />}></Route>
           <Route path='/archive' element={<Archive />}></Route>
