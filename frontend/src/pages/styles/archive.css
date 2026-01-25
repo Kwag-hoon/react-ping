@@ -451,6 +451,7 @@ select {
   vertical-align: middle;
 }
 
+/* archive.scss */
 .archive article h2 {
   font-family: "KoreaInstituteOfMachineryAndMaterials";
   font-size: 48px;
@@ -506,7 +507,8 @@ select {
   border-radius: 30px;
 }
 
-.card-box, .detail .detail_box .detail-box_right .box-right_card ul li:not(:first-child) {
+/* detail.scss */
+.card-box, .detail .detail-box_right .sticky-inner .box-right_memo ul li, .detail .detail-box_right .sticky-inner .box-right_card ul li:not(:first-child) {
   border: 1px solid #9CA3AF;
   border-radius: 12px;
   padding: 16px 30px;
@@ -514,28 +516,125 @@ select {
   box-sizing: border-box;
 }
 
-.detail .detail_box .detail-box_left {
+.mobile-comment-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  text-align: center;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  box-shadow: inset 2px 2px 10px #ffffff, inset -2px -2px 20px rgba(156, 163, 175, 0.4), -2px -2px 10px rgba(229, 231, 235, 0.2);
+  padding: 12px 24px;
+  font-family: "Inter";
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: -0.02em;
+  background: #023FA1;
+  color: #ffffff;
+  border: 1px solid;
+  cursor: pointer;
+  display: none;
+}
+
+.modal-dim {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-dim.is-open {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-wrapper {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.detail-modal {
+  background: #fff;
+  border-radius: 16px 16px 0 0;
+  transform: translateY(100%);
+  transition: transform 0.35s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-dim.is-open .detail-modal {
+  transform: translateY(0);
+}
+
+.close_btn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.image_wrap {
+  position: relative;
+  width: 100%;
+}
+
+.image_wrap img {
+  width: 100%;
+  display: block;
+}
+
+.pin_marker {
+  position: absolute;
+  transform: translate(-50%, -100%);
+}
+
+.detail .detail-box_left {
+  position: relative;
+  margin: 100px 0px;
   border: 1px solid #D2D5DA;
   border-radius: 16px;
   padding: 50px;
   display: flex;
   flex-direction: column;
 }
-.detail .detail_box .detail-box_left a {
+.detail .detail-box_left .back_btn {
+  box-shadow: inset 2px 2px 10px #ffffff, inset -2px -2px 20px rgba(156, 163, 175, 0.4), -2px -2px 10px rgba(229, 231, 235, 0.2);
+  position: absolute;
+  top: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 14px;
+  margin-bottom: 10px;
   cursor: pointer;
-  display: block;
-  padding: 10px 0px;
 }
-.detail .detail_box .detail-box_left h2 {
+.detail .detail-box_left h2 {
   font-family: "KoreaInstituteOfMachineryAndMaterials";
   font-size: 48px;
   font-weight: 700;
   line-height: 130%;
   letter-spacing: 0;
   color: #111827;
-  padding-bottom: 10px;
+  padding: 10px 0px;
 }
-.detail .detail_box .detail-box_left p {
+.detail .detail-box_left p {
   font-family: "Inter";
   font-size: 24px;
   font-weight: 400;
@@ -544,36 +643,33 @@ select {
   color: #4B5563;
   padding-bottom: 20px;
 }
-.detail .detail_box .detail-box_left .desc-row {
+.detail .detail-box_left .desc-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
-.detail .detail_box .detail-box_left .desc-row .user-badge {
+.detail .detail-box_left .desc-row .user-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
-  border: 1px solid #9CA3AF;
-  border-radius: 999px;
-  background: #fff;
-  font-size: 14px;
-  color: #333;
+  font-size: 16px;
+  color: #4B5563;
 }
-.detail .detail_box .detail-box_left .desc-row .user-badge img {
-  width: 32px;
-  height: 32px;
+.detail .detail-box_left .desc-row .user-badge img {
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   -o-object-fit: cover;
      object-fit: cover;
   display: block;
 }
-.detail .detail_box .detail-box_left .badge-btn {
+.detail .detail-box_left .badge-btn {
   display: flex;
   gap: 10px;
 }
-.detail .detail_box .detail-box_left .badge-btn > li {
+.detail .detail-box_left .badge-btn > li {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -593,21 +689,30 @@ select {
   border: 1px solid 1px solid #D2D5DA;
   border-radius: 30px;
 }
-.detail .detail_box .detail-box_left .img_box {
-  padding: 50px 0px;
+.detail .detail-box_left .img_box {
+  padding: 30px 0px;
 }
-.detail .detail_box .detail-box_left .img_box img {
+.detail .detail-box_left .img_box img {
   width: 100%;
   height: auto;
   display: block;
 }
-.detail .detail_box .detail-box_right {
-  box-sizing: border-box;
+.detail .detail-box_right {
+  margin: 100px 0px;
   padding: 50px 24px;
   border: 1px solid #D2D5DA;
   border-radius: 16px;
 }
-.detail .detail_box .detail-box_right .pin-label {
+.detail .detail-box_right hr {
+  border: none;
+  border-top: 1px solid #D2D5DA;
+  margin: 24px 0;
+}
+.detail .detail-box_right .sticky-inner {
+  position: sticky;
+  top: 100px;
+}
+.detail .detail-box_right .sticky-inner .pin-label {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -618,19 +723,22 @@ select {
   letter-spacing: -0.02em;
   color: #1F2937;
 }
-.detail .detail_box .detail-box_right .pin-label .pin-badge {
-  display: inline-flex;
+.detail .detail-box_right .sticky-inner .pin-label .pin-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  padding: 2px 10px;
-  background: #FF6E79;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  flex-shrink: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  animation: pulse 1.5s infinite;
 }
-.detail .detail_box .detail-box_right span {
+.detail .detail-box_right .sticky-inner span {
   font-family: "Inter";
   font-size: 16px;
   font-weight: 400;
@@ -638,13 +746,13 @@ select {
   letter-spacing: -0.02em;
   color: #4B5563;
 }
-.detail .detail_box .detail-box_right .box-right_card {
+.detail .detail-box_right .sticky-inner .box-right_card {
   width: 100%;
 }
-.detail .detail_box .detail-box_right .box-right_card ul {
+.detail .detail-box_right .sticky-inner .box-right_card ul {
   width: 100%;
 }
-.detail .detail_box .detail-box_right .box-right_card ul li:first-child {
+.detail .detail-box_right .sticky-inner .box-right_card ul li:first-child {
   font-family: "Inter";
   font-size: 16px;
   font-weight: 700;
@@ -653,7 +761,7 @@ select {
   color: #4B5563;
   margin-bottom: 30px;
 }
-.detail .detail_box .detail-box_right .box-right_card ul li:not(:first-child) {
+.detail .detail-box_right .sticky-inner .box-right_card ul li:not(:first-child) {
   font-family: "Inter";
   font-size: 14px;
   font-weight: 400;
@@ -661,10 +769,10 @@ select {
   letter-spacing: -0.02em;
   color: #1F2937;
 }
-.detail .detail_box .detail-box_right .box-right_card ul li:not(:first-child) span {
+.detail .detail-box_right .sticky-inner .box-right_card ul li:not(:first-child) span {
   font-size: 13px;
 }
-.detail .detail_box .detail-box_right .box-right_card textarea {
+.detail .detail-box_right .sticky-inner .box-right_card textarea {
   width: 100%;
   min-height: 120px;
   font-family: inherit;
@@ -675,7 +783,7 @@ select {
   background: transparent;
   border: 1px solid #9CA3AF;
 }
-.detail .detail_box .detail-box_right .box-right_card button {
+.detail .detail-box_right .sticky-inner .box-right_card button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -695,14 +803,39 @@ select {
   border: 1px solid;
   margin-top: 30px;
   width: 100%;
-  border: none;
+  border: 1px solid #ffffff;
   /* typo 덮어쓰기 */
   font: inherit;
 }
-.detail .detail_box .detail-box_right .box-right_memo {
+.detail .detail-box_right .sticky-inner .box-right_card button:hover {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  text-align: center;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  box-shadow: inset 2px 2px 10px #ffffff, inset -2px -2px 20px rgba(156, 163, 175, 0.4), -2px -2px 10px rgba(229, 231, 235, 0.2);
+  padding: 12px 24px;
+  font-family: "Inter";
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: -0.02em;
+  background: #ffffff;
+  color: #023FA1;
+  border: 1px solid;
+  margin-top: 30px;
+  width: 100%;
+  border: 1px solid #023FA1;
+  /* typo 덮어쓰기 */
+  font: inherit;
+  font-weight: 700;
+}
+.detail .detail-box_right .sticky-inner .box-right_memo {
   padding: 0px 10px;
 }
-.detail .detail_box .detail-box_right .box-right_memo p {
+.detail .detail-box_right .sticky-inner .box-right_memo p {
   font-family: "Inter";
   font-size: 16px;
   font-weight: 700;
@@ -710,7 +843,18 @@ select {
   letter-spacing: -0.02em;
   color: #4B5563;
 }
-.detail .detail_box .detail-box_right .box-right_memo textarea {
+.detail .detail-box_right .sticky-inner .box-right_memo ul li {
+  font-family: "Inter";
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.02em;
+  color: #1F2937;
+}
+.detail .detail-box_right .sticky-inner .box-right_memo ul li span {
+  font-size: 13px;
+}
+.detail .detail-box_right .sticky-inner .box-right_memo textarea {
   margin-top: 30px;
   width: 100%;
   min-height: 120px;
@@ -722,7 +866,7 @@ select {
   background: transparent;
   border: 1px solid #9CA3AF;
 }
-.detail .detail_box .detail-box_right .box-right_memo button {
+.detail .detail-box_right .sticky-inner .box-right_memo button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -742,7 +886,195 @@ select {
   border: 1px solid;
   margin-top: 30px;
   width: 100%;
-  border: none;
+  border: 1px solid #ffffff;
   /* typo 덮어쓰기 */
   font: inherit;
+}
+.detail .detail-box_right .sticky-inner .box-right_memo button:hover {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  text-align: center;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  box-shadow: inset 2px 2px 10px #ffffff, inset -2px -2px 20px rgba(156, 163, 175, 0.4), -2px -2px 10px rgba(229, 231, 235, 0.2);
+  padding: 12px 24px;
+  font-family: "Inter";
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 130%;
+  letter-spacing: -0.02em;
+  background: #ffffff;
+  color: #023FA1;
+  border: 1px solid;
+  margin-top: 30px;
+  width: 100%;
+  border: 1px solid #023FA1;
+  /* typo 덮어쓰기 */
+  font: inherit;
+  font-weight: 700;
+}
+
+/* 1920+ (PC) */
+@media screen and (min-width: 1920px) {
+  .detail .detail_box {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    -moz-column-gap: 36px;
+         column-gap: 36px;
+  }
+  .detail .detail-box_left {
+    grid-column: span 8;
+  }
+  .detail .detail-box_right {
+    grid-column: span 4;
+  }
+}
+/* 1440 ~ 1919 (Desktop) */
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+  .detail .detail_box {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    -moz-column-gap: 32px;
+         column-gap: 32px;
+  }
+  .detail .detail-box_left {
+    grid-column: span 6;
+  }
+  .detail .detail-box_right {
+    grid-column: span 4;
+  }
+}
+/* 1024 ~ 1439 — Tablet Landscape / Small Laptop */
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+  .detail .detail_box {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    -moz-column-gap: 24px;
+         column-gap: 24px;
+  }
+  .detail .detail-box_left {
+    grid-column: span 5;
+  }
+  .detail .detail-box_right {
+    grid-column: span 3;
+  }
+}
+/* 768 ~ 1023px (TABLET) */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .detail .container {
+    max-width: 768px;
+    padding: 0 16px;
+  }
+  .detail .grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    -moz-column-gap: 20px;
+         column-gap: 20px;
+  }
+  .detail .detail-box_left {
+    grid-column: 1/-1;
+  }
+  .detail .detail-box_right {
+    margin: 0px;
+    grid-column: 1/-1;
+  }
+  .detail .modal-dim {
+    display: block;
+  }
+  .detail .modal-dim.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .detail .mobile-comment-btn {
+    display: block;
+  }
+  .detail .detail-box_right.hidden {
+    display: none;
+  }
+}
+/* 0 ~ 767px (MOBILE) */
+@media screen and (max-width: 767px) {
+  .detail .container {
+    max-width: 390px;
+    padding: 0 16px;
+  }
+  .detail .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    -moz-column-gap: 20px;
+         column-gap: 20px;
+  }
+  .detail .detail-box_left {
+    grid-column: 1/-1;
+  }
+  .detail .detail-box_left .back_btn {
+    box-shadow: inset 2px 2px 10px #ffffff, inset -2px -2px 20px rgba(156, 163, 175, 0.4), -2px -2px 10px rgba(229, 231, 235, 0.2);
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 14px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .detail .detail-box_left h2 {
+    font-family: "KoreaInstituteOfMachineryAndMaterials";
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 130%;
+    letter-spacing: 0;
+  }
+  .detail .detail-box_left p {
+    font-family: "Inter";
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: -0.02em;
+  }
+  .detail .detail-box_left .desc-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .detail .detail-box_left .desc-row .user-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #4B5563;
+  }
+  .detail .detail-box_left .desc-row .user-badge img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    -o-object-fit: cover;
+       object-fit: cover;
+    display: block;
+  }
+  .detail .detail-box_right {
+    grid-column: 1/-1;
+    margin: 0px;
+  }
+  .detail .modal-dim {
+    display: block;
+  }
+  .detail .modal-dim.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .detail .mobile-comment-btn {
+    display: block;
+  }
+  .detail .detail-box_right.hidden {
+    display: none;
+  }
 }/*# sourceMappingURL=archive.css.map */
