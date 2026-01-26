@@ -97,7 +97,7 @@ button[type="submit"] {
   width: 100%;
 }
 
-section {
+.auth {
   .grid {
     h2 {
       padding: 70px 0;
@@ -111,7 +111,7 @@ section {
       justify-content: space-around;
       padding: 40px 90px;
 
-      a{
+      a {
         display: inline-block;
         cursor: pointer;
       }
@@ -182,7 +182,7 @@ section {
 
 //반응형 서식
 @media (min-width: 1024px) {
-  section .grid .col-4 {
+  .auth .grid .col-4 {
     grid-column: 5 / span 4;
   }
 }

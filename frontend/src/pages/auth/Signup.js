@@ -12,7 +12,7 @@ function Login(props) {
   };
 
   return (
-    <section className='signup_section container'>
+    <section className='signup_section container auth'>
       <div className="grid">
         <div className="col-4 ">
           <h2>JOIN</h2>
@@ -21,8 +21,8 @@ function Login(props) {
           </div>
           <ul className="social-login">
             <li><Link to="/auth/naver"><img src={process.env.PUBLIC_URL + '/images/naver.jpg'} alt="네이버" /></Link></li>
-            <li><Link to="/auth/kakao"><img src={process.env.PUBLIC_URL + '/images/kakao.jpg'} /></Link></li>
-            <li><Link to="/auth/google"><img src={process.env.PUBLIC_URL + '/images/google.jpg'} /></Link></li>
+            <li><Link to="/auth/kakao"><img src={process.env.PUBLIC_URL + '/images/kakao.jpg'} alt="카카오" /></Link></li>
+            <li><Link to="/auth/google"><img src={process.env.PUBLIC_URL + '/images/google.jpg'} alt="구글" /></Link></li>
           </ul>
           <div class="divider">
             <span>이메일로 가입하기</span>
