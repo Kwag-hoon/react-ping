@@ -1,4 +1,4 @@
-import '../styles/archive.scss'
+import '../styles/detail.scss'
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import backIcon from '../../assets/icon-chevron-left.svg';
@@ -6,17 +6,40 @@ import CloseIcon from '../../assets/icon-x.svg'
 
 
 function Detail() {
+  // 이미지 위에 표시될 핀 정보 + 각 핀에 대응되는 질문 데이터
+  //나중에 핀 업로드에서 가져올때는
+  //1. const [pins, setPins] = useState([]); 값으로 바꾸기
+  //2. const [selectedPin, setSelectedPin] = useState(null); 기본 null값으로 바꿔주기
+
+  // 3. useEffect(() => {
+  //   axios.get(`/api/designs/${id}`)
+  //     .then(res => {
+  //       setPins(res.data.pins);
+  //       setSelectedPin(res.data.pins[0]);
+  //     });
+  // }, []);
+  const pins = [
+    { id: 1, x: 32.5, y: 40.2, question: '카드 스타일 레이아웃과 전체 화면 디자인 중 어느것이 더 나을까요? 사용자에게 주는 느낌이 다를 것 같은데 의견이 필요합니다.' },
+    { id: 2, x: 61.8, y: 28.4, question: '질문 2' },
+    { id: 3, x: 48.1, y: 66.9, question: '질문 3' },
+  ];
+  // 현재 선택된 핀 상태 (핀을 선택하지 않았을 경우 기본값으로 첫 번째 핀 사용)
+  const [selectedPin, setSelectedPin] = useState(pins[0]);
+
+  const navigate = useNavigate();
   //모바일 댓글창 여는 상태변수
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
 
-  //댓글 업로드 상태변수
-  const [comments, setComments] = useState([]);
+  // 핀 id를 key로 하는 댓글 상태 객체 (각 핀마다 댓글을 분리해서 저장)
+  const [comments, setComments] = useState({});
   const [commentText, setCommentText] = useState('');
 
   //메모 업로드 상태변수
   const [memo, setMemo] = useState([]);
   const [memoText, setMemoText] = useState('');
+
+  //나중에 PinEditor 서버에서 받을 이미지 데이터 구조
+  const imageUrl = `${process.env.PUBLIC_URL}/images/detail.png`;
 
   //댓글 게시 버튼 로직
   const handleAddComment = () => {
@@ -32,9 +55,18 @@ function Detail() {
       content: commentText,
     };
 
-    setComments(prev => [...prev, newComment]);
+    setComments(prev => ({
+      ...prev,
+      [selectedPin.id]: [
+        ...(prev[selectedPin.id] || []),
+        newComment,
+      ],
+    }));
     setCommentText('');
   };
+
+  // comments 객체에서 현재 선택된 핀의 댓글만 추출
+  const pinComments = comments[selectedPin?.id] || [];
 
   //메모 게시 버튼 로직
   const handleAddMemo = () => {
@@ -53,14 +85,6 @@ function Detail() {
     setMemo(prev => [...prev, newMemo]);
     setMemoText('');
   }
-  //나중에 PinEditor / 서버에서 받을 데이터 구조
-  const imageUrl = `${process.env.PUBLIC_URL}/images/detail.png`;
-
-  const pins = [
-    { id: 1, x: 32.5, y: 40.2, question: '질문 1' },
-    { id: 2, x: 61.8, y: 28.4, question: '질문 2' },
-    { id: 3, x: 48.1, y: 66.9, question: '질문 3' },
-  ];
 
   return (
     <section className="detail container">
@@ -74,9 +98,9 @@ function Detail() {
 
           <h2>모바일 뱅킹 앱</h2>
 
-          <div class="desc-row">
+          <div className="desc-row">
             <p>거래 화면에 대한 다양한 접근 방식 탐색</p>
-            <span class="user-badge">
+            <span className="user-badge">
               <img
                 src={`${process.env.PUBLIC_URL}/images/detail.png`}
                 alt="프로필 이미지"
@@ -98,17 +122,50 @@ function Detail() {
               {pins.map((pin, index) => (
                 <div
                   key={pin.id}
-                  className="pin_marker"
+                  className={`pin_marker ${selectedPin.id === pin.id ? 'active' : ''}`}
                   style={{
                     left: `${pin.x}%`,
                     top: `${pin.y}%`,
                   }}
+                  onClick={() => setSelectedPin(pin)}
                 >
-                  {index + 1}
+                  {pin.id}
                 </div>
               ))}
             </div>
             <div className="image_wrap">
+              <img src={imageUrl} alt="상세페이지 이미지" />
+              {pins.map((pin, index) => (
+                <div
+                  key={pin.id}
+                  className={`pin_marker ${selectedPin.id === pin.id ? 'active' : ''}`}
+                  style={{
+                    left: `${pin.x}%`,
+                    top: `${pin.y}%`,
+                  }}
+                  onClick={() => setSelectedPin(pin)}
+                >
+                  {pin.id}
+                </div>
+              ))}
+            </div>
+            <div className="image_wrap">
+              <img src={imageUrl} alt="상세페이지 이미지" />
+              {pins.map((pin, index) => (
+                <div
+                  key={pin.id}
+                  className={`pin_marker ${selectedPin.id === pin.id ? 'active' : ''}`}
+                  style={{
+                    left: `${pin.x}%`,
+                    top: `${pin.y}%`,
+                  }}
+                  onClick={() => setSelectedPin(pin)}
+                >
+                  {pin.id}
+                </div>
+              ))}
+            </div>
+            {/* <div className="image_wrap">
               <img src={imageUrl} alt="상세페이지 이미지" />
               {pins.map((pin, index) => (
                 <div
@@ -137,7 +194,7 @@ function Detail() {
                   {index + 1}
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
 
           {/* 모바일 모달 창 버튼 */}
@@ -150,22 +207,26 @@ function Detail() {
         <div className="detail-box_right col-4 hidden">
           <div className="sticky-inner">
             <p className="pin-label">
-              <span className="pin-badge">{pins.length}</span>
+              <span className="pin-badge">
+                {selectedPin ? selectedPin.id : '-'}
+              </span>
               Pin Question
             </p>
 
-            {/* 이후 선택된 핀 기준으로 질문 표시예정 */}
+            {/* 선택된 핀 기준으로 질문 표시예정 */}
             <hr />
-            <span>카드 스타일 레이아웃과 전체 화면 디자인 중 어느것이 더 나을까요? 사용자에게 주는 느낌이 다를 것 같은데 의견이 필요합니다.</span>
+            <span>
+              {selectedPin.question}
+            </span>
             <hr />
 
             <div className='box-right_card'>
               <ul>
-                <li>Community Replies <span>({comments.length})</span></li>
-                {comments.length === 0 && (
+                <li>Community Replies <span>({pinComments.length})</span></li>
+                {pinComments.length === 0 && (
                   <li className='empty'>아직 댓글이 없습니다.</li>
                 )}
-                {comments.map(comment => (
+                {pinComments.map(comment => (
                   <li key={comment.id}>
                     <strong>{comment.user}</strong>
                     <br />
@@ -183,7 +244,7 @@ function Detail() {
                 onChange={(e) => setCommentText(e.target.value)}
               />
 
-              <button type='submit' onClick={handleAddComment}>댓글 게시</button>
+              <button type='submit' className='comment-btn' onClick={handleAddComment}>댓글 게시</button>
               <hr />
             </div>
 
@@ -221,8 +282,10 @@ function Detail() {
           <div className="detail-modal">
             <div className="detail-box_right col-4">
               <div className="sticky-inner">
-                <p class="pin-label">
-                  <span className="pin-badge">{pins.length}</span>
+                <p className="pin-label">
+                  <span className="pin-badge">
+                    {selectedPin ? selectedPin.id : '-'}
+                  </span>
                   Pin Question
                 </p>
                 <button className="close_btn"
@@ -232,16 +295,16 @@ function Detail() {
                 </button>
 
                 <hr />
-                <span>카드 스타일 레이아웃과 전체 화면 디자인 중 어느것이 더 나을까요? 사용자에게 주는 느낌이 다를 것 같은데 의견이 필요합니다.</span>
+                <span>{selectedPin.question}</span>
                 <hr />
 
                 <div className='box-right_card'>
                   <ul>
-                    <li>Community Replies <span>({comments.length})</span></li>
-                    {comments.length === 0 && (
+                    <li>Community Replies <span>({pinComments.length})</span></li>
+                    {pinComments.length === 0 && (
                       <li className='empty'>아직 댓글이 없습니다.</li>
                     )}
-                    {comments.map(comment => (
+                    {pinComments.map(comment => (
                       <li key={comment.id}>
                         <strong>{comment.user}</strong>
                         <br />
