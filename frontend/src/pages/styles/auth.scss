@@ -1,4 +1,5 @@
 @use '../../styles/base.scss' as *;
+
 /*공통 서식*/
 //select
 .custom-select {
@@ -49,36 +50,42 @@
     }
   }
 }
+
 //입력창
-.form-group{
+.form-group {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-top: 20px;
 
-  label{ @include typo("headingMd", $regular); }
+  label {
+    @include typo("headingMd", $regular);
+  }
 
-  input{
+  input {
     width: 100%;
-    height: 70px;
+    box-sizing: border-box;
     padding: 20px;
     border: none;
     border-radius: 10px;
-    @include typo("headingMd", $regular);  
+    @include typo("headingMd", $regular);
     @include neumorphism-shadow;
+
     &::placeholder {
-      @include typo("headingMd", $regular);  
-      color: $main_gray_400;       
+      @include typo("headingMd", $regular);
+      color: $main_gray_400;
     }
   }
-  .password-wrapper{
+
+  .password-wrapper {
     position: relative;
-    .eye-btn{
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-  }
+
+    .eye-btn {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
   }
 }
 
@@ -90,77 +97,92 @@ button[type="submit"] {
   width: 100%;
 }
 
-section{
-  .grid{
-    h2{
+section {
+  .grid {
+    h2 {
       padding: 70px 0;
       @include typo("displaySm", $bold);
       color: $primary_mint;
       text-align: center;
     }
 
-    .social-login{
+    .social-login {
       display: flex;
       justify-content: space-around;
       padding: 40px 90px;
+
+      a{
+        display: inline-block;
+        cursor: pointer;
+      }
+
+      img {
+        width: 80px;
+        border-radius: 40px;
+        @include btn-shadow;
+      }
     }
   }
 }
+
 //login 서식
-.login_section{
-  .login_form{
-      a{
-        margin: 20px 0;
-        display: block;     
-        text-align: right;     
-        color: $primary_blue;
-        border-bottom: 1px solid $primary_blue;
-        width: fit-content;    
-        margin-left: auto; 
-      }
-    }
-      .login_bottom{
-      display: flex;
-      flex-direction: column;
+.login_section {
+  .login_form {
+    a {
       margin: 20px 0;
-      gap: 20px;
-      text-align: center;
-
-      a{
-        border-bottom: 1px solid $main_gray_800;
-        align-self: center;
-      }
+      display: block;
+      text-align: right;
+      color: $primary_blue;
+      border-bottom: 1px solid $primary_blue;
+      width: fit-content;
+      margin-left: auto;
     }
+  }
+
+  .login_bottom {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+    gap: 20px;
+    text-align: center;
+
+    a {
+      border-bottom: 1px solid $main_gray_800;
+      align-self: center;
+    }
+  }
 }
+
 //signup 서식
-.signup_section{
+.signup_section {
   .divider {
-  display: flex;
-  align-items: center;
-  gap: 12px; // 선과 글자 사이 여백
+    display: flex;
+    align-items: center;
+    gap: 12px; // 선과 글자 사이 여백
 
-  span {
-    white-space: nowrap; // 줄바꿈 방지
-    @include typo("headingSm", $regular);
-    color: $main_gray_800;
+    span {
+      white-space: nowrap; // 줄바꿈 방지
+      @include typo("headingSm", $regular);
+      color: $main_gray_800;
+    }
+
+    &::before,
+    &::after {
+      content: "";
+      flex: 1; // 선을 양쪽으로 쭉 늘리기
+      height: 1px;
+      background: $main_gray_800;
+    }
   }
 
-  &::before,
-  &::after {
-    content: "";
-    flex: 1;               // 선을 양쪽으로 쭉 늘리기
-    height: 1px;
-    background: $main_gray_800;
-  }
-}
-  button[type="submit"]{
+  button[type="submit"] {
     margin: 40px 0px;
   }
 }
 
 //반응형 서식
 @media (min-width: 1024px) {
-  section .grid .col-4{
+  section .grid .col-4 {
     grid-column: 5 / span 4;
   }
 }

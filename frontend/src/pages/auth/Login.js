@@ -17,9 +17,9 @@ function Login(props) {
           <h2>LOGIN</h2>
 
           <ul className="social-login">
-            <li><Link to="/auth/naver"><img src="/images/naver.png" alt="네이버" /></Link></li>
-            <li><Link to="/auth/kakao"><img src="/images/kakao.png" alt="카카오" /></Link></li>
-            <li><Link to="/auth/google"><img src="/images/google.png" alt="구글" /></Link></li>
+            <li><Link to="/auth/naver"><img src={process.env.PUBLIC_URL + '/images/naver.jpg'} alt="네이버" /></Link></li>
+            <li><Link to="/auth/kakao"><img src={process.env.PUBLIC_URL + '/images/kakao.jpg'} /></Link></li>
+            <li><Link to="/auth/google"><img src={process.env.PUBLIC_URL + '/images/google.jpg'} /></Link></li>
           </ul>
 
           <form className='login_form' onSubmit={handleSubmit}>
