@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import arrow from "../../assets/icon-chevron-down.svg";
 function Select({ options, placeholder }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState("");
@@ -9,7 +9,11 @@ function Select({ options, placeholder }) {
         {selected || placeholder}
       </div>
 
-      <div className="arrow">▼</div>
+      <div className="arrow">
+        <img
+        src={arrow} alt="arrow" className="select_arrow"
+      />
+      </div>
 
       {open && (
         <ul className="options">
@@ -18,6 +22,7 @@ function Select({ options, placeholder }) {
               key={opt}
               onClick={() => {
                 setSelected(opt);
+                onchange?.(opt);  
                 setOpen(false);
               }}
             >

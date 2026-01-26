@@ -4,8 +4,9 @@ import useAuth from '../../../hooks/useAuth';
 import TabBarGuest from './TabBarGuest';
 import TabBarUser from './TabBarUser';
 
-// scss
-import '../../styles/common.scss';
+
+
+
 
 const TabBar = () => {
   const isLogin = useAuth();

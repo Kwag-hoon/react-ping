@@ -1,0 +1,39 @@
+@use '../../styles/base.scss' as *;
+
+body {
+  font-family: $font-family-inter;
+  
+}
+.mypage-layout {
+  padding: 60px 0;
+}
+ /* ---------- Tabs ---------- */
+.mypage-tabs {
+  display: flex;
+  gap: 36px;
+  border-bottom: 1px solid $main_gray_300;
+
+  .tab {
+    padding: 12px 0;
+    font-size: 16px;
+    color: $main_gray_500;
+    text-decoration: none;
+    cursor: pointer;
+
+    &.active {
+      color: $primary_blue;
+      font-weight: 500;
+      border-bottom: 2px solid $primary_blue;
+    }
+  }
+}
+
+/* ---------- Header ---------- */
+ 
+
+ 
+ 
+
+  /* ---------- Content ---------- */
+  
+

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/auth.scss';
+import eye from "../../assets/icon-eye.svg";
 
 function Login(props) {
   const [show, setShow] = useState(false);
@@ -11,15 +12,15 @@ function Login(props) {
   };
 
   return (
-    <section className='login_section container'>
+    <section className='login_section container auth'>
       <div className="grid">
         <div className="col-4 ">
           <h2>LOGIN</h2>
 
           <ul className="social-login">
-            <li><Link to="/auth/naver"><img src="/images/naver.png" alt="네이버" /></Link></li>
-            <li><Link to="/auth/kakao"><img src="/images/kakao.png" alt="카카오" /></Link></li>
-            <li><Link to="/auth/google"><img src="/images/google.png" alt="구글" /></Link></li>
+            <li><Link to="/auth/naver"><img src={process.env.PUBLIC_URL + '/images/naver.jpg'} alt="네이버" /></Link></li>
+            <li><Link to="/auth/kakao"><img src={process.env.PUBLIC_URL + '/images/kakao.jpg'} alt="카카오"/></Link></li>
+            <li><Link to="/auth/google"><img src={process.env.PUBLIC_URL + '/images/google.jpg'} alt="구글"/></Link></li>
           </ul>
 
           <form className='login_form' onSubmit={handleSubmit}>
@@ -48,7 +49,9 @@ function Login(props) {
                   onTouchStart={() => setShow(true)}
                   onTouchEnd={() => setShow(false)}
                 >
-                  👁
+                  <img
+        src={eye} alt="eye" className="eye"
+      />
                 </button>
               </div>
             </div>
