@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/auth.scss';
 import Select from './Select';
-
+import eye from "../../assets/icon-chevron-down.svg";
 function Login(props) {
   const [show, setShow] = useState(false);
 
@@ -54,7 +54,9 @@ function Login(props) {
                   onTouchStart={() => setShow(true)}
                   onTouchEnd={() => setShow(false)}
                 >
-                  👁
+                  <img
+                    src={eye} alt="eye" className="eye"
+                  />
                 </button>
               </div>
             </div>
@@ -78,7 +80,9 @@ function Login(props) {
                   onTouchStart={() => setShow(true)}
                   onTouchEnd={() => setShow(false)}
                 >
-                  👁
+                  <img
+                    src={eye} alt="eye" className="eye"
+                  />
                 </button>
               </div>
             </div>
