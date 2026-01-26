@@ -1,38 +1,39 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import HomeIcon from '../../../assets/icon-home.svg';
 import SearchIcon from '../../../assets/icon-search.svg';
 import UploadIcon from '../../../assets/icon-plus.svg';
 import BellIcon from '../../../assets/icon-bell.svg';
 import UserIcon from '../../../assets/icon-user.svg';
+import '../../styles/tabbar.scss';
 
 const TabBarUser = () => {
   return (
     <nav className="tabbar user">
-      <Link to="/" className="tab-item">
+      <NavLink to="/" className={({ isActive }) => isActive ? 'tab-item active' : 'tab-item'}>
         <img src={HomeIcon} alt="홈" />
         <span>Home</span>
-      </Link>
+      </NavLink>
 
-      <Link to="/search" className="tab-item">
+      <NavLink to="/search" className={({ isActive }) => isActive ? 'tab-item active' : 'tab-item'}>
         <img src={SearchIcon} alt="검색" />
         <span>Search</span>
-      </Link>
+      </NavLink>
 
-      <Link to="/upload" className="tab-item upload">
+      <NavLink to="/upload" className={({ isActive }) => isActive ? 'tab-item upload active' : 'tab-item upload'} end>
         <img src={UploadIcon} alt="업로드" />
         <span>Upload</span>
-      </Link>
+      </NavLink>
 
-      <Link to="/alarm" className="tab-item">
+      <NavLink to="/alarm" className={({ isActive }) => isActive ? 'tab-item active' : 'tab-item'}>
         <img src={BellIcon} alt="알림" />
-        <span>Noti</span>
-      </Link>
+        <span>Alarm</span>
+      </NavLink>
 
-      <Link to="/mypage" className="tab-item">
+      <NavLink to="/mypage" className={({ isActive }) => isActive ? 'tab-item active' : 'tab-item'}>
         <img src={UserIcon} alt="마이페이지" />
         <span>Mypage</span>
-      </Link>
+      </NavLink>
     </nav>
   );
 };

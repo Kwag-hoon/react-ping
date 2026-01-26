@@ -494,7 +494,7 @@ main section p {
   background: linear-gradient(120deg, #FF6E79 0%, #7a5fa3 25%, #023FA1 50%, #1976a3 75%, #43ECAC 100%);
 }
 .main_hero-section .grid {
-  padding: 120px 0;
+  padding: 200px 0;
   align-items: center;
   /* hero 텍스트/버튼 영역(좌) + 이미지(우) 배치용 */
   /* 우측 히어로 이미지 */
