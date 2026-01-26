@@ -508,7 +508,11 @@ select {
 }
 
 /* detail.scss */
+<<<<<<< HEAD
 .card-box, .detail .detail-box_right .sticky-inner .box-right_card ul li:not(:first-child) {
+=======
+.card-box, .detail .detail-box_right .sticky-inner .box-right_memo ul li, .detail .detail-box_right .sticky-inner .box-right_card ul li:not(:first-child) {
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
   border: 1px solid #9CA3AF;
   border-radius: 12px;
   padding: 16px 30px;
@@ -587,7 +591,28 @@ select {
   cursor: pointer;
 }
 
+<<<<<<< HEAD
 .detail .detail-box_left {
+=======
+.image_wrap {
+  position: relative;
+  width: 100%;
+}
+
+.image_wrap img {
+  width: 100%;
+  display: block;
+}
+
+.pin_marker {
+  position: absolute;
+  transform: translate(-50%, -100%);
+}
+
+.detail .detail-box_left {
+  position: relative;
+  margin: 100px 0px;
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
   border: 1px solid #D2D5DA;
   border-radius: 16px;
   padding: 50px;
@@ -596,13 +621,20 @@ select {
 }
 .detail .detail-box_left .back_btn {
   box-shadow: inset 2px 2px 10px #ffffff, inset -2px -2px 20px rgba(156, 163, 175, 0.4), -2px -2px 10px rgba(229, 231, 235, 0.2);
+<<<<<<< HEAD
   display: flex;
+=======
+  position: absolute;
+  top: 15px;
+  display: inline-flex;
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
   align-items: center;
   gap: 8px;
   border: none;
   border-radius: 999px;
   background: #fff;
   font-size: 14px;
+<<<<<<< HEAD
   width: 11%;
   margin-bottom: 10px;
   cursor: pointer;
@@ -611,6 +643,11 @@ select {
   position: relative;
   top: 3px;
 }
+=======
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
 .detail .detail-box_left h2 {
   font-family: "KoreaInstituteOfMachineryAndMaterials";
   font-size: 48px;
@@ -618,7 +655,7 @@ select {
   line-height: 130%;
   letter-spacing: 0;
   color: #111827;
-  padding-bottom: 10px;
+  padding: 10px 0px;
 }
 .detail .detail-box_left p {
   font-family: "Inter";
@@ -676,7 +713,11 @@ select {
   border-radius: 30px;
 }
 .detail .detail-box_left .img_box {
+<<<<<<< HEAD
   padding: 50px 0px;
+=======
+  padding: 30px 0px;
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
 }
 .detail .detail-box_left .img_box img {
   width: 100%;
@@ -684,13 +725,28 @@ select {
   display: block;
 }
 .detail .detail-box_right {
+<<<<<<< HEAD
+=======
+  margin: 100px 0px;
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
   padding: 50px 24px;
   border: 1px solid #D2D5DA;
   border-radius: 16px;
 }
+<<<<<<< HEAD
 .detail .detail-box_right .sticky-inner {
   position: sticky;
   top: 30px;
+=======
+.detail .detail-box_right hr {
+  border: none;
+  border-top: 1px solid #D2D5DA;
+  margin: 24px 0;
+}
+.detail .detail-box_right .sticky-inner {
+  position: sticky;
+  top: 100px;
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
 }
 .detail .detail-box_right .sticky-inner .pin-label {
   display: inline-flex;
@@ -704,16 +760,23 @@ select {
   color: #1F2937;
 }
 .detail .detail-box_right .sticky-inner .pin-label .pin-badge {
+<<<<<<< HEAD
   display: inline-flex;
+=======
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  padding: 2px 10px;
-  background: #FF6E79;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  flex-shrink: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  animation: pulse 1.5s infinite;
 }
 .detail .detail-box_right .sticky-inner span {
   font-family: "Inter";
@@ -820,6 +883,20 @@ select {
   letter-spacing: -0.02em;
   color: #4B5563;
 }
+<<<<<<< HEAD
+=======
+.detail .detail-box_right .sticky-inner .box-right_memo ul li {
+  font-family: "Inter";
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.02em;
+  color: #1F2937;
+}
+.detail .detail-box_right .sticky-inner .box-right_memo ul li span {
+  font-size: 13px;
+}
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
 .detail .detail-box_right .sticky-inner .box-right_memo textarea {
   margin-top: 30px;
   width: 100%;
@@ -882,6 +959,7 @@ select {
   font-weight: 700;
 }
 
+<<<<<<< HEAD
 .detail {
   /* 1920+ (PC) */
   /* 1440 ~ 1919 (Desktop) */
@@ -889,6 +967,9 @@ select {
   /* 768 ~ 1023px (TABLET) */
   /* 0 ~ 767px (MOBILE) */
 }
+=======
+/* 1920+ (PC) */
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
 @media screen and (min-width: 1920px) {
   .detail .detail_box {
     display: grid;
@@ -903,6 +984,10 @@ select {
     grid-column: span 4;
   }
 }
+<<<<<<< HEAD
+=======
+/* 1440 ~ 1919 (Desktop) */
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
 @media screen and (min-width: 1440px) and (max-width: 1919px) {
   .detail .detail_box {
     display: grid;
@@ -917,6 +1002,10 @@ select {
     grid-column: span 4;
   }
 }
+<<<<<<< HEAD
+=======
+/* 1024 ~ 1439 — Tablet Landscape / Small Laptop */
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
 @media screen and (min-width: 1024px) and (max-width: 1439px) {
   .detail .detail_box {
     display: grid;
@@ -931,6 +1020,10 @@ select {
     grid-column: span 3;
   }
 }
+<<<<<<< HEAD
+=======
+/* 768 ~ 1023px (TABLET) */
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
 @media screen and (min-width: 768px) and (max-width: 1023px) {
   .detail .container {
     max-width: 768px;
@@ -946,6 +1039,10 @@ select {
     grid-column: 1/-1;
   }
   .detail .detail-box_right {
+<<<<<<< HEAD
+=======
+    margin: 0px;
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
     grid-column: 1/-1;
   }
   .detail .modal-dim {
@@ -962,6 +1059,10 @@ select {
     display: none;
   }
 }
+<<<<<<< HEAD
+=======
+/* 0 ~ 767px (MOBILE) */
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
 @media screen and (max-width: 767px) {
   .detail .container {
     max-width: 390px;
@@ -976,8 +1077,65 @@ select {
   .detail .detail-box_left {
     grid-column: 1/-1;
   }
+<<<<<<< HEAD
   .detail .detail-box_right {
     grid-column: 1/-1;
+=======
+  .detail .detail-box_left .back_btn {
+    box-shadow: inset 2px 2px 10px #ffffff, inset -2px -2px 20px rgba(156, 163, 175, 0.4), -2px -2px 10px rgba(229, 231, 235, 0.2);
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 14px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .detail .detail-box_left h2 {
+    font-family: "KoreaInstituteOfMachineryAndMaterials";
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 130%;
+    letter-spacing: 0;
+  }
+  .detail .detail-box_left p {
+    font-family: "Inter";
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    letter-spacing: -0.02em;
+  }
+  .detail .detail-box_left .desc-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .detail .detail-box_left .desc-row .user-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #4B5563;
+  }
+  .detail .detail-box_left .desc-row .user-badge img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    -o-object-fit: cover;
+       object-fit: cover;
+    display: block;
+  }
+  .detail .detail-box_right {
+    grid-column: 1/-1;
+    margin: 0px;
+>>>>>>> df457b2ae3ee6fa8d7d32631987031a46b00a1d9
   }
   .detail .modal-dim {
     display: block;
