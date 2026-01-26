@@ -240,7 +240,7 @@ main {
   background: $main-white;
   border-radius: 22px;
   padding: 26px 28px;
-  min-height: 190px;
+  min-height: 216px;
 
   box-shadow:
     0 16px 32px rgba(17, 24, 39, 0.12),
@@ -345,17 +345,29 @@ main {
   }
 
   .date {
-    @include typo("inter-label", $regular);
+    @include typo("bodytextSm", $regular);
     color: $main_gray_400;
+    text-align: end;
   }
 
   .icons {
     margin-top: 8px;
+    justify-content: end;
+    align-items: center;
     display: flex;
     gap: 10px;
-    align-items: center;
     color: $main_gray_500;
-    @include typo("bodytextSm", $regular);
+
+    span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      @include typo("bodytextMd", $regular);
+
+      img {
+        width: 22px;
+      }
+    }
   }
 }
 
