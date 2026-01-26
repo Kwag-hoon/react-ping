@@ -22,6 +22,7 @@ function Select({ options, placeholder }) {
               key={opt}
               onClick={() => {
                 setSelected(opt);
+                onchange?.(opt);  
                 setOpen(false);
               }}
             >
