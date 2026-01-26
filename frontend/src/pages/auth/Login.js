@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/auth.scss';
-import eye from "../../assets/icon-chevron-down.svg";
+import eye from "../../assets/icon-eye.svg";
 
 function Login(props) {
   const [show, setShow] = useState(false);
