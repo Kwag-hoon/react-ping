@@ -99,13 +99,6 @@
 }
 
 
-
-button[type="submit"] {
-  @include btn("md", "fixed");
-  border: none;
-  width: 100%;
-}
-
 .auth {
   .grid {
     padding: 70px 0;
@@ -138,6 +131,12 @@ button[type="submit"] {
         width: 80px;
         border-radius: 40px;
       }
+    }
+
+    button[type="submit"] {
+      @include btn("md", "fixed");
+      border: none;
+      width: 100%;
     }
   }
 }
