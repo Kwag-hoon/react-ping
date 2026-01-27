@@ -30,6 +30,13 @@ function Upload(props) {
     setSelectedIssues([...selectedIssues, issue]);
   }
 
+  const handleNext = (e) => {
+  e.preventDefault();
+
+  // (지금은 검증 없이 바로 이동)
+  navigate('/upload/pineditor');
+};
+
   return (
    
       <main className='upload'>
@@ -247,13 +254,17 @@ function Upload(props) {
             </div>
 
             {/* 다음 버튼 */}
-            <button className="upload_next">
-              다음: 핀 설정 및 미리보기
-            </button>
+              <button
+                type="button"
+                className="upload_next"
+                onClick={handleNext}
+              >
+                다음: 핀 설정 및 미리보기
+              </button>
           </form>
         </section>
       </main>
-   
+
   );
 }
 
