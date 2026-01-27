@@ -4,13 +4,12 @@ body {
   font-family: $font-family-inter;
 }
 
-
 // 헤더
 .header {
   position: relative;
   width: 100%;
   z-index: 1000;
-  box-shadow: 0 4px 4px 0 rgba($main-black, 0.25);
+  box-shadow: 2px 2px 10px rgba($main_gray_600, 0.25);
 
 
   // 1. 로그인 전  HeaderGuest
@@ -29,7 +28,7 @@ body {
     align-items: center;
     border-radius: 100px;
     background: rgba($main-white, 0.70);
-    box-shadow: 0 4px 4px 0 rgba($main-black, 0.25);
+    box-shadow: 4px 4px 0 rgba($main_gray_400, 0.25);
     backdrop-filter: blur(10px);
 
     h1 {
@@ -70,32 +69,47 @@ body {
     align-items: center;
     justify-content: space-between;
 
-    a {
-      position: relative;
-      display: block;
-      color: $main_gray_500;
-      // padding: 10px;
-      font-weight: 600;
-      transition: all color 0.3s ease-in-out;
-    }
+    .gnb {
+      a {
+        position: relative;
+        display: inline-flex;
+        flex: 0 0 auto;
+        white-space: nowrap;
+        @include btn("sm", "custom", false, transparent, $main_gray_400, transparent);
+        border: none;
+        @include typo('headingSm', $bold);
+        transition: 0.3s;
+        padding: 10px 14px;
+        border-radius: 999px;
+        color: $main_gray_600;
+        user-select: none;
+        cursor: pointer;
 
-    a:hover {
-      color: $main_gray_800;
-    }
+        &:hover {
+          @include neumorphism-shadow;
+          background-color: rgba($main_gray_800, 0.08);
 
-    a.active {
-      border-radius: 6px;
-      background: var(--Primary_Blue, #023FA1);
-      box-shadow: -2px -2px 20px 0 rgba(156, 163, 175, 0.40) inset, 2px 2px 10px 0 #FFF inset, -2px -2px 10px 0 rgba(229, 231, 235, 0.20);
-      color: $main-white;
-      padding: 8px 12px;
+          color: $main_gray_800;
+        }
+
+        &:focus-visible {
+          outline: 2px solid rgba($primary_pink, 0.5);
+          outline-offset: 2px;
+        }
+
+        &.active {
+          background-color: $primary_pink;
+          color: $main-white;
+          @include btn-shadow;
+        }
+      }
     }
 
     // 헤더 왼쪽 
     .header-left {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 30px;
       font-size: 1.25rem;
 
       .gnb ul {
@@ -115,7 +129,7 @@ body {
       width: 450px;
       border-radius: 100px;
       background: #FFF;
-      box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.25);
+      box-shadow: 0px 0px 8px rgba($main_gray_400, 0.75);
       padding: 4px 24px;
 
       input {

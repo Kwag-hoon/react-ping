@@ -20,36 +20,36 @@ const HeaderUser = ({ variant }) => {
             </Link>
           </h1>
           <nav className="gnb">
-            
-           <ul>
+
+            <ul>
               <li>
-                <NavLink to="/archive"              
-                 className={({ isActive }) => `btn-archive ${isActive ? 'active' : ''}`}
+                <NavLink to="/archive"
+                  className={({ isActive }) => `btn-archive ${isActive ? 'active' : ''}`}
                 >Archive</NavLink>
               </li>
               <li>
-                <NavLink to="/upload" 
-                 className={({ isActive }) => `btn-upload ${isActive ? 'active' : ''}`}
+                <NavLink to="/upload"
+                  className={({ isActive }) => `btn-upload ${isActive ? 'active' : ''}`}
                 >Upload</NavLink>
               </li>
-           </ul>
+            </ul>
           </nav>
         </div>
 
         {/* 중앙: 검색 */}
         <div className="header-center">
           <form action="/search" method=" " className="search-form">
-            <input 
-            type="text" 
-            name="query" 
-            placeholder="Search..." />
+            <input
+              type="text"
+              name="query"
+              placeholder="Search..." />
             <button type="submit" className="search-btn"><img src={SearchIcon} alt="search" /></button>
           </form>
         </div>
 
         {/* 우측: 업로드 버튼 + 프로필 */}
         <div className="header-right">
-          
+
           <img src={Alarm} alt="알람" />
 
           <Link to="/mypage" className="profile">

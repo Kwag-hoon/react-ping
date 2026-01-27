@@ -1,6 +1,6 @@
 import '../styles/detail.scss'
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import backIcon from '../../assets/icon-chevron-left.svg';
 import CloseIcon from '../../assets/icon-x.svg'
 
@@ -29,6 +29,9 @@ function Detail() {
   const navigate = useNavigate();
   //모바일 댓글창 여는 상태변수
   const [isOpen, setIsOpen] = useState(false);
+
+  //archive 페이지에서 아이디값 넘겨 받기
+  const {id} = useParams();
 
   // 핀 id를 key로 하는 댓글 상태 객체 (각 핀마다 댓글을 분리해서 저장)
   const [comments, setComments] = useState({});
@@ -244,7 +247,7 @@ function Detail() {
                 onChange={(e) => setCommentText(e.target.value)}
               />
 
-              <button type='submit' className='comment-btn' onClick={handleAddComment}>댓글 게시</button>
+              <button type='submit' onClick={handleAddComment}>댓글 게시</button>
               <hr />
             </div>
 

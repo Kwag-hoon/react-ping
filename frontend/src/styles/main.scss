@@ -366,7 +366,7 @@ main {
 
       img {
         width: 22px;
-        
+
       }
     }
   }
@@ -525,6 +525,10 @@ main {
     }
 
     section {
+      .col-12 {
+        grid-column: span 8;
+      }
+
       h2 {
         @include typo("displaySm", $bold);
       }
@@ -658,6 +662,7 @@ main {
 @media screen and (max-width: 767px) {
   main {
     article {
+
       h2 {
         @include typo("displaySm", $bold);
       }
@@ -671,6 +676,10 @@ main {
     }
 
     section {
+      .col-12 {
+        grid-column: span 4;
+      }
+
       h2 {
         @include typo("displaySm", $bold);
       }

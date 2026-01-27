@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/upload.scss';
-
 import { useNavigate } from 'react-router-dom';
-
+import imageIcon from '../../assets/icon-image.svg';
 function Upload(props) {
 
   // 선택된 문제유형 클래스 변경을 위한 함수 설정 
@@ -30,27 +29,33 @@ function Upload(props) {
     setSelectedIssues([...selectedIssues, issue]);
   }
 
+  const handleNext = (e) => {
+    e.preventDefault();
+
+    // (지금은 검증 없이 바로 이동)
+    navigate('/upload/pineditor');
+  };
+
   return (
-   
-      <main className='upload'>
-        <section className='container'>
+    <main className='upload container'>
+      <section className='grid'>
           {/* 상단 타이틀  */}
-          <div className="upload__header">
-            <h2 className="upload__title">디자인 업로드</h2>
-            <p className="upload__sub content">
+          <div className="upload_header col-6">
+            <h2>디자인 업로드</h2>
+            <p>
               작업을 공유하고 커뮤니티로부터 맥락있는 피드백을 받으세요
             </p>
           </div>
 
           {/* 폼 영역 */}
-          <form className="upload_form">
+          <form className="upload_form col-6">
             {/* 이미지 업로드 안내 영역 (드래그 앤 드롭존 ) */}
             <div className="upload_dropzone" role='button' tabIndex={0}>
               <div className="upload_dropzoneInner">
-                <div className="upload_icon" aria-hidden="true">(파일 업로드 아이콘 예정 )</div>
+                <div className="upload_icon" aria-hidden="true"><img src={imageIcon} alt="이미지 아이콘" /></div>
 
                 <p className="upload_dropText">
-                  <strong className="upload_dropStrong">클릭하여 업로드</strong>
+                  <strong>클릭하여 업로드 </strong>
                   <span>또는 드래그 앤 드롭 </span>
                 </p>
 
@@ -62,7 +67,6 @@ function Upload(props) {
               {/* 실제 파일 인풋영역 (디자인은 css로 숨김) */}
               <input type="file" className="upload_file" accept='.png,.jpg,.jpeg,.pdf' required />
             </div>
-
             {/* 제목 */}
             <div className="upload_field">
               <label htmlFor="title" className='upload_label'>제목</label>
@@ -247,13 +251,17 @@ function Upload(props) {
             </div>
 
             {/* 다음 버튼 */}
-            <button className="upload_next">
+            <button
+              type="button"
+              className="upload_next"
+              onClick={handleNext}
+            >
               다음: 핀 설정 및 미리보기
             </button>
           </form>
-        </section>
-      </main>
-   
+      </section>
+    </main>
+
   );
 }
 
