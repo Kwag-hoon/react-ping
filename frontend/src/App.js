@@ -41,8 +41,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/upload" element={<Upload />} />
-          <Route path='/detail' element={<Detail />}></Route>
-          <Route path='/archive' element={<Archive />}></Route>
+          <Route path='/detail/:id' element={<Detail />} />
+          <Route path='/archive' element={<Archive />} />
           <Route path="/upload/pineditor" element={<PinEditor />} />
           {/* 마이페이지 레이아웃 */}
           <Route path="/mypage" element={<MyPageLayout />}>

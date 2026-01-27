@@ -1,28 +1,29 @@
 import React, { useState, useMemo } from 'react';
 import DesignItem from "../DesignItem";
 import '../styles/archive.scss'
+import { Link } from 'react-router-dom';
 
 
 function Archive() {
   const filters = useMemo(() => ([
-      '정보위계',
-      '내비게이션 구조',
-      '콘텐츠 구조',
-      '라벨링',
-      '사용자 플로우',
-      '피드백/응답',
-      '제스처/동작',
-      '마이크로 인터렉션',
-      '접근성',
-      '가독성',
-      '오류방지',
-      '일관성',
-      '레이아웃 / 그리드',
-      '타이포그래피',
-      '색상 사용',
-      '여백/간격',
-      '시각적 위계',
-    ]), [])
+    '정보위계',
+    '내비게이션 구조',
+    '콘텐츠 구조',
+    '라벨링',
+    '사용자 플로우',
+    '피드백/응답',
+    '제스처/동작',
+    '마이크로 인터렉션',
+    '접근성',
+    '가독성',
+    '오류방지',
+    '일관성',
+    '레이아웃 / 그리드',
+    '타이포그래피',
+    '색상 사용',
+    '여백/간격',
+    '시각적 위계',
+  ]), [])
 
   const items = useMemo(() => {
 
@@ -82,9 +83,13 @@ function Archive() {
 
         <div className="main_recent-archives col-full">
           <div className="gallery-grid">
+
             {filteredItems.map((item) => (
-              <DesignItem key={item.id} item={item} />
+              <Link to={`/detail/${item.id}`} key={item.id}>
+                <DesignItem item={item} />
+              </Link>
             ))}
+
           </div>
         </div>
       </article>

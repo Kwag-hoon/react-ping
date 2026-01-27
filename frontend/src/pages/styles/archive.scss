@@ -49,9 +49,8 @@
           cursor: pointer;
 
           &.active {
-            background: #0047ff;
+            background:$primary_blue;
             color: #fff;
-            border-color: #0047ff;
           }
         }
       }
