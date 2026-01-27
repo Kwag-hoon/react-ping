@@ -1,14 +1,44 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/auth.scss';
 import eye from "../../assets/icon-eye.svg";
+import axios from 'axios';
 
 function Login(props) {
+  // 페이지간 이동을 위한 navigate 선언 
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
 
-  const handleSubmit = (e) => {
+  // 입력한 값을 담기 위한 form 선언
+  const [form, setForm] = useState({
+    user_id:'',
+    user_pw: '',
+  });
+
+  const handleChange =(e)=>{
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("로그인 시도");
+
+    try {
+      const res = await axios.post(
+        'http://localhost:9070/users/login',
+        form
+      );
+
+      // JsonWebToken 저장
+      localStorage.setItem('token', res.data.token);
+
+      alert('로그인 성공');
+      navigate('/');
+    } catch (err) {
+      alert(err.response?.data?.message || '로그인 실패');
+    }
   };
 
   return (
@@ -26,7 +56,7 @@ function Login(props) {
           <form className='login_form' onSubmit={handleSubmit}>
             <div className='form-group'>
               <label htmlFor="id">아이디</label>
-              <input type="text" name="id" id="id" placeholder='아이디를 입력하세요.' />
+              <input type="text" name="user_id" id="id" placeholder='아이디를 입력하세요.' value={form.user_id} onChange={handleChange} required />
             </div>
 
             <div className='form-group'>
@@ -35,9 +65,11 @@ function Login(props) {
               <div className="password-wrapper">
                 <input
                   type={show ? "text" : "password"}   // ✅ 여기!
-                  name="password"
+                  name="user_pw"
                   id="password"
                   placeholder="비밀번호를 입력하세요."
+                  value={form.user_pw}
+                  onChange={handleChange}
                 />
 
                 <button
