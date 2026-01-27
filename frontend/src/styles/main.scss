@@ -399,7 +399,7 @@ main {
       @include typo("displayMd", $bold);
     }
 
-    button {
+    .upload-btn {
       @include btn("md", "fixed", false);
     }
   }
@@ -835,7 +835,7 @@ main {
         @include typo("displaySm", $bold);
       }
 
-      button {
+      .upload-btn {
         @include btn(md, "fixedMo", false);
       }
     }

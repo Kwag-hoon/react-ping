@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function HeroSection(props) {
   return (
@@ -16,8 +17,13 @@ function HeroSection(props) {
             alt=""
           />
         </div><div className="hero-btns col-4">
-          <button className='achive-btn'>아카이브 시작하기</button>
-          <button className='sample-btn'>샘플보기</button>
+          <Link to="/archive" className="achive-btn">
+            아카이브 시작하기
+          </Link>
+
+          <button className="sample-btn">
+            샘플보기
+          </button>
         </div>
 
       </div>
