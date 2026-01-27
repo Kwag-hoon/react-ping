@@ -45,6 +45,7 @@ $main-black: #000000;
 $main-white: #ffffff;
 $bg-p: #FFE3E3;
 $bg-m: #E1FFF4;
+$bg-b: #d4e5ff;
 // font
 $font-family-kimm: 'KoreaInstituteOfMachineryAndMaterials';
 $font-family-inter: 'Inter';
@@ -112,7 +113,7 @@ $typo-styles: (
 }
 
 @mixin sns-shadow {
-  background: #f0f0f3; // 반드시 아주 연한 회색 톤이어야 함 (핵심!!)
+  background: $main_gray_50; // 반드시 아주 연한 회색 톤이어야 함 (핵심!!)
   border-radius: 40px;
 
   box-shadow:
@@ -194,7 +195,7 @@ $typo-styles: (
 
     @else if $size =="sm" {
       padding: 8px 16px;
-      @include typo("bodytextMd", $bold);
+      @include typo("bodytextLg", $bold);
     }
 
     @else {
