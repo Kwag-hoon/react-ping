@@ -3,7 +3,6 @@ import useAuth from '../../../hooks/useAuth';
 
 import HeaderUser from './HeaderUser';
 import HeaderGuest from './HeaderGuest';
-
 // css
 import '../../styles/common.scss';
 

@@ -14,7 +14,7 @@ const MyPageTabs = () => {
       <NavLink
         to="/mypage/pins"
         className={({ isActive }) => `tab ${isActive ? 'active' : ''}`}
-      >
+      > 
         My Pins
       </NavLink>
 

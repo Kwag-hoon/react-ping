@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 // 핑 로고(svg) 가져오기
 import Logogray from '../../../assets/Logo_gray.svg';
-import '../../styles/common.scss';
+
 
 
 

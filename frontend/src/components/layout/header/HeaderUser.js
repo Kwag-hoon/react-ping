@@ -4,14 +4,14 @@ import { Link, NavLink } from 'react-router-dom';
 import Logogray from '../../../assets/Logo_gray.svg';
 import SearchIcon from '../../../assets/icon-search.svg';
 import Avartar from '../../../assets/Avatar.png';
-import Notifi from '../../../assets/icon-bell.svg';
+import Alarm from '../../../assets/icon-bell.svg';
 
-import '../../styles/common.scss';
+
 
 const HeaderUser = ({ variant }) => {
   return (
     <header className={`header user ${variant}`}>
-      <div className="container header-inner">
+      <div className="header-inner">
         {/* 좌측: 로고 + 메뉴 */}
         <div className="header-left">
           <h1>
@@ -49,7 +49,8 @@ const HeaderUser = ({ variant }) => {
 
         {/* 우측: 업로드 버튼 + 프로필 */}
         <div className="header-right">
-          <img src={Notifi} alt="" />
+          
+          <img src={Alarm} alt="알람" />
 
           <Link to="/mypage" className="profile">
             <img src={Avartar} alt="user profile" />
