@@ -24,6 +24,7 @@ import MyDesigns from './pages/mypage/MyDesigns';
 import MyPins from './pages/mypage/MyPins';
 import MyFeedback from './pages/mypage/MyFeedback';
 import MyProfile from './pages/mypage/MyProfile';
+import Header from "./components/layout/header/Header";
 import MyAlarm from './pages/mypage/MyAlarm';
 
 
@@ -34,7 +35,7 @@ function App() {
 
         {/* 헤더 */}
         {/* <Header /> */}
-        <HeaderUser />
+        <Header />
 
         <Routes>
 

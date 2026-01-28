@@ -3,14 +3,14 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../db');
+const auth = require('../middleware/auth');
 
 const router = express.Router();
 const SALT_ROUNDS = 10;
 
-// =========================
+
 // 회원가입
 // POST /users/signup
-// =========================
 router.post('/signup', async (req, res) => {
   const {
     user_id,
@@ -95,10 +95,8 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-// =========================
 // 로그인
 // POST /users/login
-// =========================
 router.post('/login', (req, res) => {
   const { user_id, user_pw } = req.body;
 
@@ -161,6 +159,39 @@ router.post('/login', (req, res) => {
       });
     }
   );
+});
+
+// 로그인 유지 + 내 정보 조회
+router.get('/me', auth, (req, res) => {
+  const { user_no } = req.user;
+
+  const sql = `
+    SELECT
+      user_no,
+      user_id,
+      user_nickname,
+      user_intro,
+      user_image,
+      user_banner,
+      user_grade,
+      user_role,
+      create_datetime
+    FROM pin_users
+    WHERE user_no = ?
+  `;
+
+  db.query(sql, [user_no], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: '회원 조회 실패' });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({ message: '회원 정보 없음' });
+    }
+
+    res.json(result[0]);
+  });
 });
 
 module.exports = router;
