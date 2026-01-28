@@ -3,9 +3,9 @@ import useAuth from '../../../hooks/useAuth';
 
 import HeaderUser from './HeaderUser';
 import HeaderGuest from './HeaderGuest';
+
 // css
 import '../../styles/common.scss';
-
 
 const Header = () => {
   const isLogin = useAuth();
@@ -23,8 +23,11 @@ const Header = () => {
     return <HeaderGuest variant="default" />;
   }
 
+
   // 로그인 후
+if (isLogin) {
   return <HeaderUser />;
+}
 };
 
 export default Header;
