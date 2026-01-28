@@ -31,6 +31,12 @@ const MyPageTabs = () => {
       >
         My Profile
       </NavLink>
+      <NavLink
+        to="/mypage/alarm"
+        className={({ isActive }) => `tab ${isActive ? 'active' : ''}`}
+      >
+        Alarm
+      </NavLink>
     </div>
   );
 };

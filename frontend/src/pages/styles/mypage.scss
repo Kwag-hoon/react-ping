@@ -12,21 +12,50 @@ body {
 /* ---------- Tabs ---------- */
 .mypage-tabs {
   display: flex;
+
+
   gap: 36px;
   border-bottom: 1px solid $main_gray_300;
 
-  .tab {
-    padding: 12px 0;
-    font-size: 16px;
-    color: $main_gray_500;
-    text-decoration: none;
-    cursor: pointer;
 
-    &.active {
-      color: $primary_blue;
-      font-weight: 500;
-      border-bottom: 2px solid $primary_blue;
+}
+
+.mypage-tabs .tab {
+  flex-shrink: 0; // 이게 핵심이다
+  padding: 12px 0;
+  font-size: 16px;
+  color: $main_gray_500;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap; // 텍스트 줄바꿈 방지
+
+  &.active {
+    color: $primary_blue;
+    font-weight: 500;
+    border-bottom: 2px solid $primary_blue;
+  }
+}
+
+/* 모바일에서만 snap */
+@media (max-width: 768px) {
+  .mypage-tabs {
+    flex-wrap: nowrap; //  줄바꿈 방지
+    width: 100%; //  반드시 필요
+    scroll-snap-type: x mandatory;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
     }
+  }
+
+  .mypage-tabs .tab {
+    scroll-snap-align: start;
   }
 }
 
@@ -404,11 +433,12 @@ body {
     align-items: center;
     gap: 8px;
 
-    img{
-      line-height: 24px;  
+    img {
+      line-height: 24px;
       width: 24px;
     }
-    span{
+
+    span {
       padding-bottom: 4px;
     }
   }
@@ -471,7 +501,7 @@ body {
         display: flex;
         align-items: center;
         gap: 6px;
-        font-size: 13px;
+        font-size: 14px;
         color: $main_gray_600;
         line-height: 1.5;
 
@@ -497,15 +527,16 @@ body {
           flex-shrink: 0;
           display: flex;
           align-items: center;
-           gap: 6px;
-          
-          img{
+          gap: 6px;
+
+          img {
             width: 24px;
             height: 24px;
             background: none;
 
           }
-          strong{
+
+          strong {
             font-size: 14px;
             font-weight: 600;
             margin-bottom: 4px;
@@ -527,6 +558,14 @@ body {
       h3 {
         font-size: 14px;
       }
+    }
+
+    .question p {
+      font-size: 14px;
+    }
+
+    .my-feedback-text p {
+      font-size: 14px;
     }
   }
 }
