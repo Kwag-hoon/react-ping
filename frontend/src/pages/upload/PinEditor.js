@@ -1,5 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/pinEditor.scss';
+import axios from 'axios';
 import left from '../../assets/icon-chevron-left.svg'
 import plusIcon from '../../assets/icon-plus.svg'
 import minusIcon from '../../assets/icon-check.svg'
@@ -8,8 +10,57 @@ function PinEditor() {
   // 변수 선언 
   const [pins, setPins] = useState([]);
   const [activePinId, setActivePinId] = useState(null);
-  const stageRef = useRef(null);
+  // 린 const stageRef = useRef(null);
   const imgRef = useRef(null);
+  const [post, setPost] = useState(null); //린
+
+  //린_ useNavigate상태변수
+  const navigate = useNavigate();
+  //린
+  const location = useLocation();
+  const { postNo, imageNo, imagePath } = location.state || {};
+
+  //린
+  useEffect(() => {
+    if (!postNo) return;
+
+    axios.get('http://localhost:9070/api/posts/${postNo}')
+      .then(res => {
+        setPost(res.data);
+      })
+      .catch(err => console.error(err))
+  }, [postNo]);
+
+  // 린_핀 저장함수 만들기
+  const savePinsToServer = async () => {
+    return axios.post('http://localhost:9070/api/pins', {
+      postNo,
+      imageNo,
+      pins,
+    });
+  };
+
+  //린_저장 버튼
+  const handleSave = async () => {
+    try {
+      await savePinsToServer();
+      alert('임시 저장 완료');
+    } catch (err) {
+      console.error(err);
+      alert('저장 실패');
+    }
+  };
+
+  // 핀 삭제 함수 
+  const handleDeletePin = () => {
+    if (!activePinId) return;
+
+    const ok = window.confirm('이 핀을 삭제할까요?');
+    if (!ok) return;
+
+    setPins(prev => prev.filter(pin => pin.id !== activePinId));
+    setActivePinId(null);
+  };
 
   const hasPin = pins.length > 0;
   const activePin = pins.find(pin => pin.id === activePinId);
@@ -40,23 +91,35 @@ function PinEditor() {
     setActivePinId(newPin.id);
   };
 
-  // 핀 삭제 함수 
-  const handleDeletePin = () => {
-    if (!activePinId) return;
+  //린_완료 버튼
+  const handleComplete = async () => {
+    if (!postNo) {
+      alert('게시물 정보가 없습니다.');
+      return;
+    }
 
-    const ok = window.confirm('이 핀을 삭제할까요?');
-    if (!ok) return;
+    if (pins.length === 0) {
+      alert('최소 1개의 핀을 추가하세요.');
+      return;
+    }
 
-    setPins(prev => prev.filter(pin => pin.id !== activePinId));
-    setActivePinId(null);
+    try {
+      await savePinsToServer();
+      navigate(`/detail/${postNo}`);
+    } catch (err) {
+      console.error(err);
+      alert('완료 처리 실패');
+    }
   };
+  
   return (
     <main className="pineditor container">
 
       {/* 전체 래퍼 */}
-      <div className=" grid pineditor_root">
+      <div className="grid pineditor_root">
         {/* 상단 영역 */}
         <div className="pineditor_header col-12">
+          {/* <div className="p_header_inner"> */}
 
           <div className="p_header_left">
             <button className="p_header_back">
@@ -65,7 +128,9 @@ function PinEditor() {
             </button>
 
             <div className="p_header_title">
-              <h1 className="p_title_text">게시물 제목</h1>
+              <h1 className="p_title_text">
+                {post?.post_title || '게시물 제목'}
+              </h1>
               <p className="p_title_sub">{pins.length}개의 핀</p>
             </div>
           </div>
@@ -77,12 +142,26 @@ function PinEditor() {
               <button><img src={plusIcon} alt="플러스" /></button>
             </div>
 
-            <button className="btn_save">저장</button>
-            <button className="btn_complete" disabled>
+            <button
+              className="btn_save"
+              onClick={handleSave} //린
+            >
+              저장
+            </button>
+            <button
+              className="btn_complete"
+              onClick={handleComplete} //린
+              disabled={pins.length === 0} //린
+            >
               완료
             </button>
           </div>
         </div>
+
+
+        {/* 본문 */}
+        {/* <div className="pineditor_body"> 하영씨*/}
+
         <div className="col-12">
           <div className="grid">
             {/* 좌측 캔버스 */}
@@ -92,7 +171,8 @@ function PinEditor() {
                   <div className="canvas_image_wrap">
                     <img
                       ref={imgRef}
-                      src={`${process.env.PUBLIC_URL}/images/hero.png`}
+                      // src={`${process.env.PUBLIC_URL}/images/hero.png`}
+                      src={`http://localhost:9070${imagePath}`}
                       alt="업로드 이미지"
                       className="canvas_image"
                       draggable={false}
@@ -116,6 +196,7 @@ function PinEditor() {
                 </div>
               </div>
             </section>
+
             {/* 우측 사이드바 */}
             <aside className="pineditor_sidebar col-4">
 
@@ -134,8 +215,6 @@ function PinEditor() {
                     </button>
                   )}
                 </div>
-
-
               </div>
 
               {/* 사이드바 컨텐츠 */}
@@ -199,16 +278,28 @@ function PinEditor() {
                 <button
                   className="btn_submit"
                   disabled={!activePin || !activePin.question.trim()}
+                  onClick={async () => {
+                    try {
+                      await axios.post('http://localhost:9070/api/pins', {
+                        postNo,
+                        imageNo,
+                        pins: [activePin], // ✅ 단일 핀만
+                      });
+                      alert('핀 저장 완료');
+                    } catch (err) {
+                      console.error(err);
+                      alert('핀 저장 실패');
+                    }
+                  }} //린
                 >
                   핀 저장
                 </button>
               </div>
-
             </aside>
           </div>
         </div>
       </div>
-    </main>
+    </main >
   );
 }
 
