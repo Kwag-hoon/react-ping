@@ -12,6 +12,7 @@ import TabBar from './components/layout/tabbar/TabBar';
 
 import Footer from './components/layout/Footer';
 
+
 // 페이지
 import Main from './pages/Main';
 import Login from "./pages/auth/Login";
