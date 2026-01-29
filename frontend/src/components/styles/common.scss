@@ -284,9 +284,7 @@ body {
   background-color: $main_gray_800;
   color: $main_gray_100;
   width: 100%;
-  @media (max-width: 1023px) {
-    background: none;
-  }
+  
 }
 
 .footer-wrapper {

@@ -569,3 +569,262 @@ body {
     }
   }
 }
+
+/* ===== My Profile ===== */
+
+
+.mypage_section {
+  .join_form {
+
+
+
+    /* 버튼 그룹 (취소 / 수정) */
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin: 40px 0;
+
+      button {
+        flex: 1;
+        border: none;
+      }
+
+      button[type="button"] {
+        @include btn(md, "outline");
+      }
+
+      button[type="submit"] {
+        @include btn(md, "primary");
+        margin: 0;
+      }
+
+      button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .form-group {
+    label {
+      @include typo("bodytextLg", $regular)
+    }
+
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      @include typo("bodytextLg", $regular);
+      @include neumorphism-shadow;
+
+      &::placeholder {
+        @include typo("bodytextLg", $regular);
+        color: $main_gray_400;
+      }
+    }
+  }
+
+
+  /* 비밀번호 영역 */
+  h4 {
+    margin: 40px 0 20px;
+    @include typo("headingSm", $regular);
+    color: $main_gray_700;
+  }
+
+  hr {
+    margin: 40px 0;
+    border: none;
+    height: 1px;
+    background: $main_gray_300;
+  }
+
+  /* 위험 영역 (회원 탈퇴) */
+  .danger-zone {
+    margin-top: 60px;
+    padding: 24px;
+    border-radius: 12px;
+    background: $main_gray_100;
+
+    h4 {
+      margin-bottom: 12px;
+      color: $main_gray_700;
+    }
+
+    p {
+      margin-bottom: 16px;
+      @include typo("bodytextMd", $regular);
+      color: $main_gray_600;
+    }
+
+    .btn-danger {
+      width: 100%;
+      @include btn(md, "danger");
+      border: none;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .mypage_section {
+
+    .btn-group {
+      flex-direction: column;
+      gap: 10px;
+
+      button {
+        width: 100%;
+      }
+    }
+
+    .danger-zone {
+      padding: 20px;
+    }
+  }
+}
+
+/* ===== My Alarm ===== */
+
+.my-alarm {
+  padding: 40px 0;
+
+  /* 섹션 헤더 */
+  .mypage-section-header {
+    margin-bottom: 32px;
+
+    h2 {
+      @include typo("bodytextLg", 600);
+      color: $main_gray_800;
+      margin-bottom: 8px;
+    }
+
+    p {
+      @include typo("bodytextMd", 400);
+      color: $main_gray_500;
+    }
+  }
+
+  /* =========================
+   알림 필터
+========================= */
+  .alarm-filter {
+    display: flex;
+    gap: 12px;
+    margin: 24px 0 32px;
+
+    button {
+      flex: 1;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid $main_gray_200;
+      background: $main_white;
+      color: $main_gray_600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      @include typo("bodytextMd", 500);
+
+      &:hover {
+        background: $main_gray_100;
+      }
+
+      &.active {
+        background: $main_gray_400;
+        color: $main_white;
+        border-color: $main_gray_400;
+      }
+    }
+  }
+
+
+
+  /* 알림 리스트 */
+  .alarm-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* 알림 아이템 */
+  .alarm-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    border-radius: 16px;
+    background: $main-white;
+    border: 1px solid $main_gray_200;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: $main_gray_50;
+    }
+
+    &.unread {
+      border-color: $primary_pink;
+      background: rgba(255, 110, 121, 0.06);
+    }
+  }
+
+  /* 상태 점 */
+  .alarm-dot {
+    width: 10px;
+    height: 10px;
+    margin-top: 6px;
+    border-radius: 50%;
+    background: $main_gray_300;
+
+    .unread & {
+      background: $primary_pink;
+    }
+  }
+
+  /* 알림 내용 */
+  .alarm-content {
+    flex: 1;
+
+    h3 {
+      @include typo("bodytextLg", 500);
+      color: $main_gray_900;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    p {
+      @include typo("bodytextMd", 400);
+      color: $main_gray_600;
+      margin-bottom: 10px;
+    }
+
+    .alarm-meta {
+      display: flex;
+      justify-content: space-between;
+      @include typo("bodytextSm", 400);
+      color: $main_gray_400;
+    }
+  }
+}
+
+/* 모바일 */
+@media screen and (max-width: 767px) {
+  .my-alarm {
+    padding: 24px 0;
+
+    .alarm-item {
+      padding: 16px;
+      border-radius: 12px;
+    }
+
+    .alarm-content {
+      h3 {
+        @include typo("bodytextMd", 500);
+      }
+
+      p {
+        @include typo("bodytextSm", 400);
+      }
+    }
+  }
+}

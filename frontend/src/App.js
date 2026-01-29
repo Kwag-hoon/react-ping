@@ -4,10 +4,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './styles/base.scss';  //초기화 및 기본 스타일 가이드
 
 // 컴포넌트
-// import HeaderGuest from "./components/layout/header/HeaderGuest";
-import HeaderUser from './components/layout/header/HeaderUser';  // 나중에 Header로 바꿀것
-// import TabBar from './components/layout/tabbar/TabBar';
-import TabBarUser from './components/layout/tabbar/TabBarUser';  
+
+// import TabBarUser from './components/layout/tabbar/TabBarUser';
+import TabBar from './components/layout/tabbar/TabBar';
+// import HeaderUser from "./components/layout/header/HeaderUser";
+// import Header from "./components/layout/header/Header";
+
 import Footer from './components/layout/Footer';
 
 // 페이지
@@ -24,8 +26,17 @@ import MyDesigns from './pages/mypage/MyDesigns';
 import MyPins from './pages/mypage/MyPins';
 import MyFeedback from './pages/mypage/MyFeedback';
 import MyProfile from './pages/mypage/MyProfile';
-import Header from "./components/layout/header/Header";
 import MyAlarm from './pages/mypage/MyAlarm';
+
+// 관리자 페이지
+import AdminLayout from './pages/admin/AdminLayout';
+import AdminDesign from './pages/admin/pages/AdminDesign';
+import AdminPins from './pages/admin/pages/AdminPins';
+import AdminComments from './pages/admin/pages/AdminComments';
+import AdminUsers from './pages/admin/pages/AdminUsers';
+import AdminIssueTypes from './pages/admin/pages/AdminIssueTypes';
+import HeaderUser from "./components/layout/header/HeaderUser";
+
 
 
 function App() {
@@ -34,8 +45,9 @@ function App() {
       <BrowserRouter>
 
         {/* 헤더 */}
+
+        <HeaderUser/>
         {/* <Header /> */}
-        <Header />
 
         <Routes>
 
@@ -54,11 +66,20 @@ function App() {
             <Route path="profile" element={<MyProfile />} />
             <Route path="alarm" element={<MyAlarm />} />
           </Route>
+          {/* 관리자 레이아웃 */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDesign />} />
+            {/* <Route path="design" element={<AdminDesign />} /> */}
+            <Route path="pins" element={<AdminPins />} />
+            <Route path="comments" element={<AdminComments />} />
+            <Route path="users" element={<AdminUsers />} />
+            <Route path="issue" element={<AdminIssueTypes />} />
+          </Route>
+
         </Routes>
 
         {/* 모바일 탭바 */}
-        <TabBarUser />
-        {/* <TabBar /> */}
+        <TabBar />
 
         {/* 푸터 */}
         <Footer />
