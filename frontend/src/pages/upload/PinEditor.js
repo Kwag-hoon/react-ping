@@ -1,8 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/pinEditor.scss';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
-
+import left from '../../assets/icon-chevron-left.svg'
+import plusIcon from '../../assets/icon-plus.svg'
+import minusIcon from '../../assets/icon-check.svg'
 
 function PinEditor() {
   // 변수 선언 
@@ -109,195 +111,195 @@ function PinEditor() {
       alert('완료 처리 실패');
     }
   };
+  
   return (
-    <main className="pineditor">
+    <main className="pineditor container">
 
       {/* 전체 래퍼 */}
-      <div className="pineditor_root">
-
+      <div className="grid pineditor_root">
         {/* 상단 영역 */}
-        <header className="pineditor_header">
-          <div className="p_header_inner">
+        <div className="pineditor_header col-12">
+          {/* <div className="p_header_inner"> */}
 
-            <div className="p_header_left">
-              <button className="p_header_back">
-                ←
-              </button>
+          <div className="p_header_left">
+            <button className="p_header_back">
+              <img src={left} alt="왼쪽화살표" />
+              <span>뒤로</span>
+            </button>
 
-              <div className="p_header_title">
-                <h1 className="p_title_text">
-                  {post?.post_title || '게시물 제목'}
-                </h1>
-                <p className="p_title_sub">{pins.length}개의 핀</p>
-              </div>
+            <div className="p_header_title">
+              <h1 className="p_title_text">
+                {post?.post_title || '게시물 제목'}
+              </h1>
+              <p className="p_title_sub">{pins.length}개의 핀</p>
             </div>
-
-            <div className="p_header_right">
-              <div className="zoom_controls">
-                <button>-</button>
-                <span>100%</span>
-                <button>+</button>
-              </div>
-
-              <button
-                className="btn_save"
-                onClick={handleSave} //린
-              >
-                저장
-              </button>
-              <button
-                className="btn_complete"
-                onClick={handleComplete} //린
-                disabled={pins.length === 0} //린
-              >
-                완료
-              </button>
-            </div>
-
           </div>
-        </header>
+
+          <div className="p_header_right">
+            <div className="zoom_controls">
+              <button><img src={minusIcon} alt="마이너스" /></button>
+              <span>100%</span>
+              <button><img src={plusIcon} alt="플러스" /></button>
+            </div>
+
+            <button
+              className="btn_save"
+              onClick={handleSave} //린
+            >
+              저장
+            </button>
+            <button
+              className="btn_complete"
+              onClick={handleComplete} //린
+              disabled={pins.length === 0} //린
+            >
+              완료
+            </button>
+          </div>
+        </div>
+
 
         {/* 본문 */}
-        <div className="pineditor_body">
+        {/* <div className="pineditor_body"> 하영씨*/}
 
-          {/* 좌측 캔버스 */}
-          <section className="pineditor_canvas">
-            <div className="canvas_outer">
-              <div className="canvas_stage">
-                <div className="canvas_image_wrap">
-                  <img
-                    ref={imgRef}
-                    // src={`${process.env.PUBLIC_URL}/images/hero.png`}
-                    src={`http://localhost:9070${imagePath}`}
-                    alt="업로드 이미지"
-                    className="canvas_image"
-                    draggable={false}
-                    onClick={handleAddPin}
-                  />
-
-                  {pins.map((pin, index) => (
-                    <div
-                      key={pin.id}
-                      className={`pin_marker ${pin.id === activePinId ? 'active' : ''}`}
-                      style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActivePinId(pin.id);
-                      }}
-                    >
-                      {index + 1}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* 우측 사이드바 */}
-          <aside className="pineditor_sidebar">
-
-            {/* 사이드바 헤더 */}
-            <div className="sidebar_header">
-              <div className="sidebar_header_left">
-                <h2>Pin Question</h2>
-                <p>선택된 핀</p>
-              </div>
-
-              {activePinId && (
-                <button
-                  type="button"
-                  className="btn_pin_delete"
-                  onClick={handleDeletePin}
-                >
-                  삭제
-                </button>
-              )}
-            </div>
-
-            {/* 사이드바 컨텐츠 */}
-            <div className="sidebar_content">
-
-              {/* 핀 찍기 전 가이드 */}
-              {!hasPin && (
-                <div className="pineditor_guide">
-                  <p>이미지 위에 핀을 찍어</p>
-                  <p>질문 위치를 선택하세요</p>
-                </div>
-              )}
-
-              {/* 핀 찍은 후 질문 폼 */}
-              {hasPin && activePin && (
-                <>
-                  <div className="form_group">
-                    <label>질문 *</label>
-                    <textarea
-                      placeholder="이 부분에 대해 어떤 피드백이 필요한가요?"
-                      value={activePin.question}
-                      onChange={(e) => {
-                        setPins(prev =>
-                          prev.map(pin =>
-                            pin.id === activePin.id
-                              ? { ...pin, question: e.target.value }
-                              : pin
-                          )
-                        );
-                      }}
+        <div className="col-12">
+          <div className="grid">
+            {/* 좌측 캔버스 */}
+            <section className="pineditor_canvas col-8">
+              <div className="canvas_outer">
+                <div className="canvas_stage">
+                  <div className="canvas_image_wrap">
+                    <img
+                      ref={imgRef}
+                      // src={`${process.env.PUBLIC_URL}/images/hero.png`}
+                      src={`http://localhost:9070${imagePath}`}
+                      alt="업로드 이미지"
+                      className="canvas_image"
+                      draggable={false}
+                      onClick={handleAddPin}
                     />
-                    <p className="form_hint">
-                      핀 당 하나의 명확한 질문을 작성하세요
-                    </p>
-                  </div>
 
-                  <div className="form_group">
-                    <div className="form_group_header">
-                      <label>문제 유형 *</label>
-                      <span className="form_warning">최소 1개 선택</span>
+                    {pins.map((pin, index) => (
+                      <div
+                        key={pin.id}
+                        className={`pin_marker ${pin.id === activePinId ? 'active' : ''}`}
+                        style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActivePinId(pin.id);
+                        }}
+                      >
+                        {index + 1}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* 우측 사이드바 */}
+            <aside className="pineditor_sidebar col-4">
+
+              {/* 사이드바 헤더 */}
+              <div className="sidebar_header">
+                <h2>Pin Question</h2>
+                <div className="sidebar_header_bottom">
+                  <p>선택된 핀</p>
+                  {activePinId && (
+                    <button
+                      type="button"
+                      className="btn_pin_delete"
+                      onClick={handleDeletePin}
+                    >
+                      삭제
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* 사이드바 컨텐츠 */}
+              <div className="sidebar_content">
+
+                {/* 핀 찍기 전 가이드 */}
+                {!hasPin && (
+                  <div className="pineditor_guide">
+                    <p>이미지 위에 핀을 찍어</p>
+                    <p>질문 위치를 선택하세요</p>
+                  </div>
+                )}
+
+                {/* 핀 찍은 후 질문 폼 */}
+                {hasPin && activePin && (
+                  <>
+                    <div className="form_group">
+                      <label>질문 *</label>
+                      <textarea
+                        placeholder="이 부분에 대해 어떤 피드백이 필요한가요?"
+                        value={activePin.question}
+                        onChange={(e) => {
+                          setPins(prev =>
+                            prev.map(pin =>
+                              pin.id === activePin.id
+                                ? { ...pin, question: e.target.value }
+                                : pin
+                            )
+                          );
+                        }}
+                      />
+                      <p className="form_hint">
+                        핀 당 하나의 명확한 질문을 작성하세요
+                      </p>
                     </div>
 
-                    <p className="form_desc">
-                      이 핀이 어떤 문제와 관련되어 있나요?
-                    </p>
+                    <div className="form_group">
+                      <div className="form_group_header">
+                        <label>문제 유형 *</label>
+                        <span className="form_warning">최소 1개 선택</span>
+                      </div>
 
-                    <div className="tag_box">
-                      <button className="tag active">
-                        일관성
-                      </button>
+                      <p className="form_desc">
+                        이 핀이 어떤 문제와 관련되어 있나요?
+                      </p>
+
+                      <div className="tag_box">
+                        <button className="tag active">
+                          일관성
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </>
-              )}
+                  </>
+                )}
 
-            </div>
+              </div>
 
 
-            {/* 사이드바 하단 */}
-            <div className="sidebar_footer">
-              <button
-                className="btn_submit"
-                disabled={!activePin || !activePin.question.trim()}
-                onClick={async () => {
-                  try {
-                    await axios.post('http://localhost:9070/api/pins', {
-                      postNo,
-                      imageNo,
-                      pins: [activePin], // ✅ 단일 핀만
-                    });
-                    alert('핀 저장 완료');
-                  } catch (err) {
-                    console.error(err);
-                    alert('핀 저장 실패');
-                  }
-                }} //린
-              >
-                핀 저장
-              </button>
-            </div>
-
-          </aside>
-
+              {/* 사이드바 하단 */}
+              <div className="sidebar_footer">
+                <button
+                  className="btn_submit"
+                  disabled={!activePin || !activePin.question.trim()}
+                  onClick={async () => {
+                    try {
+                      await axios.post('http://localhost:9070/api/pins', {
+                        postNo,
+                        imageNo,
+                        pins: [activePin], // ✅ 단일 핀만
+                      });
+                      alert('핀 저장 완료');
+                    } catch (err) {
+                      console.error(err);
+                      alert('핀 저장 실패');
+                    }
+                  }} //린
+                >
+                  핀 저장
+                </button>
+              </div>
+            </aside>
+          </div>
         </div>
       </div>
-    </main>
+    </main >
   );
 }
 
