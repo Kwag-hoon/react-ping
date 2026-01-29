@@ -174,15 +174,8 @@ body {
       justify-self: end;
       display: flex;
       align-items: center;
-      gap: 24px;
-
+      gap: 20px;
       font-size: 1.25rem;
-
-      >img {
-        width: 40px;
-        height: 40px;
-        padding-top: 2px;
-      }
 
       .profile {
         width: 60px;
@@ -194,6 +187,17 @@ body {
           width: 100%;
           height: 100%;
           object-fit: cover;
+        }
+      }
+.btns{
+  display: flex;
+  gap: 10px;
+}
+      button{
+        border: none;
+        background: none;
+        img{
+          width: 36px;
         }
       }
     }

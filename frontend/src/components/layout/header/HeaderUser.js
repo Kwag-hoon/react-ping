@@ -1,7 +1,7 @@
 import { Link, NavLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import logoutImg from '../../../assets/icon-login.svg';
 // assets
 import Logogray from '../../../assets/Logo_gray.svg';
 import SearchIcon from '../../../assets/icon-search.svg';
@@ -11,7 +11,10 @@ import Alarm from '../../../assets/icon-bell.svg';
 const HeaderUser = ({ variant }) => {
   const [user, setUser] = useState(null);
   const token = localStorage.getItem('token');
-
+  const handleLogout = () => {
+    // 나중에 실제 로그아웃 로직 연결
+    alert('로그아웃');
+  };
   useEffect(() => {
     // 🔴 토큰 없으면 절대 호출 안 함
     if (!token) return;
@@ -82,7 +85,7 @@ const HeaderUser = ({ variant }) => {
 
         {/* 우측 */}
         <div className="header-right">
-          <img src={Alarm} alt="알람" />
+
 
           <Link to="/mypage" className="profile">
             <img src={Avartar} alt="user profile" />
@@ -94,6 +97,14 @@ const HeaderUser = ({ variant }) => {
               </span>
             )}
           </Link>
+          <div className="btns">
+            <button className='alarm-btn'>
+              <img src={Alarm} alt="알람" />
+            </button>
+            <button onClick={handleLogout} className='logout-btn' >
+              <img src={logoutImg} alt="로그아웃 이미지" />
+            </button>
+          </div>
         </div>
 
       </div>
