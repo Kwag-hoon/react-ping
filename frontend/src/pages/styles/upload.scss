@@ -14,6 +14,7 @@
 
   /* 상단 타이틀 부분 */
   .upload_header {
+    padding-top: 100px;
     margin-bottom: 48px;
 
     p {
@@ -247,6 +248,9 @@
 
 @media screen and (max-width: 767px) {
   .upload {
+    .upload_header{
+      padding-top: 50px;
+    }
     .grid {
       .col-6 {
         grid-column: 1 / span 4;
