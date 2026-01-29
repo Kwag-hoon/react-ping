@@ -34,13 +34,12 @@ const HeaderUser = ({ variant }) => {
         setUser(res.data);
       })
       .catch(err => {
-        console.log('[HeaderUser] /users/me 실패:', err.response?.status);
-        console.log('[HeaderUser] 에러 내용:', err.response?.data);
+  console.log('[HeaderUser] /users/me 실패:', err.response?.status);
+  console.log('[HeaderUser] 에러 내용:', err.response?.data);
 
-        // 토큰 이상 시 초기화
-        localStorage.removeItem('token');
-        setUser(null);
-      });
+
+  setUser(null);
+});
   }, [token]);
 
   // 🔹 임시 로그아웃 (포트폴리오용)
@@ -103,7 +102,7 @@ const HeaderUser = ({ variant }) => {
 
 
           {/*  닉네임 클릭 시 로그아웃  임시 .*/}
-          <Link to="/mypage" className="profile" onClick={handleLogout}>
+          <Link to="/mypage" className="profile" >
             <img src={Avartar} alt="user profile" />
 
             {user && (
