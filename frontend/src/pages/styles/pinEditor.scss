@@ -239,6 +239,10 @@
       @include typo("headingMd", $bold);
       margin-bottom: 4px;
     }
+    .btns{
+    display: flex;
+    gap: 10px;
+}
   }
 
   .sidebar_header_bottom {
