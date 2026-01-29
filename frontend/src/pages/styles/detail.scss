@@ -114,18 +114,18 @@
 
 
     .back_btn {
-      @include btn-shadow;
-      position: absolute;
-      top: 15px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      @include btn("sm", "custome");
+      @include sns-shadow;
       border: none;
-      border-radius: 999px;
-      background: #fff;
-      font-size: 14px;
-      margin-bottom: 10px;
-      cursor: pointer;
+      transition: 0.3s;
+      color: $main-white;
+      background-color: $primary_blue;
+      width: 120px;
+
+      img {
+        width: 20px;
+        transform: translate(-2px, 3px);
+      }
     }
 
     h2 {
@@ -170,13 +170,11 @@
       gap: 10px;
 
       >li {
-        @include btn($size: "sm",
-          $type: "custom",
-          $shadow: true,
-          $bg: transparent,
-          $color: $main_gray_800,
-          $border: 1px solid $main_gray_300 );
-        border-radius: 30px;
+        @include btn("sm", "custome");
+        @include sns-shadow;
+        border: none;
+        transition: 0.3s;
+        background: $bg-b;
       }
     }
 

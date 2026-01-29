@@ -2,12 +2,16 @@
 @use '../../styles/base.scss' as *;
 
 /* archive.scss */
+header.guest+.archive section .top-text {
+  padding-top: 80px;
+}
+
 .archive {
   section {
     padding: 80px 0;
 
     .top-text {
-      padding-top: 100px;
+      //padding-top: 100px;
     }
 
     .filters {
