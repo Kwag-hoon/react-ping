@@ -1,53 +1,114 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import '../styles/pinEditor.scss';
+import axios from 'axios';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 
 function PinEditor() {
   // 변수 선언 
   const [pins, setPins] = useState([]);
   const [activePinId, setActivePinId] = useState(null);
-  const stageRef = useRef(null);
+  // 린 const stageRef = useRef(null);
   const imgRef = useRef(null);
+  const [post, setPost] = useState(null); //린
+
+  //린_ useNavigate상태변수
+  const navigate = useNavigate();
+  //린
+  const location = useLocation();
+  const { postNo, imageNo, imagePath } = location.state || {};
+
+  //린
+  useEffect(() => {
+    if (!postNo) return;
+
+    axios.get('http://localhost:9070/api/posts/${postNo}')
+      .then(res => {
+        setPost(res.data);
+      })
+      .catch(err => console.error(err))
+  }, [postNo]);
+
+  // 린_핀 저장함수 만들기
+  const savePinsToServer = async () => {
+    return axios.post('http://localhost:9070/api/pins', {
+      postNo,
+      imageNo,
+      pins,
+    });
+  };
+
+  //린_저장 버튼
+  const handleSave = async () => {
+    try {
+      await savePinsToServer();
+      alert('임시 저장 완료');
+    } catch (err) {
+      console.error(err);
+      alert('저장 실패');
+    }
+  };
+
+  // 핀 삭제 함수 
+  const handleDeletePin = () => {
+    if (!activePinId) return;
+
+    const ok = window.confirm('이 핀을 삭제할까요?');
+    if (!ok) return;
+
+    setPins(prev => prev.filter(pin => pin.id !== activePinId));
+    setActivePinId(null);
+  };
 
   const hasPin = pins.length > 0;
   const activePin = pins.find(pin => pin.id === activePinId);
 
   // 핀 찍는 핵심 로직 
-const handleAddPin = (e) => {
-  if (!imgRef.current) return;
+  const handleAddPin = (e) => {
+    if (!imgRef.current) return;
 
-  const rect = imgRef.current.getBoundingClientRect();
+    const rect = imgRef.current.getBoundingClientRect();
 
-  const clickX = e.clientX;
-  const clickY = e.clientY;
+    const clickX = e.clientX;
+    const clickY = e.clientY;
 
-  const x = ((clickX - rect.left) / rect.width) * 100;
-  const y = ((clickY - rect.top) / rect.height) * 100;
+    const x = ((clickX - rect.left) / rect.width) * 100;
+    const y = ((clickY - rect.top) / rect.height) * 100;
 
-  if (x < 0 || x > 100 || y < 0 || y > 100) return;
+    if (x < 0 || x > 100 || y < 0 || y > 100) return;
 
-  const newPin = {
-    id: Date.now(),
-    x,
-    y,
-    question:'',
-    issues:[],
+    const newPin = {
+      id: Date.now(),
+      x,
+      y,
+      question: '',
+      issues: [],
+    };
+
+    setPins(prev => [...prev, newPin]);
+    setActivePinId(newPin.id);
   };
 
-  setPins(prev=>[...prev, newPin]);
-  setActivePinId(newPin.id);
-};
+  //린_완료 버튼
+  const handleComplete = async () => {
+    if (!postNo) {
+      alert('게시물 정보가 없습니다.');
+      return;
+    }
 
-// 핀 삭제 함수 
-const handleDeletePin = () => {
-  if (!activePinId) return;
+    if (pins.length === 0) {
+      alert('최소 1개의 핀을 추가하세요.');
+      return;
+    }
 
-  const ok = window.confirm('이 핀을 삭제할까요?');
-  if (!ok) return;
-
-  setPins(prev => prev.filter(pin => pin.id !== activePinId));
-  setActivePinId(null);
-};
+    try {
+      await savePinsToServer();
+      navigate(`/detail/${postNo}`);
+    } catch (err) {
+      console.error(err);
+      alert('완료 처리 실패');
+    }
+  };
   return (
     <main className="pineditor">
 
@@ -64,7 +125,9 @@ const handleDeletePin = () => {
               </button>
 
               <div className="p_header_title">
-                <h1 className="p_title_text">게시물 제목</h1>
+                <h1 className="p_title_text">
+                  {post?.post_title || '게시물 제목'}
+                </h1>
                 <p className="p_title_sub">{pins.length}개의 핀</p>
               </div>
             </div>
@@ -76,8 +139,17 @@ const handleDeletePin = () => {
                 <button>+</button>
               </div>
 
-              <button className="btn_save">저장</button>
-              <button className="btn_complete" disabled>
+              <button
+                className="btn_save"
+                onClick={handleSave} //린
+              >
+                저장
+              </button>
+              <button
+                className="btn_complete"
+                onClick={handleComplete} //린
+                disabled={pins.length === 0} //린
+              >
                 완료
               </button>
             </div>
@@ -95,7 +167,8 @@ const handleDeletePin = () => {
                 <div className="canvas_image_wrap">
                   <img
                     ref={imgRef}
-                    src={`${process.env.PUBLIC_URL}/images/hero.png`}
+                    // src={`${process.env.PUBLIC_URL}/images/hero.png`}
+                    src={`http://localhost:9070${imagePath}`}
                     alt="업로드 이미지"
                     className="canvas_image"
                     draggable={false}
@@ -108,8 +181,8 @@ const handleDeletePin = () => {
                       className={`pin_marker ${pin.id === activePinId ? 'active' : ''}`}
                       style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
                       onClick={(e) => {
-                        e.stopPropagation();     
-                        setActivePinId(pin.id); 
+                        e.stopPropagation();
+                        setActivePinId(pin.id);
                       }}
                     >
                       {index + 1}
@@ -124,22 +197,22 @@ const handleDeletePin = () => {
           <aside className="pineditor_sidebar">
 
             {/* 사이드바 헤더 */}
-              <div className="sidebar_header">
-                <div className="sidebar_header_left">
-                  <h2>Pin Question</h2>
-                  <p>선택된 핀</p>
-                </div>
-
-                {activePinId && (
-                  <button
-                    type="button"
-                    className="btn_pin_delete"
-                    onClick={handleDeletePin}
-                  >
-                    삭제
-                  </button>
-                )}
+            <div className="sidebar_header">
+              <div className="sidebar_header_left">
+                <h2>Pin Question</h2>
+                <p>선택된 핀</p>
               </div>
+
+              {activePinId && (
+                <button
+                  type="button"
+                  className="btn_pin_delete"
+                  onClick={handleDeletePin}
+                >
+                  삭제
+                </button>
+              )}
+            </div>
 
             {/* 사이드바 컨텐츠 */}
             <div className="sidebar_content">
@@ -198,14 +271,27 @@ const handleDeletePin = () => {
 
 
             {/* 사이드바 하단 */}
-          <div className="sidebar_footer">
-            <button
-              className="btn_submit"
-              disabled={!activePin || !activePin.question.trim()}
-            >
-              핀 저장
-            </button>
-          </div>
+            <div className="sidebar_footer">
+              <button
+                className="btn_submit"
+                disabled={!activePin || !activePin.question.trim()}
+                onClick={async () => {
+                  try {
+                    await axios.post('http://localhost:9070/api/pins', {
+                      postNo,
+                      imageNo,
+                      pins: [activePin], // ✅ 단일 핀만
+                    });
+                    alert('핀 저장 완료');
+                  } catch (err) {
+                    console.error(err);
+                    alert('핀 저장 실패');
+                  }
+                }} //린
+              >
+                핀 저장
+              </button>
+            </div>
 
           </aside>
 
