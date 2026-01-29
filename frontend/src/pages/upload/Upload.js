@@ -36,13 +36,6 @@ function Upload(props) {
     setSelectedIssues([...selectedIssues, issue]);
   }
 
-  //린 const handleNext = (e) => {
-  //   e.preventDefault();
-
-  //   // (지금은 검증 없이 바로 이동)
-  //   navigate('/upload/pineditor');
-  // };
-
   //린 
   const handleNext = async (e) => {
   e.preventDefault();
@@ -61,6 +54,7 @@ function Upload(props) {
 
     const res = await axios.post('http://localhost:9070/api/posts', formData, {
       headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
         'Content-Type': 'multipart/form-data',
       },
     });

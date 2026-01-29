@@ -24,7 +24,14 @@ function PinEditor() {
   useEffect(() => {
     if (!postNo) return;
 
-    axios.get('http://localhost:9070/api/posts/${postNo}')
+    axios.get(
+      `http://localhost:9070/api/designs/${postNo}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }
+    )
       .then(res => {
         setPost(res.data);
       })
@@ -32,12 +39,42 @@ function PinEditor() {
   }, [postNo]);
 
   // 린_핀 저장함수 만들기
+  // const savePinsToServer = async () => {
+
+  //   return axios.post(
+  //     'http://localhost:9070/api/pins',
+  //     {
+  //       postNo,
+  //       imageNo,
+  //       pins,
+  //     },
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //       },
+  //     }
+  //   );
+  // };
   const savePinsToServer = async () => {
-    return axios.post('http://localhost:9070/api/pins', {
-      postNo,
-      imageNo,
-      pins,
-    });
+    const cleanedPins = pins.map(pin => ({
+      x: pin.x,
+      y: pin.y,
+      question: pin.question,
+    }));
+
+    return axios.post(
+      'http://localhost:9070/api/pins',
+      {
+        postNo,
+        imageNo,
+        pins: cleanedPins, // ✅ 정제된 데이터만 전송
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }
+    );
   };
 
   //린_저장 버튼
@@ -111,7 +148,7 @@ function PinEditor() {
       alert('완료 처리 실패');
     }
   };
-  
+
   return (
     <main className="pineditor container">
 

@@ -6,8 +6,8 @@ import CloseIcon from '../../assets/icon-x.svg';
 import axios from 'axios';
 
 function Detail() {
-  // 이미지 위에 표시될 핀 정보 + 각 핀에 대응되는 질문 데이터
-  //나중에 핀 업로드에서 가져올때는
+
+
   const [pins, setPins] = useState([]);
   const [selectedPin, setSelectedPin] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
@@ -15,14 +15,7 @@ function Detail() {
 
   //archive 페이지에서 아이디값 넘겨 받기
   const { id } = useParams();
-  // const pins = [
-  //   { id: 1, x: 32.5, y: 40.2, question: '카드 스타일 레이아웃과 전체 화면 디자인 중 어느것이 더 나을까요? 사용자에게 주는 느낌이 다를 것 같은데 의견이 필요합니다.' },
-  //   { id: 2, x: 61.8, y: 28.4, question: '질문 2' },
-  //   { id: 3, x: 48.1, y: 66.9, question: '질문 3' },
-  // ];
-  // 현재 선택된 핀 상태 (핀을 선택하지 않았을 경우 기본값으로 첫 번째 핀 사용)
-  // const [selectedPin, setSelectedPin] = useState(pins[0]);
-  // 서버 데이터 로딩
+
   useEffect(() => {
     if (!id) return;
 
@@ -158,8 +151,8 @@ function Detail() {
 
               {pins.map((pin, index) => (
                 <div
-                  key={pin.id}
-                  className={`pin_marker ${selectedPin?.id === pin.id ? 'active' : ''}`}
+                  key={pin.pin_no}
+                  className={`pin_marker ${selectedPin?.pin_no === pin.pin_no ? 'active' : ''}`}
                   style={{
                     left: `${pin.x}%`,
                     top: `${pin.y}%`,
