@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import '../styles/upload.scss';
 import { useNavigate } from 'react-router-dom';
 import imageIcon from '../../assets/icon-image.svg';
+import axios from 'axios';
+
 function Upload(props) {
 
   // 선택된 문제유형 클래스 변경을 위한 함수 설정 
@@ -9,6 +11,11 @@ function Upload(props) {
 
   // 페이지간 이동을 위한 url관리
   const navigate = useNavigate();
+
+  //린 
+  const [file, setFile] = useState(null);
+  const [title, setTitle] = useState('');
+  const [desc, setDesc] = useState('');
 
   // 클릭 핸들러 함수 설정 
   const handleIssueClick = (issue) => {
@@ -29,12 +36,51 @@ function Upload(props) {
     setSelectedIssues([...selectedIssues, issue]);
   }
 
-  const handleNext = (e) => {
-    e.preventDefault();
+  //린 const handleNext = (e) => {
+  //   e.preventDefault();
 
-    // (지금은 검증 없이 바로 이동)
-    navigate('/upload/pineditor');
-  };
+  //   // (지금은 검증 없이 바로 이동)
+  //   navigate('/upload/pineditor');
+  // };
+
+  //린 
+  const handleNext = async (e) => {
+  e.preventDefault();
+
+  if (!file) {
+    alert('이미지를 업로드해주세요.');
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('title', title);
+    formData.append('desc', desc);
+    formData.append('issues', JSON.stringify(selectedIssues));
+
+    const res = await axios.post('http://localhost:9070/api/posts', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    const { postNo, imageNo, imagePath } = res.data;
+
+    // 👉 PinEditor로 이동
+    navigate('/upload/pineditor', {
+      state: {
+        postNo,
+        imageNo,
+        imagePath,
+      },
+    });
+
+  } catch (err) {
+    console.error(err);
+    alert('업로드 실패');
+  }
+};
 
   return (
     <main className='upload container'>
@@ -65,18 +111,39 @@ function Upload(props) {
               </div>
 
               {/* 실제 파일 인풋영역 (디자인은 css로 숨김) */}
-              <input type="file" className="upload_file" accept='.png,.jpg,.jpeg,.pdf' required />
+              <input 
+              type="file" 
+              className="upload_file" 
+              accept='.png,.jpg,.jpeg,.pdf' 
+              onChange={(e) => setFile(e.target.files[0])} //린
+              required 
+              />
             </div>
             {/* 제목 */}
             <div className="upload_field">
               <label htmlFor="title" className='upload_label'>제목</label>
-              <input type="text" className="upload_input" id="title" placeholder='디자인에 명확한 제목을 입력하세요' required />
+              <input 
+              type="text" 
+              className="upload_input" 
+              id="title" 
+              placeholder='디자인에 명확한 제목을 입력하세요'
+              value={title} //린
+              onChange={(e) =>setTitle(e.target.value)} //린 
+              required 
+              />
             </div>
 
             {/* 설명 */}
             <div className="upload_field">
               <label htmlFor="desc" className="upload_label">설명</label>
-              <textarea className="upload_textarea" id='desc' rows={4} placeholder='어떤 문제를 해결하려 하나요? 어떤 피드백을 원하시나요?' required />
+              <textarea 
+              className="upload_textarea" 
+              id='desc' 
+              rows={4} 
+              placeholder='어떤 문제를 해결하려 하나요? 어떤 피드백을 원하시나요?' 
+              value={desc} //린
+              onChange={(e) => setDesc(e.target.value)} //린
+              required />
             </div>
 
             {/* 문제유형 선택 */}

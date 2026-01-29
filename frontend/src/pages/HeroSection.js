@@ -21,9 +21,9 @@ function HeroSection(props) {
             아카이브 시작하기
           </Link>
 
-          <button className="sample-btn">
-            샘플보기
-          </button>
+          <Link to="/signup" className="sample-btn">
+            회원 가입
+          </Link>
         </div>
 
       </div>

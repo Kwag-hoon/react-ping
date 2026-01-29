@@ -1,37 +1,49 @@
 import '../styles/detail.scss'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import backIcon from '../../assets/icon-chevron-left.svg';
-import CloseIcon from '../../assets/icon-x.svg'
-
+import CloseIcon from '../../assets/icon-x.svg';
+import axios from 'axios';
 
 function Detail() {
   // 이미지 위에 표시될 핀 정보 + 각 핀에 대응되는 질문 데이터
   //나중에 핀 업로드에서 가져올때는
-  //1. const [pins, setPins] = useState([]); 값으로 바꾸기
-  //2. const [selectedPin, setSelectedPin] = useState(null); 기본 null값으로 바꿔주기
+  const [pins, setPins] = useState([]);
+  const [selectedPin, setSelectedPin] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
+  const [post, setPost] = useState(null);
 
-  // 3. useEffect(() => {
-  //   axios.get(`/api/designs/${id}`)
-  //     .then(res => {
-  //       setPins(res.data.pins);
-  //       setSelectedPin(res.data.pins[0]);
-  //     });
-  // }, []);
-  const pins = [
-    { id: 1, x: 32.5, y: 40.2, question: '카드 스타일 레이아웃과 전체 화면 디자인 중 어느것이 더 나을까요? 사용자에게 주는 느낌이 다를 것 같은데 의견이 필요합니다.' },
-    { id: 2, x: 61.8, y: 28.4, question: '질문 2' },
-    { id: 3, x: 48.1, y: 66.9, question: '질문 3' },
-  ];
+  //archive 페이지에서 아이디값 넘겨 받기
+  const { id } = useParams();
+  // const pins = [
+  //   { id: 1, x: 32.5, y: 40.2, question: '카드 스타일 레이아웃과 전체 화면 디자인 중 어느것이 더 나을까요? 사용자에게 주는 느낌이 다를 것 같은데 의견이 필요합니다.' },
+  //   { id: 2, x: 61.8, y: 28.4, question: '질문 2' },
+  //   { id: 3, x: 48.1, y: 66.9, question: '질문 3' },
+  // ];
   // 현재 선택된 핀 상태 (핀을 선택하지 않았을 경우 기본값으로 첫 번째 핀 사용)
-  const [selectedPin, setSelectedPin] = useState(pins[0]);
+  // const [selectedPin, setSelectedPin] = useState(pins[0]);
+  // 서버 데이터 로딩
+  useEffect(() => {
+    if (!id) return;
+
+    axios
+      .get(`http://localhost:9070/api/designs/${id}`)
+      .then(res => {
+        const serverPins = res.data.pins || [];
+
+        setPins(serverPins);
+        setSelectedPin(serverPins[0] || null);
+        setImageUrl(res.data.imageUrl || '');
+        setPost(res.data.post || null);
+      })
+      .catch(err => {
+        console.error('❌ Detail fetch error:', err);
+      });
+  }, [id]);
 
   const navigate = useNavigate();
   //모바일 댓글창 여는 상태변수
   const [isOpen, setIsOpen] = useState(false);
-
-  //archive 페이지에서 아이디값 넘겨 받기
-  const {id} = useParams();
 
   // 핀 id를 key로 하는 댓글 상태 객체 (각 핀마다 댓글을 분리해서 저장)
   const [comments, setComments] = useState({});
@@ -42,10 +54,11 @@ function Detail() {
   const [memoText, setMemoText] = useState('');
 
   //나중에 PinEditor 서버에서 받을 이미지 데이터 구조
-  const imageUrl = `${process.env.PUBLIC_URL}/images/detail.png`;
+  // const imageUrl = `${process.env.PUBLIC_URL}/images/detail.png`;
 
   //댓글 게시 버튼 로직
   const handleAddComment = () => {
+    if (!selectedPin) return;
     if (!commentText.trim()) return;
 
     const newComment = {
@@ -60,16 +73,18 @@ function Detail() {
 
     setComments(prev => ({
       ...prev,
-      [selectedPin.id]: [
-        ...(prev[selectedPin.id] || []),
+      [selectedPin.pin_no]: [
+        ...(prev[selectedPin.pin_no] || []),
         newComment,
       ],
     }));
     setCommentText('');
   };
 
-  // comments 객체에서 현재 선택된 핀의 댓글만 추출
-  const pinComments = comments[selectedPin?.id] || [];
+  // comments 객체에서 현재 선택된 핀의 질문
+  const pinComments = selectedPin
+    ? comments[selectedPin.pin_no] || []
+    : [];
 
   //메모 게시 버튼 로직
   const handleAddMemo = () => {
@@ -89,6 +104,15 @@ function Detail() {
     setMemoText('');
   }
 
+  //핀클릭시 모달 메뉴 열기 함수
+  const handlePinClick = (pin) => {
+    setSelectedPin(pin);
+
+    if (window.innerWidth <= 1023) {
+      setIsOpen(true);
+    }
+  };
+
   return (
     <section className="detail container">
       <article className="detail_box grid">
@@ -99,10 +123,14 @@ function Detail() {
             <img src={backIcon} alt='뒤로가기 아이콘' />뒤로 가기
           </button>
 
-          <h2>모바일 뱅킹 앱</h2>
+          <h2>
+            {post?.post_title}
+          </h2>
 
           <div className="desc-row">
-            <p>거래 화면에 대한 다양한 접근 방식 탐색</p>
+            <p>
+              {post?.post_content}
+            </p>
             <span className="user-badge">
               <img
                 src={`${process.env.PUBLIC_URL}/images/detail.png`}
@@ -121,84 +149,29 @@ function Detail() {
           {/* PinEditor와 동일한 핀 구조 */}
           <div className="img_box">
             <div className="image_wrap">
-              <img src={imageUrl} alt="상세페이지 이미지" />
+              {imageUrl && (
+                <img
+                  src={`http://localhost:9070${imageUrl}`}
+                  alt="상세페이지 이미지"
+                />
+              )}
+
               {pins.map((pin, index) => (
                 <div
                   key={pin.id}
-                  className={`pin_marker ${selectedPin.id === pin.id ? 'active' : ''}`}
+                  className={`pin_marker ${selectedPin?.id === pin.id ? 'active' : ''}`}
                   style={{
                     left: `${pin.x}%`,
                     top: `${pin.y}%`,
                   }}
-                  onClick={() => setSelectedPin(pin)}
-                >
-                  {pin.id}
-                </div>
-              ))}
-            </div>
-            <div className="image_wrap">
-              <img src={imageUrl} alt="상세페이지 이미지" />
-              {pins.map((pin, index) => (
-                <div
-                  key={pin.id}
-                  className={`pin_marker ${selectedPin.id === pin.id ? 'active' : ''}`}
-                  style={{
-                    left: `${pin.x}%`,
-                    top: `${pin.y}%`,
-                  }}
-                  onClick={() => setSelectedPin(pin)}
-                >
-                  {pin.id}
-                </div>
-              ))}
-            </div>
-            <div className="image_wrap">
-              <img src={imageUrl} alt="상세페이지 이미지" />
-              {pins.map((pin, index) => (
-                <div
-                  key={pin.id}
-                  className={`pin_marker ${selectedPin.id === pin.id ? 'active' : ''}`}
-                  style={{
-                    left: `${pin.x}%`,
-                    top: `${pin.y}%`,
-                  }}
-                  onClick={() => setSelectedPin(pin)}
-                >
-                  {pin.id}
-                </div>
-              ))}
-            </div>
-            {/* <div className="image_wrap">
-              <img src={imageUrl} alt="상세페이지 이미지" />
-              {pins.map((pin, index) => (
-                <div
-                  key={pin.id}
-                  className="pin_marker"
-                  style={{
-                    left: `${pin.x}%`,
-                    top: `${pin.y}%`,
-                  }}
+                  onClick={() => handlePinClick(pin)}
                 >
                   {index + 1}
                 </div>
               ))}
             </div>
-            <div className="image_wrap">
-              <img src={imageUrl} alt="상세페이지 이미지" />
-              {pins.map((pin, index) => (
-                <div
-                  key={pin.id}
-                  className="pin_marker"
-                  style={{
-                    left: `${pin.x}%`,
-                    top: `${pin.y}%`,
-                  }}
-                >
-                  {index + 1}
-                </div>
-              ))}
-            </div> */}
           </div>
+
 
           {/* 모바일 모달 창 버튼 */}
           <button className="mobile-comment-btn" onClick={() => setIsOpen(true)}>
@@ -211,7 +184,9 @@ function Detail() {
           <div className="sticky-inner">
             <p className="pin-label">
               <span className="pin-badge">
-                {selectedPin ? selectedPin.id : '-'}
+                {selectedPin
+                  ? pins.findIndex(p => p.pin_no === selectedPin.pin_no) + 1
+                  : '-'}
               </span>
               Pin Question
             </p>
@@ -219,7 +194,7 @@ function Detail() {
             {/* 선택된 핀 기준으로 질문 표시예정 */}
             <hr />
             <span>
-              {selectedPin.question}
+              {selectedPin ? selectedPin.question : '핀을 선택해주세요'}
             </span>
             <hr />
 
@@ -287,7 +262,9 @@ function Detail() {
               <div className="sticky-inner">
                 <p className="pin-label">
                   <span className="pin-badge">
-                    {selectedPin ? selectedPin.id : '-'}
+                    {selectedPin
+                      ? pins.findIndex(p => p.pin_no === selectedPin.pin_no) + 1
+                      : '-'}
                   </span>
                   Pin Question
                 </p>
@@ -298,7 +275,7 @@ function Detail() {
                 </button>
 
                 <hr />
-                <span>{selectedPin.question}</span>
+                <span>{selectedPin?.question || ''}</span>
                 <hr />
 
                 <div className='box-right_card'>

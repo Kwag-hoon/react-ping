@@ -101,10 +101,10 @@
 
 .auth {
   .grid {
-    padding: 70px 0;
+    padding: 120px 0;
 
     h2 {
-      padding-bottom: 50px;
+      padding: 50px;
       @include typo("displaySm", $bold);
       color: $primary_mint;
       text-align: center;

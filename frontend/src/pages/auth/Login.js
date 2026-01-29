@@ -35,7 +35,7 @@ function Login(props) {
       localStorage.setItem('token', res.data.token);
 
       alert('로그인 성공');
-      navigate('/');
+      window.location.href = '/';
     } catch (err) {
       alert(err.response?.data?.message || '로그인 실패');
     }

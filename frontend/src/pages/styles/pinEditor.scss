@@ -170,12 +170,13 @@
 
   .canvas_image_wrap {
     position: relative;
-    width: fit-content;
+    // width: fit-content;
+    display: inline-block;
+    overflow: hidden;
   }
 
   .canvas_image {
-    max-width: 1000px;
-    width: 80%;
+    max-width: 100%;
     height: auto;
     display: block;
     justify-self: center;
