@@ -29,14 +29,15 @@ import MyFeedback from './pages/mypage/MyFeedback';
 import MyProfile from './pages/mypage/MyProfile';
 import MyAlarm from './pages/mypage/MyAlarm';
 
-// 관리자 페이지
-import AdminLayout from './pages/admin/AdminLayout';
-import AdminDesign from './pages/admin/pages/AdminDesign';
-import AdminPins from './pages/admin/pages/AdminPins';
-import AdminComments from './pages/admin/pages/AdminComments';
-import AdminUsers from './pages/admin/pages/AdminUsers';
-import AdminIssueTypes from './pages/admin/pages/AdminIssueTypes';
+// // 관리자 페이지
+// import AdminLayout from './pages/admin/AdminLayout';
+// import AdminDesign from './pages/admin/pages/AdminDesign';
+// import AdminPins from './pages/admin/pages/AdminPins';
+// import AdminComments from './pages/admin/pages/AdminComments';
+// import AdminUsers from './pages/admin/pages/AdminUsers';
+// import AdminIssueTypes from './pages/admin/pages/AdminIssueTypes';
 import HeaderUser from "./components/layout/header/HeaderUser";
+import Header from "./components/layout/header/Header";
 
 
 
@@ -47,7 +48,7 @@ function App() {
 
         {/* 헤더 */}
 
-        <HeaderUser/>
+        <Header/>
         {/* <Header /> */}
 
         <Routes>
@@ -67,15 +68,15 @@ function App() {
             <Route path="profile" element={<MyProfile />} />
             <Route path="alarm" element={<MyAlarm />} />
           </Route>
-          {/* 관리자 레이아웃 */}
+          {/* 관리자 레이아웃
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDesign />} />
-            {/* <Route path="design" element={<AdminDesign />} /> */}
+            <Route path="design" element={<AdminDesign />} />
             <Route path="pins" element={<AdminPins />} />
             <Route path="comments" element={<AdminComments />} />
             <Route path="users" element={<AdminUsers />} />
             <Route path="issue" element={<AdminIssueTypes />} />
-          </Route>
+          </Route> */}
 
         </Routes>
 
