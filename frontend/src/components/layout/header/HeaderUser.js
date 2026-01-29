@@ -11,13 +11,17 @@ import Alarm from '../../../assets/icon-bell.svg';
 const HeaderUser = ({ variant }) => {
   const [user, setUser] = useState(null);
   const token = localStorage.getItem('token');
-  const handleLogout = () => {
-    // 나중에 실제 로그아웃 로직 연결
-    alert('로그아웃');
-  };
+
+  // 🔹 로그인 유지: 유저 정보 조회
   useEffect(() => {
-    // 🔴 토큰 없으면 절대 호출 안 함
-    if (!token) return;
+    console.log('[HeaderUser] token:', token);
+
+    if (!token) {
+      console.log('[HeaderUser] 토큰 없음 → 요청 안 함');
+      return;
+    }
+
+    console.log('[HeaderUser] /users/me 요청 시작');
 
     axios
       .get('http://localhost:9070/users/me', {
@@ -26,14 +30,25 @@ const HeaderUser = ({ variant }) => {
         },
       })
       .then(res => {
+        console.log('[HeaderUser] /users/me 성공:', res.data);
         setUser(res.data);
       })
-      .catch(() => {
-        // 토큰 이상 시 조용히 초기화
+      .catch(err => {
+        console.log('[HeaderUser] /users/me 실패:', err.response?.status);
+        console.log('[HeaderUser] 에러 내용:', err.response?.data);
+
+        // 토큰 이상 시 초기화
         localStorage.removeItem('token');
         setUser(null);
       });
   }, [token]);
+
+  // 🔹 임시 로그아웃 (포트폴리오용)
+  const handleLogout = (e) => {
+    e.preventDefault(); // Link 기본 이동 막기
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  };
 
   return (
     <header className={`header user ${variant || ''}`}>
@@ -87,10 +102,10 @@ const HeaderUser = ({ variant }) => {
         <div className="header-right">
 
 
-          <Link to="/mypage" className="profile">
+          {/*  닉네임 클릭 시 로그아웃  임시 .*/}
+          <Link to="/mypage" className="profile" onClick={handleLogout}>
             <img src={Avartar} alt="user profile" />
 
-            {/* 로그인 + 유저 정보 로드 완료 시만 표시 */}
             {user && (
               <span className="nickname">
                 {user.user_nickname}
