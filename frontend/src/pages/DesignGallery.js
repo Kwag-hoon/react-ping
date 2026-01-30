@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import DesignItem from "./DesignItem";
+import testItems from "../test/archive.json" //test 이미지카드
 
 function DesignGallery(props) {
   const [isUnder1023, setIsUnder1023] = useState(
@@ -13,27 +14,37 @@ function DesignGallery(props) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
   const items = useMemo(() => {
+    const ratios = ["4/5", "1/1", "3/4", "9/16"];
 
-      const ratios = ["4/5", "1/1", "3/4", "9/16"];
 
-    return Array.from({ length: 25 }).map((_, i) => ({
-      id: i,
-      url: `https://picsum.photos/seed/design-${i}/800/1200`,
-      ratio: ratios[Math.floor(Math.random() * ratios.length)],
-      title: "네비게이션 간격",
-      date: "~2026.02.22",
-      views: 25,
-      likes: 7,
-      comments: 2,
-    }));
+    return [...testItems]
+      .sort(
+        (a, b) =>
+          new Date(b.create_datetime) - new Date(a.create_datetime)
+      )
+
+      .map((item) => ({
+        id: item.id,
+        image: item.image_path,
+        ratio: ratios[Math.floor(Math.random() * ratios.length)],
+        title: item.post_title,
+        date: item.create_datetime,
+        views: 25,
+        likes: 7,
+        comments: 2,
+      }));
   }, []);
   const visibleItems = isUnder1023 ? items.slice(0, 10) : items;
   return (
 
     <div className="gallery-masonry">
       {visibleItems.map((item) => (
-        <DesignItem key={item.id} item={item} />
+        <DesignItem
+          key={item.id}
+          item={item}
+        />
       ))}
     </div>
 
