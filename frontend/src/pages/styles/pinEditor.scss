@@ -284,7 +284,7 @@
 
   .pineditor_guide {
     text-align: center;
-    color: #6b7280;
+    color: $main_gray_500;
     font-size: 14px;
   }
 
@@ -370,7 +370,7 @@
     height: 44px;
     border-radius: 10px;
     border: none;
-    background: #0047ff;
+    background: $primary_blue;
     color: #fff;
     font-size: 14px;
     font-weight: 600;
