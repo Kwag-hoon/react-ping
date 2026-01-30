@@ -3,8 +3,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/pinEditor.scss';
 import axios from 'axios';
 import left from '../../assets/icon-chevron-left.svg'
-import plusIcon from '../../assets/icon-plus.svg'
-import minusIcon from '../../assets/icon-check.svg'
 
 function PinEditor() {
   // 변수 선언 
@@ -40,53 +38,70 @@ function PinEditor() {
 
   // 린_핀 저장함수 만들기
   // const savePinsToServer = async () => {
+  //   try {
+  //     const cleanedPins = pins.map(pin => ({
+  //       x: pin.x,
+  //       y: pin.y,
+  //       question: pin.question,
+  //     }));
 
-  //   return axios.post(
-  //     'http://localhost:9070/api/pins',
-  //     {
-  //       postNo,
-  //       imageNo,
-  //       pins,
-  //     },
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //     const res = axios.post(
+  //       'http://localhost:9070/api/pins',
+  //       {
+  //         postNo,
+  //         imageNo,
+  //         pins: cleanedPins, // ✅ 정제된 데이터만 전송
   //       },
-  //     }
-  //   );
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //         },
+  //       }
+  //     );
+  //     console.log('핀 저장 성공: ', res.data);
+  //     alert('핀 저장 완료');
+  //   } catch (err) {
+  //     console.err('핀 저장 실패 :', err)
+  //   }
   // };
   const savePinsToServer = async () => {
-    const cleanedPins = pins.map(pin => ({
-      x: pin.x,
-      y: pin.y,
-      question: pin.question,
-    }));
+    if (!activePin) return;
 
-    return axios.post(
-      'http://localhost:9070/api/pins',
-      {
-        postNo,
-        imageNo,
-        pins: cleanedPins, // ✅ 정제된 데이터만 전송
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      }
-    );
+    const payload = {
+      postNo,
+      imageNo,
+      x: activePin.x,
+      y: activePin.y,
+      question: activePin.question,
+    };
+
+    try {
+      await axios.post(
+        'http://localhost:9070/api/pins',
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+
+      alert('핀 저장 완료');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   //린_저장 버튼
-  const handleSave = async () => {
-    try {
-      await savePinsToServer();
-      alert('임시 저장 완료');
-    } catch (err) {
-      console.error(err);
-      alert('저장 실패');
-    }
-  };
+  // const handleSave = async () => {
+  //   try {
+  //     await savePinsToServer();
+  //     alert('임시 저장 완료');
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert('저장 실패');
+  //   }
+  // };
 
   // 핀 삭제 함수 
   const handleDeletePin = () => {
@@ -173,25 +188,25 @@ function PinEditor() {
           </div>
 
           <div className="p_header_right">
-            <div className="zoom_controls">
+            {/* <div className="zoom_controls">
               <button><img src={minusIcon} alt="마이너스" /></button>
               <span>100%</span>
               <button><img src={plusIcon} alt="플러스" /></button>
-            </div>
+            </div> */}
 
-            <button
+            {/* <button
               className="btn_save"
               onClick={handleSave} //린
             >
               저장
-            </button>
-            <button
+            </button> */}
+            {/* <button
               className="btn_complete"
               onClick={handleComplete} //린
               disabled={pins.length === 0} //린
             >
               완료
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -243,13 +258,21 @@ function PinEditor() {
                 <div className="sidebar_header_bottom">
                   <p>선택된 핀</p>
                   {activePinId && (
-                    <button
-                      type="button"
-                      className="btn_pin_delete"
-                      onClick={handleDeletePin}
-                    >
-                      삭제
-                    </button>
+                    <div className="btns">
+                      <button
+                        className="btn_save"
+                        disabled={!activePin || !activePin.question.trim()}
+                        onClick={savePinsToServer}>
+                        임시 저장
+                      </button>
+                      <button
+                        type="button"
+                        className="btn_pin_delete"
+                        onClick={handleDeletePin}
+                      >
+                        삭제
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
@@ -312,24 +335,18 @@ function PinEditor() {
 
               {/* 사이드바 하단 */}
               <div className="sidebar_footer">
-                <button
+                {/* <button
                   className="btn_submit"
                   disabled={!activePin || !activePin.question.trim()}
-                  onClick={async () => {
-                    try {
-                      await axios.post('http://localhost:9070/api/pins', {
-                        postNo,
-                        imageNo,
-                        pins: [activePin], // ✅ 단일 핀만
-                      });
-                      alert('핀 저장 완료');
-                    } catch (err) {
-                      console.error(err);
-                      alert('핀 저장 실패');
-                    }
-                  }} //린
-                >
+                  onClick={savePinsToServer}>
                   핀 저장
+                </button> */}
+                <button
+                  className="btn_submit"
+                  onClick={handleComplete} //린
+                  disabled={pins.length === 0} //린
+                >
+                  핀 업로드
                 </button>
               </div>
             </aside>

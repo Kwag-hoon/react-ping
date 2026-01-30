@@ -33,7 +33,7 @@ const router = express.Router();
 //       ],
 //       (err) => {
 //         if (err) {
-          
+
 //           console.error('핀 저장 실패:', err);
 //         }
 //       }
@@ -44,9 +44,9 @@ const router = express.Router();
 // });
 
 router.post('/', (req, res) => {
-  const { postNo, imageNo, pins } = req.body;
+  const { postNo, imageNo, x, y, question } = req.body;
 
-  // 1️⃣ 토큰에서 user_no 추출
+  // 토큰에서 user_no 추출
   const authHeader = req.headers.authorization;
   if (!authHeader) {
     return res.status(401).json({ message: '로그인 필요' });
@@ -63,36 +63,33 @@ router.post('/', (req, res) => {
 
   const userNo = decoded.user_no;
 
-  // 2️⃣ 유효성 검사
-  if (!postNo || !imageNo || !pins || pins.length === 0) {
+  // 유효성 검사
+  if (!postNo || !imageNo || x == null || y == null || !question) {
     return res.status(400).json({ message: '핀 데이터 부족' });
   }
 
-  // 3️⃣ INSERT 쿼리
-  
+  // INSERT 쿼리
   const insertSql = `
-    INSERT INTO pin_questions
-    (post_no, image_no, user_no, x, y, question_content)
-    VALUES ?
-  `;
+  INSERT INTO pin_questions
+  (post_no, image_no, user_no, x, y, question_content)
+  VALUES (?, ?, ?, ?, ?, ?)
+`;
 
-  const values = pins.map(pin => [
-    postNo,
-    imageNo,
-    userNo,
-    pin.x,
-    pin.y,
-    pin.question, // ⭐ question → question_content
-  ]);
+  db.query(
+    insertSql,
+    [postNo, imageNo, userNo, x, y, question],
+    (err, result) => {
+      if (err) {
+        console.error('❌ pin_questions insert error:', err);
+        return res.status(500).json({ message: '핀 저장 실패' });
+      }
 
-  db.query(insertSql, [values], (err, result) => {
-    if (err) {
-      console.error('❌ pin_questions insert error:', err);
-      return res.status(500).json({ message: '핀 저장 실패' });
-    }
-
-    res.json({ success: true });
-  });
-});
+      res.json({ 
+        success: true,
+        pinNo: result.inserId,
+      });
+    });
+  }
+);
 
 module.exports = router;
