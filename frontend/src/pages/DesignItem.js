@@ -1,11 +1,12 @@
 import eye from "../assets/icon-eye.svg";
 import like from "../assets/icon-like.svg";
 import comments from "../assets/icon-edit.svg";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 export default function DesignItem({ item }) {
   return (
-    <Link to={`/design/${item.id}`} className="design-item-link">
+    //링크는 각 페이지에서 중첩되지 않게 사용하기 
+    // <Link to={`/design/${item.id}`} className="design-item-link">
       <article className="design-item">
         <div className="thumb-wrap" style={{ "--ratio": item.ratio }}>
           <img className="thumb" 
@@ -27,6 +28,5 @@ export default function DesignItem({ item }) {
           </div>
         </div>
       </article>
-    </Link>
   );
 }
