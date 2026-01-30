@@ -62,6 +62,11 @@ function Upload(props) {
       return;
     }
 
+    if (!title.trim()) {
+      alert('제목을 입력해주세요.');
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append('image', file);
@@ -87,13 +92,14 @@ function Upload(props) {
 
       const { postNo, imageNo, imagePath } = res.data;
 
-      // 👉 PinEditor로 이동
+      // 👉 PinEditor로 이동 (🔥 title 반드시 넘김)
       navigate('/upload/pineditor', {
         state: {
           postNo,
           imageNo,
           imagePath,
-          issues: selectedIssues, // 다음 페이지에서도 사용 가능
+          issues: selectedIssues,
+          title, // ✅ 이게 빠져 있었음
         },
       });
 
@@ -117,7 +123,7 @@ function Upload(props) {
         {/* 폼 영역 */}
         <form className="upload_form col-6">
 
-          {/* 이미지 업로드 안내 영역 (드래그 앤 드롭존 ) */}
+          {/* 이미지 업로드 안내 영역 */}
           <div className="upload_dropzone" role='button' tabIndex={0}>
             <div className="upload_dropzoneInner">
               <div className="upload_icon" aria-hidden="true">
@@ -134,12 +140,11 @@ function Upload(props) {
               </p>
             </div>
 
-            {/* 실제 파일 인풋영역 (디자인은 css로 숨김) */}
             <input 
               type="file" 
               className="upload_file" 
               accept='.png,.jpg,.jpeg,.pdf' 
-              onChange={(e) => setFile(e.target.files[0])} //린
+              onChange={(e) => setFile(e.target.files[0])}
               required 
             />
           </div>
@@ -152,8 +157,8 @@ function Upload(props) {
               className="upload_input" 
               id="title" 
               placeholder='디자인에 명확한 제목을 입력하세요'
-              value={title} //린
-              onChange={(e) => setTitle(e.target.value)} //린 
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               required 
             />
           </div>
@@ -166,8 +171,8 @@ function Upload(props) {
               id='desc' 
               rows={4} 
               placeholder='어떤 문제를 해결하려 하나요? 어떤 피드백을 원하시나요?' 
-              value={desc} //린
-              onChange={(e) => setDesc(e.target.value)} //린
+              value={desc}
+              onChange={(e) => setDesc(e.target.value)}
               required 
             />
           </div>
@@ -186,7 +191,6 @@ function Upload(props) {
             </p>
 
             <div className="upload_issueBox">
-              {/* 🔹 DB 기반 카테고리 출력 */}
               {Object.entries(categories).map(([groupName, items]) => (
                 <div className="upload_issueGroup" key={groupName}>
                   <h4 className="upload_groupTitle">{groupName}</h4>
@@ -210,12 +214,11 @@ function Upload(props) {
             </div>
           </div>
 
-          {/* 하단 안내 박스  */}
+          {/* 하단 안내 박스 */}
           <div className="upload_note">
             <h4 className="upload_noteTitle">다음 단계</h4>
             <p className="upload_noteText">
-              다음 화면에서 디자인에 핀을 추가하여 피드백이 필요한 부분을 명확이 표시할 수 있습니다. <br />
-              핀은 변경 후 수정할 수 없으므로 신중하게 배치하세요
+              다음 화면에서 디자인에 핀을 추가하여 피드백이 필요한 부분을 명확이 표시할 수 있습니다.
             </p>
           </div>
 
