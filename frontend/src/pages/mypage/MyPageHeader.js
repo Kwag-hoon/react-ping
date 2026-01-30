@@ -1,51 +1,74 @@
-// components/pages/mypage/MyPageHeader.js
-import React from 'react';
-import IconEmail from '../../assets/icon-mail.svg'; 
-import IconEdit2 from '../../assets/icon-edit-2.svg'; 
-
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import IconEmail from '../../assets/icon-mail.svg';
+import IconEdit2 from '../../assets/icon-edit-2.svg';
 
 const MyPageHeader = () => {
-  const handleLogout = () => {
-    // 나중에 실제 로그아웃 로직 연결
-    alert('로그아웃');
-  };
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const res = await axios.get("http://localhost:9070/users/mypage", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        // ✅ 전체 데이터 그대로 저장
+        setProfile(res.data);
+
+      } catch (err) {
+        console.error("프로필 불러오기 실패:", err);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  if (!profile) return <div className="mypage-header">불러오는 중...</div>;
+
   return (
     <section className="mypage-header">
-      {/* 왼쪽 프로필 영역 */}
       <div className="profile-left">
         <div className="avatar">
           <img
-            src="https://i.pravatar.cc/150?img=32"
+            src={
+              profile.user_image
+                ? `http://localhost:9070${profile.user_image}`
+                : "https://i.pravatar.cc/150?img=32"
+            }
             alt="profile"
           />
         </div>
       </div>
 
-      {/* 가운데 정보 영역 */}
       <div className="profile-right">
         <div className="name-row">
-          <h2>SENA</h2>
-          <span className="badge">PRO</span>
+          <h2>{profile.user_nickname}</h2>
+          <span className="badge">{profile.user_grade}</span>
         </div>
 
-        <p className="job">UX/UI DESIGNER</p>
+        <p className="job">{profile.user_intro || "아직 소개가 없어요"}</p>
 
         <div className="info-row">
           <div className="info-item">
-            <span className="icon"><img src={IconEmail} alt="이메일" /></span>
-            <span>abc123@google.com</span>
+            <span className="icon">
+              <img src={IconEmail} alt="이메일" />
+            </span>
+            <span>{profile.user_id}</span>
           </div>
 
           <div className="info-item">
-            <span className="icon"><img src={IconEdit2} alt="가이드" /></span>
-            <span>2026.02.20</span>
+            <span className="icon">
+              <img src={IconEdit2} alt="가입일" />
+            </span>
+            <span>{profile.create_datetime?.slice(0, 10)}</span>
           </div>
         </div>
       </div>
 
-      {/* 오른쪽 로그아웃 영역 */}
-      <div className="profile-action">
-      </div>
+      <div className="profile-action"></div>
     </section>
   );
 };

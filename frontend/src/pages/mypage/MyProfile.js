@@ -7,10 +7,12 @@ import Select from '../auth/Select';
 
 function MyProfile() {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   // ======================
   // form state
   // ======================
+
   const [form, setForm] = useState({
     user_id: "",
     user_nickname: "",
@@ -45,10 +47,11 @@ function MyProfile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:9070/users/me",
-          { withCredentials: true }
-        );
+        const token = localStorage.getItem("token"); // ✅ 여기로 이동
+
+        const res = await axios.get("http://localhost:9070/users/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         setForm(prev => ({
           ...prev,
@@ -58,11 +61,15 @@ function MyProfile() {
           user_grade: res.data.user_grade,
         }));
 
-        setOriginForm(res.data);
-        setLoading(false);
+        setOriginForm({
+          user_nickname: res.data.user_nickname,
+          user_intro: res.data.user_intro || "",
+          user_grade: res.data.user_grade,
+        });
       } catch (err) {
         console.error(err);
         setError("프로필 정보를 불러오지 못했습니다.");
+      } finally {
         setLoading(false);
       }
     };
@@ -88,7 +95,11 @@ function MyProfile() {
       user_grade: gradeMap[value] || "GENERAL",
     }));
   };
-
+  const labelByGrade = {
+    GENERAL: "0~3년",
+    BASIC: "3~7년",
+    PRO: "7년 이상",
+  };
   // ======================
   // 변경 여부 체크
   // ======================
@@ -144,11 +155,9 @@ function MyProfile() {
         payload.new_pw = form.new_pw;
       }
 
-      await axios.put(
-        "http://localhost:9070/users/profile",
-        payload,
-        { withCredentials: true }
-      );
+      await axios.put("http://localhost:9070/users/profile", payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       alert("프로필이 수정되었습니다.");
       navigate("/mypage");
@@ -168,7 +177,28 @@ function MyProfile() {
   const handleCancel = () => {
     navigate(-1);
   };
+  const handleWithdraw = async () => {
+    const ok = window.confirm("정말 회원탈퇴 하시겠어요? 이 작업은 되돌릴 수 없어요.");
+    if (!ok) return;
 
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.delete("http://localhost:9070/users/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      // 로그인 정보 정리
+      localStorage.removeItem("token");
+      // setUser(null) 같은 전역 유저 상태가 있다면 여기서 같이 초기화
+
+      alert("회원탈퇴가 완료되었습니다.");
+      navigate("/"); // 또는 "/login"
+    } catch (err) {
+      console.error(err);
+      alert("회원탈퇴 실패: 토큰 만료/서버 오류일 수 있어요.");
+    }
+  };
   if (loading) return <p>로딩중...</p>;
 
   // ======================
@@ -218,7 +248,7 @@ function MyProfile() {
               <Select
                 placeholder="경력을 선택하세요"
                 options={["0~3년", "3~7년", "7년 이상"]}
-                defaultValue={form.user_grade}
+                defaultValue={labelByGrade[form.user_grade]}
                 onChange={handleGradeSelect}
               />
             </div>
@@ -274,8 +304,8 @@ function MyProfile() {
           <div className="danger-zone">
             <h4>회원 탈퇴</h4>
             <p>탈퇴 시 모든 정보는 삭제되며 복구할 수 없습니다.</p>
-            <button className="btn-danger">
-              회원 탈퇴
+            <button type="button" className="btn-danger" onClick={handleWithdraw}>
+              회원탈퇴
             </button>
           </div>
         </div>

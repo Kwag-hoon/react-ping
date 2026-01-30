@@ -212,10 +212,12 @@
     .sticky-inner {
       position: sticky;
       top: 70px;
-.inner-top{
-  display: flex;
-  justify-content: space-between;
-}
+
+      .inner-top {
+        display: flex;
+        justify-content: space-between;
+      }
+
       .pin-label {
         display: inline-flex;
         align-items: center;
@@ -424,14 +426,14 @@
     }
 
     .detail-box_left {
-      margin: 70px 0px;
-      padding: 50px 0px;
+      margin: 20px 0px;
+      padding: 0px 0px;
       border: none;
       grid-column: 1 / -1;
 
       .back_btn {
         @include btn-shadow;
-        position: absolute;
+        //position: absolute;
         left: 10px;
         display: inline-flex;
         align-items: center;
@@ -495,6 +497,11 @@
 
     .mobile-comment-btn {
       display: block;
+      @include btn('md'
+      );
+      @include sns-shadow;
+      background-color: $primary_pink !important;
+      width: 100%;
     }
 
     .detail-box_right.hidden {
@@ -520,9 +527,11 @@
       padding: 0px 0px;
       border: none;
       grid-column: 1 / -1;
-.left-inner{
-      padding: 0px;
-}
+
+      .left-inner {
+        padding: 0px;
+      }
+
       .back_btn {
         @include btn-shadow;
         //position: absolute;
