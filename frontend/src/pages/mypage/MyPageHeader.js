@@ -38,7 +38,7 @@ const MyPageHeader = () => {
                 ? `http://localhost:9070${profile.user_image}`
                 : "https://i.pravatar.cc/150?img=32"
             }
-            alt="profile"
+            alt="프로필"
           />
         </div>
       </div>

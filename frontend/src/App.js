@@ -36,7 +36,7 @@ import MyAlarm from './pages/mypage/MyAlarm';
 // import AdminComments from './pages/admin/pages/AdminComments';
 // import AdminUsers from './pages/admin/pages/AdminUsers';
 // import AdminIssueTypes from './pages/admin/pages/AdminIssueTypes';
-import HeaderUser from "./components/layout/header/HeaderUser";
+//import HeaderUser from "./components/layout/header/HeaderUser";
 import Header from "./components/layout/header/Header";
 
 
