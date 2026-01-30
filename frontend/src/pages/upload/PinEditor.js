@@ -16,7 +16,7 @@ function PinEditor() {
   const navigate = useNavigate();
   //린
   const location = useLocation();
-  const { postNo, imageNo, imagePath } = location.state || {};
+  const { postNo, imageNo, imagePath , issues=[] } = location.state || {};
 
   //린
   useEffect(() => {
@@ -73,6 +73,7 @@ function PinEditor() {
       x: activePin.x,
       y: activePin.y,
       question: activePin.question,
+      issue: activePin.issue, //문자열
     };
 
     try {
@@ -136,7 +137,7 @@ function PinEditor() {
       x,
       y,
       question: '',
-      issues: [],
+      issues: '',
     };
 
     setPins(prev => [...prev, newPin]);
@@ -263,7 +264,7 @@ function PinEditor() {
                         className="btn_save"
                         disabled={!activePin || !activePin.question.trim()}
                         onClick={savePinsToServer}>
-                        임시 저장
+                        핀 저장
                       </button>
                       <button
                         type="button"
@@ -320,11 +321,30 @@ function PinEditor() {
                       <p className="form_desc">
                         이 핀이 어떤 문제와 관련되어 있나요?
                       </p>
-
+                        
+                        {/* upload에서 넘겨온 카테고리 출력 */}
                       <div className="tag_box">
-                        <button className="tag active">
-                          일관성
+                        {issues.map(issue =>(
+                        <button
+                        key={issue}
+                        type='button'
+                        className={`tag ${
+                          activePin.issue === issue ? 'active':''
+                        }`}
+                        onClick={()=>{
+                          setPins(prev=>
+                            prev.map(pin=>
+                              pin.id ===activePin.id
+                              ? {...pin, issue}
+                              :pin
+                            )
+                          );
+                        }}
+                        >
+                          {issue}
                         </button>
+
+                        ))}
                       </div>
                     </div>
                   </>
@@ -346,7 +366,7 @@ function PinEditor() {
                   onClick={handleComplete} //린
                   disabled={pins.length === 0} //린
                 >
-                  핀 업로드
+                  핀 게시물 업로드
                 </button>
               </div>
             </aside>
