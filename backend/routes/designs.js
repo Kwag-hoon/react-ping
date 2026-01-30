@@ -7,9 +7,15 @@ router.get('/:postNo', (req, res) => {
 
   // 1. 게시물
   const postSql = `
-    SELECT post_no, post_title, post_content
-    FROM pin_posts
-    WHERE post_no = ?
+    SELECT 
+  p.post_no, 
+  p.post_title, 
+  p.post_content,
+  u.user_nickname,
+  u.user_image
+FROM pin_posts p
+JOIN pin_users u ON u.user_no = p.user_no
+WHERE p.post_no = ?
   `;
 
   db.query(postSql, [postNo], (err, postRows) => {

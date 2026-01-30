@@ -117,6 +117,17 @@ function Detail() {
           </button>
           <div className="left-inner">
             {/* left-inner 추가 서현 */}
+            <span className="user-badge">
+              <img
+                src={
+                  post?.user_image
+                    ? `http://localhost:9070${post.user_image}`
+                    : `${process.env.PUBLIC_URL}/images/default.png`
+                }
+                alt="프로필 이미지"
+              />
+              <strong>{post?.user_nickname || "익명"}</strong>
+            </span>
             <h2>
               {post?.post_title}
             </h2>
@@ -125,13 +136,7 @@ function Detail() {
               <p>
                 {post?.post_content}
               </p>
-              <span className="user-badge">
-                <img
-                  src={`${process.env.PUBLIC_URL}/images/detail.png`}
-                  alt="프로필 이미지"
-                />
-                <strong>김서연</strong>
-              </span>
+
             </div>
 
             <ul className="badge-btn">
