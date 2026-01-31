@@ -33,3 +33,9 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 Backend running on port ${PORT}`);
 });
+
+// 마이프로필 유저 라우터 연결
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/users", require("./routes/users"));

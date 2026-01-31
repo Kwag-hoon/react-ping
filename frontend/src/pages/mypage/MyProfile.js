@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Select from '../auth/Select';
-
+import React, { useState, useEffect, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Select from "../auth/Select";
 
 function MyProfile() {
   const navigate = useNavigate();
+
+  const API_BASE = "http://localhost:9070";
 
   // ======================
   // form state
@@ -26,6 +26,18 @@ function MyProfile() {
   const [originForm, setOriginForm] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  // ======================
+  // 인증 헤더 구성 (Bearer)
+  // ======================
+  const authConfig = useMemo(() => {
+    const token = localStorage.getItem("token");
+    return {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    };
+  }, []);
 
   // ======================
   // ENUM 매핑
@@ -34,9 +46,12 @@ function MyProfile() {
     "0~3년": "GENERAL",
     "3~7년": "BASIC",
     "7년 이상": "PRO",
-    "GENERAL": "GENERAL",
-    "BASIC": "BASIC",
-    "PRO": "PRO",
+  };
+
+  const gradeLabelMap = {
+    GENERAL: "0~3년",
+    BASIC: "3~7년",
+    PRO: "7년 이상",
   };
 
   // ======================
@@ -45,29 +60,39 @@ function MyProfile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await axios.get(
-          "http://localhost:9070/users/me",
-          { withCredentials: true }
-        );
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setError("로그인이 필요합니다. (토큰 없음)");
+          setLoading(false);
+          return;
+        }
 
-        setForm(prev => ({
+        const res = await axios.get(`${API_BASE}/users/me`, authConfig);
+
+        setForm((prev) => ({
           ...prev,
-          user_id: res.data.user_id,
-          user_nickname: res.data.user_nickname,
+          user_id: res.data.user_id || "",
+          user_nickname: res.data.user_nickname || "",
           user_intro: res.data.user_intro || "",
-          user_grade: res.data.user_grade,
+          user_grade: res.data.user_grade || "GENERAL",
         }));
 
-        setOriginForm(res.data);
+        setOriginForm({
+          user_nickname: res.data.user_nickname || "",
+          user_intro: res.data.user_intro || "",
+          user_grade: res.data.user_grade || "GENERAL",
+        });
+
         setLoading(false);
       } catch (err) {
         console.error(err);
-        setError("프로필 정보를 불러오지 못했습니다.");
+        setError(err?.response?.data?.message || "프로필 정보를 불러오지 못했습니다.");
         setLoading(false);
       }
     };
 
     fetchProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ======================
@@ -75,17 +100,17 @@ function MyProfile() {
   // ======================
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
       [name]: value,
     }));
     setError("");
   };
 
-  const handleGradeSelect = (value) => {
-    setForm(prev => ({
+  const handleGradeSelect = (label) => {
+    setForm((prev) => ({
       ...prev,
-      user_grade: gradeMap[value] || "GENERAL",
+      user_grade: gradeMap[label] || "GENERAL",
     }));
   };
 
@@ -97,13 +122,10 @@ function MyProfile() {
 
     const baseChanged =
       form.user_nickname !== originForm.user_nickname ||
-      form.user_intro !== (originForm.user_intro || "") ||
+      form.user_intro !== originForm.user_intro ||
       form.user_grade !== originForm.user_grade;
 
-    const pwChanged =
-      form.current_pw ||
-      form.new_pw ||
-      form.new_pw_confirm;
+    const pwChanged = !!(form.current_pw || form.new_pw || form.new_pw_confirm);
 
     return baseChanged || pwChanged;
   };
@@ -113,6 +135,7 @@ function MyProfile() {
   // ======================
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (saving) return;
 
     if (!form.user_nickname.trim()) {
       return setError("닉네임을 입력해 주세요.");
@@ -120,18 +143,14 @@ function MyProfile() {
 
     // 비밀번호 변경 검증 (선택)
     if (form.current_pw || form.new_pw || form.new_pw_confirm) {
-      if (!form.current_pw) {
-        return setError("현재 비밀번호를 입력해 주세요.");
-      }
-      if (!form.new_pw) {
-        return setError("새 비밀번호를 입력해 주세요.");
-      }
-      if (form.new_pw !== form.new_pw_confirm) {
-        return setError("새 비밀번호 확인이 일치하지 않습니다.");
-      }
+      if (!form.current_pw) return setError("현재 비밀번호를 입력해 주세요.");
+      if (!form.new_pw) return setError("새 비밀번호를 입력해 주세요.");
+      if (form.new_pw !== form.new_pw_confirm) return setError("새 비밀번호 확인이 일치하지 않습니다.");
     }
 
     try {
+      setSaving(true);
+
       const payload = {
         user_nickname: form.user_nickname.trim(),
         user_intro: form.user_intro,
@@ -144,21 +163,31 @@ function MyProfile() {
         payload.new_pw = form.new_pw;
       }
 
-      await axios.put(
-        "http://localhost:9070/users/profile",
-        payload,
-        { withCredentials: true }
-      );
+      await axios.put(`${API_BASE}/users/profile`, payload, authConfig);
 
       alert("프로필이 수정되었습니다.");
-      navigate("/mypage");
 
+      // 비번 입력칸 비우기
+      setForm((prev) => ({
+        ...prev,
+        current_pw: "",
+        new_pw: "",
+        new_pw_confirm: "",
+      }));
+
+      // origin 갱신
+      setOriginForm({
+        user_nickname: payload.user_nickname,
+        user_intro: payload.user_intro || "",
+        user_grade: payload.user_grade || "GENERAL",
+      });
+
+      navigate("/mypage");
     } catch (err) {
       console.error(err);
-      setError(
-        err?.response?.data?.message ||
-        "프로필 수정에 실패했습니다."
-      );
+      setError(err?.response?.data?.message || "프로필 수정에 실패했습니다.");
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -169,11 +198,37 @@ function MyProfile() {
     navigate(-1);
   };
 
+  // ======================
+  // 회원 탈퇴
+  // ======================
+  const handleWithdraw = async () => {
+    if (deleting) return;
+
+    const ok = window.confirm(
+      "정말 회원 탈퇴할까요?\n탈퇴 시 모든 정보는 삭제되며 복구할 수 없습니다."
+    );
+    if (!ok) return;
+
+    try {
+      setDeleting(true);
+
+      await axios.delete(`${API_BASE}/users/me`, authConfig);
+
+      // 토큰 제거
+      localStorage.removeItem("token");
+
+      alert("회원 탈퇴가 완료되었습니다.");
+      navigate("/"); // 또는 /login
+    } catch (err) {
+      console.error(err);
+      setError(err?.response?.data?.message || "회원 탈퇴에 실패했습니다.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   if (loading) return <p>로딩중...</p>;
 
-  // ======================
-  // render
-  // ======================
   return (
     <section className="mypage_section container auth">
       <div className="grid">
@@ -183,7 +238,6 @@ function MyProfile() {
           {error && <p className="form-error">{error}</p>}
 
           <form onSubmit={handleSubmit} className="join_form">
-
             {/* 아이디 */}
             <div className="form-group">
               <label>아이디</label>
@@ -218,7 +272,7 @@ function MyProfile() {
               <Select
                 placeholder="경력을 선택하세요"
                 options={["0~3년", "3~7년", "7년 이상"]}
-                defaultValue={form.user_grade}
+                defaultValue={gradeLabelMap[form.user_grade] || "0~3년"}
                 onChange={handleGradeSelect}
               />
             </div>
@@ -263,19 +317,19 @@ function MyProfile() {
               <button type="button" className="btn-cancel" onClick={handleCancel}>
                 취소
               </button>
-              <button type="submit" disabled={!isChanged()}>
-                수정하기
+
+              <button type="submit" disabled={!isChanged() || saving}>
+                {saving ? "저장중..." : "수정하기"}
               </button>
             </div>
-
           </form>
 
           {/* 회원 탈퇴 */}
           <div className="danger-zone">
             <h4>회원 탈퇴</h4>
             <p>탈퇴 시 모든 정보는 삭제되며 복구할 수 없습니다.</p>
-            <button className="btn-danger">
-              회원 탈퇴
+            <button className="btn-danger" onClick={handleWithdraw} disabled={deleting}>
+              {deleting ? "탈퇴 처리중..." : "회원 탈퇴"}
             </button>
           </div>
         </div>

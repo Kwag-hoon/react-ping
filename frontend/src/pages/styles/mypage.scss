@@ -573,11 +573,11 @@ body {
 /* ===== My Profile ===== */
 
 
-.mypage_section {
+.mypage_section.container.auth {
+  .grid{
+    padding:0;
+  }
   .join_form {
-
-
-
     /* 버튼 그룹 (취소 / 수정) */
     .btn-group {
       display: flex;
@@ -660,6 +660,7 @@ body {
     }
 
     .btn-danger {
+      cursor: pointer;
       width: 100%;
       @include btn(md, "danger");
       border: none;

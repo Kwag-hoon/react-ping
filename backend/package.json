@@ -25,8 +25,7 @@
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.0.2",
     "my": "^0.3.3",
-    "mysql": "^2.18.1",
-    "sql": "^0.78.0"
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"
