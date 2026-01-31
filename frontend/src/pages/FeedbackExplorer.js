@@ -6,15 +6,10 @@ const PAGE_SIZE = 4;
 
 function FeedbackExplorer() {
   const [categories, setCategories] = useState({});
+  const [feedbacks, setFeedbacks] = useState([]); // 🔥 핵심
   const [activeMain, setActiveMain] = useState('전체');
   const [activeSub, setActiveSub] = useState('전체');
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
-
-  /**
-   * 🔹 현재 단계: 게시물 없음
-   * (post / upload 완성 전)
-   */
-  const feedbacks = [];
 
   /* ===============================
      카테고리 DB 로딩
@@ -27,6 +22,16 @@ function FeedbackExplorer() {
   }, []);
 
   /* ===============================
+     게시물 DB 로딩
+  =============================== */
+  useEffect(() => {
+    fetch('http://localhost:9070/api/posts')
+      .then(res => res.json())
+      .then(data => setFeedbacks(data))
+      .catch(err => console.error('게시물 로딩 실패:', err));
+  }, []);
+
+  /* ===============================
      메인 카테고리 클릭
   =============================== */
   const handleMainClick = (main) => {
@@ -35,7 +40,7 @@ function FeedbackExplorer() {
   };
 
   /* ===============================
-     피드백 필터링 (항상 빈 결과)
+     피드백 필터링
   =============================== */
   const filteredFeedbacks = useMemo(() => {
     return feedbacks.filter((fb) => {
@@ -43,12 +48,15 @@ function FeedbackExplorer() {
       const subMatch = activeSub === '전체' || fb.subType === activeSub;
       return mainMatch && subMatch;
     });
-  }, [activeMain, activeSub]);
+  }, [feedbacks, activeMain, activeSub]);
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
   }, [activeMain, activeSub]);
 
+  /* ===============================
+     더보기 처리
+  =============================== */
   const visibleFeedbacks = useMemo(() => {
     return filteredFeedbacks.slice(0, visibleCount);
   }, [filteredFeedbacks, visibleCount]);
@@ -58,6 +66,9 @@ function FeedbackExplorer() {
   return (
     <section className="main_feedback-explorer container">
       <div className="grid">
+        {/* ===============================
+            좌측 카테고리 탐색
+        =============================== */}
         <aside className="explorer_aside col-4">
           <h2>문제 유형별 탐색</h2>
           <p>카테고리 별 피드백 아카이브를 확인해 보세요.</p>
@@ -117,11 +128,15 @@ function FeedbackExplorer() {
           </ul>
         </aside>
 
+        {/* ===============================
+            우측 카드 리스트
+        =============================== */}
         <div className="feedbackcons col-8">
           <div className="cards">
             {visibleFeedbacks.length > 0 ? (
               visibleFeedbacks.map((fb) => (
-                <FeedbackCard key={fb.id} data={fb} />
+                <FeedbackCard key={`${fb.id}-${fb.subType}-${fb.mainType}`} data={fb} />
+
               ))
             ) : (
               <p className="empty">데이터가 없습니다.</p>

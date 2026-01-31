@@ -1,24 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import DesignItem from "../DesignItem";
+// import testItems from '../../test/archive.json';
 import '../styles/archive.scss'
 import { Link } from 'react-router-dom';
 
 function Archive() {
-  /**
-   * 🔹 하위 카테고리 (DB)
-   */
+
   const [categories, setCategories] = useState([]);
   const [active, setActive] = useState('전체');
-
-  /**
-   * 🔹 현재 단계: 아카이브 게시물 없음
-   * (upload / post 완성 후 API 연결 예정)
-   */
-  const items = [];
+  const [items, setItems] = useState([]);
 
 
-    //  카테고리 DB 로딩 
-
+  //  카테고리 DB 로딩 (UI 용)
   useEffect(() => {
     fetch('http://localhost:9070/api/categories')
       .then(res => res.json())
@@ -30,11 +23,31 @@ function Archive() {
       .catch(err => console.error('카테고리 로딩 실패:', err));
   }, []);
 
+  // 게시물 로딩 
+  useEffect(() => {
+    fetch('http://localhost:9070/api/posts')
+      .then(res => res.json())
+      .then(data => {
+        setItems(Array.isArray(data) ? data : []);
+      })
+      .catch(err => console.error('아카이브 로딩 실패:', err));
+  }, []);
 
-    //  필터 적용 (현재는 항상 빈 결과)
-  const filteredItems = useMemo(() => {
-    if (active === '전체') return items;
-    return items.filter(item => item.category === active);
+  //  필터 적용
+  const displayItems = useMemo(() => {
+    // 1) 먼저 필터 적용
+    const filtered =
+      active === '전체'
+        ? items
+        : items.filter(item => item.subType === active);
+
+    // 2) 그 다음 필터된 결과에서만 중복 제거
+    const map = new Map();
+    filtered.forEach(item => {
+      if (!map.has(item.id)) map.set(item.id, item);
+    });
+
+    return Array.from(map.values());
   }, [items, active]);
 
   return (
@@ -59,15 +72,21 @@ function Archive() {
               </button>
             </li>
 
-            {categories.map((tab) => (
+            {/* {categories.map((tab) => (
               <li key={tab}>
                 <button
                   type='button'
                   aria-pressed={active === tab}
                   className={active === tab ? 'active' : ''}
                   onClick={() => setActive(tab)}
+                >*/}
+            {categories.map(name => (
+              <li key={name}>
+                <button
+                  className={active === name ? 'active' : ''}
+                  onClick={() => setActive(name)}
                 >
-                  {tab}
+                  {name}
                 </button>
               </li>
             ))}
@@ -75,17 +94,40 @@ function Archive() {
         </div>
 
         <div className="main_recent-archives col-full">
-          <div className="gallery-grid">
+          {/* <div className="gallery-grid">
             {filteredItems.length > 0 ? (
               filteredItems.map((item) => (
                 <Link to={`/detail/${item.id}`} key={item.id}>
-                  <DesignItem item={item} />
+                  <DesignItem item={{
+                    title: item.post_title,
+                    image: item.image_path,
+                    date: item.create_datetime
+                  }} />
+                </Link>
+              ))
+            ) : (
+              <p className="empty">아카이브가 없습니다.</p>
+            )}
+          </div> */}
+          <div className="gallery-grid">
+            {displayItems.length > 0 ? (
+              displayItems.map(item => (
+                <Link to={`/detail/${item.id}`} key={item.id}>
+                  <DesignItem
+                    item={{
+                      title: item.title,
+                      image: `http://localhost:9070${item.imagePath}`,
+                      date: item.createdAt,
+                      pins: item.pins
+                    }}
+                  />
                 </Link>
               ))
             ) : (
               <p className="empty">아카이브가 없습니다.</p>
             )}
           </div>
+
         </div>
       </section>
     </main>

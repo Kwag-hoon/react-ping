@@ -8,6 +8,9 @@ const uploadRoutes = require('./routes/upload'); //게시물 + 이미지
 const pinRoutes = require('./routes/pins'); // 핀 저장
 const designRoutes = require('./routes/designs'); //detail 페이지
 const categoryRoutes = require('./routes/category') //category 저장
+const mypageRouter = require("./routes/mypage");
+const postRoutes = require('./routes/posts'); //게시물 
+
 const app = express();
 const PORT = 9070;  // 통신 포트 설정
 
@@ -22,8 +25,9 @@ app.use('/users', authRoutes); //회원관련
 app.use('/api/posts', uploadRoutes); //업로드 관련
 app.use('/api/pins', pinRoutes); //핀에디터 관련
 app.use('/api/designs', designRoutes); //디테일 페이지 관련
-app.use('/api' , categoryRoutes);
-
+app.use('/api', categoryRoutes);
+app.use("/users", mypageRouter);
+app.use(postRoutes);
 // 서버 상태 확인용
 app.get('/', (req, res) => {
   res.send('Ping backend running');

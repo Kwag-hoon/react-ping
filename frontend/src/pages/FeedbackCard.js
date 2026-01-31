@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 const FeedbackCard = ({ data }) => {
   return (
-    <Link to={`/feedback/${data.id}`} className="feedback_card_link">
+    <Link to={`/detail/${data.id}`} className="feedback_card_link">
       <article className="feedback_card">
         <span className="badge">{data.mainType}</span>
 

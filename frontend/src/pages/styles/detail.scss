@@ -2,6 +2,7 @@
 @use '../../styles/base.scss' as *;
 
 
+
 //detail 카드 형식 
 .card-box {
   border: 1px solid $main_gray_400;
@@ -62,7 +63,7 @@
 }
 
 .close_btn {
-  position: absolute;
+  //position: absolute;
   top: 8px;
   right: 12px;
   background: none;
@@ -87,7 +88,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #2563eb;
+  background: $primary_pink;
   color: #fff;
   font-size: 13px;
   font-weight: 600;
@@ -108,18 +109,22 @@
     margin: 70px 0px;
     border: 1px solid $main_gray_300;
     border-radius: 16px;
-    padding: 50px;
     display: flex;
     flex-direction: column;
+    padding: 20px;
+
+    .left-inner {
+      padding: 20px 30px;
+    }
 
 
     .back_btn {
       @include btn("sm", "custome");
       @include sns-shadow;
-      border: none;
+      border: 1px solid $main_gray_400;
       transition: 0.3s;
-      color: $main-white;
-      background-color: $primary_blue;
+      color: $main_gray_600;
+      background-color: $main-white;
       width: 120px;
 
       img {
@@ -136,18 +141,11 @@
     }
 
     p {
-      @include typo("headingMd", $regular);
+      @include typo("headingSm", $regular);
       color: $main_gray_600;
       padding-bottom: 20px;
     }
-
-    .desc-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-
-      .user-badge {
+.user-badge {
         display: inline-flex;
         align-items: center;
         gap: 8px;
@@ -163,6 +161,13 @@
           display: block;
         }
       }
+    .desc-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+
+      
     }
 
     .badge-btn {
@@ -174,7 +179,7 @@
         @include sns-shadow;
         border: none;
         transition: 0.3s;
-        background: $bg-b;
+        background: $bg-p;
       }
     }
 
@@ -208,6 +213,11 @@
       position: sticky;
       top: 70px;
 
+      .inner-top {
+        display: flex;
+        justify-content: space-between;
+      }
+
       .pin-label {
         display: inline-flex;
         align-items: center;
@@ -219,7 +229,7 @@
           width: 32px;
           height: 32px;
           border-radius: 50%;
-          background: #2563eb;
+          background: $primary_pink;
           color: #fff;
           font-size: 13px;
           font-weight: 600;
@@ -279,9 +289,12 @@
           @include btn($type: "fixed",
             $shadow: true,
           );
+          @include sns-shadow;
+          background-color: $primary_pink;
           width: 100%;
           height: 60px;
-          border: 1px solid $main-white;
+          border-radius: 12px;
+          //border: 1px solid $main-white;
 
           @include typo("bodytextXl", $bold);
         }
@@ -328,9 +341,12 @@
           @include btn($type: "fixed",
             $shadow: true,
           );
+          @include sns-shadow;
+          background-color: $primary_pink;
           width: 100%;
           height: 60px;
-          border: 1px solid $main-white;
+          //border: 1px solid $main-white;
+          border-radius: 12px;
 
           @include typo("bodytextXl", $bold);
         }
@@ -410,14 +426,14 @@
     }
 
     .detail-box_left {
-      margin: 70px 0px;
-      padding: 50px 0px;
+      margin: 20px 0px;
+      padding: 0px 0px;
       border: none;
       grid-column: 1 / -1;
 
       .back_btn {
         @include btn-shadow;
-        position: absolute;
+        //position: absolute;
         left: 10px;
         display: inline-flex;
         align-items: center;
@@ -481,6 +497,11 @@
 
     .mobile-comment-btn {
       display: block;
+      @include btn('md'
+      );
+      @include sns-shadow;
+      background-color: $primary_pink !important;
+      width: 100%;
     }
 
     .detail-box_right.hidden {
@@ -502,14 +523,18 @@
     }
 
     .detail-box_left {
-      margin: 70px 0px;
-      padding: 50px 0px;
+      margin: 20px 0px;
+      padding: 0px 0px;
       border: none;
       grid-column: 1 / -1;
 
+      .left-inner {
+        padding: 0px;
+      }
+
       .back_btn {
         @include btn-shadow;
-        position: absolute;
+        //position: absolute;
         left: 10px;
         display: inline-flex;
         align-items: center;
@@ -575,6 +600,11 @@
 
     .mobile-comment-btn {
       display: block;
+      @include btn('sm'
+      );
+      @include sns-shadow;
+      background-color: $primary_pink !important;
+      width: 100%;
     }
 
     .detail-box_right.hidden {

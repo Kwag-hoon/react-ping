@@ -5,12 +5,14 @@ import Select from "../auth/Select";
 
 function MyProfile() {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const API_BASE = "http://localhost:9070";
 
   // ======================
   // form state
   // ======================
+
   const [form, setForm] = useState({
     user_id: "",
     user_nickname: "",
@@ -60,12 +62,20 @@ function MyProfile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+<<<<<<< HEAD
         const token = localStorage.getItem("token");
         if (!token) {
           setError("로그인이 필요합니다. (토큰 없음)");
           setLoading(false);
           return;
         }
+=======
+        const token = localStorage.getItem("token"); // ✅ 여기로 이동
+
+        const res = await axios.get("http://localhost:9070/users/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+>>>>>>> a1d89022113098c77d6f4ae98895d3ffe57f0f6d
 
         const res = await axios.get(`${API_BASE}/users/me`, authConfig);
 
@@ -78,6 +88,7 @@ function MyProfile() {
         }));
 
         setOriginForm({
+<<<<<<< HEAD
           user_nickname: res.data.user_nickname || "",
           user_intro: res.data.user_intro || "",
           user_grade: res.data.user_grade || "GENERAL",
@@ -87,6 +98,16 @@ function MyProfile() {
       } catch (err) {
         console.error(err);
         setError(err?.response?.data?.message || "프로필 정보를 불러오지 못했습니다.");
+=======
+          user_nickname: res.data.user_nickname,
+          user_intro: res.data.user_intro || "",
+          user_grade: res.data.user_grade,
+        });
+      } catch (err) {
+        console.error(err);
+        setError("프로필 정보를 불러오지 못했습니다.");
+      } finally {
+>>>>>>> a1d89022113098c77d6f4ae98895d3ffe57f0f6d
         setLoading(false);
       }
     };
@@ -113,7 +134,11 @@ function MyProfile() {
       user_grade: gradeMap[label] || "GENERAL",
     }));
   };
-
+  const labelByGrade = {
+    GENERAL: "0~3년",
+    BASIC: "3~7년",
+    PRO: "7년 이상",
+  };
   // ======================
   // 변경 여부 체크
   // ======================
@@ -163,7 +188,13 @@ function MyProfile() {
         payload.new_pw = form.new_pw;
       }
 
+<<<<<<< HEAD
       await axios.put(`${API_BASE}/users/profile`, payload, authConfig);
+=======
+      await axios.put("http://localhost:9070/users/profile", payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+>>>>>>> a1d89022113098c77d6f4ae98895d3ffe57f0f6d
 
       alert("프로필이 수정되었습니다.");
 
@@ -197,7 +228,11 @@ function MyProfile() {
   const handleCancel = () => {
     navigate(-1);
   };
+  const handleWithdraw = async () => {
+    const ok = window.confirm("정말 회원탈퇴 하시겠어요? 이 작업은 되돌릴 수 없어요.");
+    if (!ok) return;
 
+<<<<<<< HEAD
   // ======================
   // 회원 탈퇴
   // ======================
@@ -227,6 +262,26 @@ function MyProfile() {
     }
   };
 
+=======
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.delete("http://localhost:9070/users/me", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      // 로그인 정보 정리
+      localStorage.removeItem("token");
+      // setUser(null) 같은 전역 유저 상태가 있다면 여기서 같이 초기화
+
+      alert("회원탈퇴가 완료되었습니다.");
+      navigate("/"); // 또는 "/login"
+    } catch (err) {
+      console.error(err);
+      alert("회원탈퇴 실패: 토큰 만료/서버 오류일 수 있어요.");
+    }
+  };
+>>>>>>> a1d89022113098c77d6f4ae98895d3ffe57f0f6d
   if (loading) return <p>로딩중...</p>;
 
   return (
@@ -272,7 +327,11 @@ function MyProfile() {
               <Select
                 placeholder="경력을 선택하세요"
                 options={["0~3년", "3~7년", "7년 이상"]}
+<<<<<<< HEAD
                 defaultValue={gradeLabelMap[form.user_grade] || "0~3년"}
+=======
+                defaultValue={labelByGrade[form.user_grade]}
+>>>>>>> a1d89022113098c77d6f4ae98895d3ffe57f0f6d
                 onChange={handleGradeSelect}
               />
             </div>
@@ -328,8 +387,13 @@ function MyProfile() {
           <div className="danger-zone">
             <h4>회원 탈퇴</h4>
             <p>탈퇴 시 모든 정보는 삭제되며 복구할 수 없습니다.</p>
+<<<<<<< HEAD
             <button className="btn-danger" onClick={handleWithdraw} disabled={deleting}>
               {deleting ? "탈퇴 처리중..." : "회원 탈퇴"}
+=======
+            <button type="button" className="btn-danger" onClick={handleWithdraw}>
+              회원탈퇴
+>>>>>>> a1d89022113098c77d6f4ae98895d3ffe57f0f6d
             </button>
           </div>
         </div>

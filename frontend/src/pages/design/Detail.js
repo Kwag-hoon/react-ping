@@ -115,61 +115,68 @@ function Detail() {
           <button onClick={() => navigate(-1)} className="back_btn">
             <img src={backIcon} alt='뒤로가기 아이콘' />뒤로 가기
           </button>
-
-          <h2>
-            {post?.post_title}
-          </h2>
-
-          <div className="desc-row">
-            <p>
-              {post?.post_content}
-            </p>
+          <div className="left-inner">
+            {/* left-inner 추가 서현 */}
             <span className="user-badge">
               <img
-                src={`${process.env.PUBLIC_URL}/images/detail.png`}
+                src={
+                  post?.user_image
+                    ? `http://localhost:9070${post.user_image}`
+                    : `${process.env.PUBLIC_URL}/images/default.png`
+                }
                 alt="프로필 이미지"
               />
-              <strong>김서연</strong>
+              <strong>{post?.user_nickname || "익명"}</strong>
             </span>
-          </div>
+            <h2>
+              {post?.post_title}
+            </h2>
 
-          <ul className="badge-btn">
-            <li>모바일</li>
-            <li>뱅킹</li>
-            <li>UX</li>
-          </ul>
+            <div className="desc-row">
+              <p>
+                {post?.post_content}
+              </p>
 
-          {/* PinEditor와 동일한 핀 구조 */}
-          <div className="img_box">
-            <div className="image_wrap">
-              {imageUrl && (
-                <img
-                  src={`http://localhost:9070${imageUrl}`}
-                  alt="상세페이지 이미지"
-                />
-              )}
-
-              {pins.map((pin, index) => (
-                <div
-                  key={pin.pin_no}
-                  className={`pin_marker ${selectedPin?.pin_no === pin.pin_no ? 'active' : ''}`}
-                  style={{
-                    left: `${pin.x}%`,
-                    top: `${pin.y}%`,
-                  }}
-                  onClick={() => handlePinClick(pin)}
-                >
-                  {index + 1}
-                </div>
-              ))}
             </div>
+
+            <ul className="badge-btn">
+              <li>모바일</li>
+              <li>뱅킹</li>
+              <li>UX</li>
+            </ul>
+
+            {/* PinEditor와 동일한 핀 구조 */}
+            <div className="img_box">
+              <div className="image_wrap">
+                {imageUrl && (
+                  <img
+                    src={`http://localhost:9070${imageUrl}`}
+                    alt="상세페이지 이미지"
+                  />
+                )}
+
+                {pins.map((pin, index) => (
+                  <div
+                    key={pin.pin_no}
+                    className={`pin_marker ${selectedPin?.pin_no === pin.pin_no ? 'active' : ''}`}
+                    style={{
+                      left: `${pin.x}%`,
+                      top: `${pin.y}%`,
+                    }}
+                    onClick={() => handlePinClick(pin)}
+                  >
+                    {index + 1}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+
+            {/* 모바일 모달 창 버튼 */}
+            <button className="mobile-comment-btn" onClick={() => setIsOpen(true)}>
+              질문 / 댓글 보기
+            </button>
           </div>
-
-
-          {/* 모바일 모달 창 버튼 */}
-          <button className="mobile-comment-btn" onClick={() => setIsOpen(true)}>
-            질문 / 댓글 보기
-          </button>
         </div>
 
         {/* 오른쪽 댓글창 박스 */}
@@ -253,20 +260,21 @@ function Detail() {
           <div className="detail-modal">
             <div className="detail-box_right col-4">
               <div className="sticky-inner">
-                <p className="pin-label">
-                  <span className="pin-badge">
-                    {selectedPin
-                      ? pins.findIndex(p => p.pin_no === selectedPin.pin_no) + 1
-                      : '-'}
-                  </span>
-                  Pin Question
-                </p>
-                <button className="close_btn"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <img src={CloseIcon} alt='닫기 버튼' />
-                </button>
-
+                <div className="inner-top">
+                  <p className="pin-label">
+                    <span className="pin-badge">
+                      {selectedPin
+                        ? pins.findIndex(p => p.pin_no === selectedPin.pin_no) + 1
+                        : '-'}
+                    </span>
+                    Pin Question
+                  </p>
+                  <button className="close_btn"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <img src={CloseIcon} alt='닫기 버튼' />
+                  </button>
+                </div>
                 <hr />
                 <span>{selectedPin?.question || ''}</span>
                 <hr />
