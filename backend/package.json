@@ -24,7 +24,6 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.0.2",
-    "my": "^0.3.3",
     "mysql": "^2.18.1"
   },
   "devDependencies": {

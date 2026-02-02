@@ -43,3 +43,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/users", require("./routes/users"));
+// 마이페이지 연결
+app.use("/mypage", require("./routes/mypage"));
+app.use("/designs", require("./routes/designs"));

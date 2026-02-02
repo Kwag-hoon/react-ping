@@ -163,4 +163,71 @@ router.put("/profile", requireAuth, async (req, res) => {
   }
 });
 
+// ======================
+// 마이 디자인(내가 쓴 글) 조회
+// GET /mypage/designs
+// ======================
+router.get("/designs", requireAuth, (req, res) => {
+  const { user_no } = req.user;
+  const limit = Number(req.query.limit || 20);
+  const offset = Number(req.query.offset || 0);
+
+  db.query(
+    `
+    SELECT
+      post_no,
+      user_no,
+      post_title,
+      post_content,
+      view_count,
+      like_count,
+      dislike_count,
+      create_datetime
+    FROM pin_posts
+    WHERE user_no = ?
+    ORDER BY post_no DESC
+    LIMIT ? OFFSET ?
+    `,
+    [user_no, limit, offset],
+    (err, rows) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: "마이디자인 조회 실패" });
+      }
+      return res.json({ items: rows, limit, offset });
+    }
+  );
+});
+
+
+// 상세: GET /mypage/designs/:postNo  디자인 상세페이지 불러오기
+router.get("/designs/:postNo", requireAuth, (req, res) => {
+  const { user_no } = req.user;
+  const postNo = Number(req.params.postNo);
+
+  db.query(
+    `
+    SELECT
+      post_no,
+      user_no,
+      post_title,
+      post_content,
+      view_count,
+      like_count,
+      dislike_count,
+      create_datetime
+    FROM pin_posts
+    WHERE post_no = ? AND user_no = ?
+    LIMIT 1
+    `,
+    [postNo, user_no],
+    (err, rows) => {
+      if (err) return res.status(500).json({ message: "상세 조회 실패" });
+      if (!rows.length) return res.status(404).json({ message: "게시글 없음" });
+      return res.json(rows[0]);
+    }
+  );
+});
+
+
 module.exports = router;
