@@ -1,58 +1,67 @@
-import { Link, NavLink } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import logoutImg from '../../../assets/icon-login.svg';
+import { Link, NavLink } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import Api from "../../../api/Api"; // ✅ Api 인스턴스 사용
+
+import logoutImg from "../../../assets/icon-login.svg";
 // assets
-import Logogray from '../../../assets/Logo_gray.svg';
-import SearchIcon from '../../../assets/icon-search.svg';
-import Avartar from '../../../assets/Avatar.png';
-import Alarm from '../../../assets/icon-bell.svg';
+import Logogray from "../../../assets/Logo_gray.svg";
+import SearchIcon from "../../../assets/icon-search.svg";
+import Alarm from "../../../assets/icon-bell.svg";
+
+// fallback (원하면 네 assets Avatar.png로 바꿔도 됨)
+import DefaultAvatar from "../../../assets/Avatar.png";
 
 const HeaderUser = ({ variant }) => {
   const [user, setUser] = useState(null);
-  const token = localStorage.getItem('token');
 
-  // 🔹 로그인 유지: 유저 정보 조회
+  // Api baseURL 가져오기
+  const API_BASE = Api.defaults.baseURL || "http://localhost:9070";
+
   useEffect(() => {
-    console.log('[HeaderUser] token:', token);
-
-    if (!token) {
-      console.log('[HeaderUser] 토큰 없음 → 요청 안 함');
-      return;
-    }
-
-    console.log('[HeaderUser] /users/me 요청 시작');
-
-    axios
-      .get('http://localhost:9070/users/me', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(res => {
-        console.log('[HeaderUser] /users/me 성공:', res.data);
+    const fetchMe = async () => {
+      try {
+        // ✅ 토큰은 Api 인터셉터가 자동으로 붙임
+        const res = await Api.get("/users/me");
         setUser(res.data);
-      })
-      .catch(err => {
-  console.log('[HeaderUser] /users/me 실패:', err.response?.status);
-  console.log('[HeaderUser] 에러 내용:', err.response?.data);
+      } catch (err) {
+        console.log("[HeaderUser] /users/me 실패:", err?.response?.status);
+        setUser(null);
+      }
+    };
 
+    // 토큰 없으면 요청 안 함
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
-  setUser(null);
-});
-  }, [token]);
+    fetchMe();
+  }, []);
+
+  // ✅ 마이페이지와 같은 규칙으로 아바타 URL 만들기
+  const avatarSrc = useMemo(() => {
+    const img = user?.user_image;
+
+    if (!img) return DefaultAvatar;
+
+    // 이미 절대 URL이면 그대로
+    if (img.startsWith("http")) return img;
+
+    // "/uploads/xxx.png" 형태면 API_BASE 붙이기
+    if (img.startsWith("/")) return `${API_BASE}${img}`;
+
+    // "default.png" 같이 파일명만이면 /uploads/로 가정
+    return `${API_BASE}/uploads/${img}`;
+  }, [user, API_BASE]);
 
   // 🔹 임시 로그아웃 (포트폴리오용)
   const handleLogout = (e) => {
-    e.preventDefault(); // Link 기본 이동 막기
-    localStorage.removeItem('token');
-    window.location.href = '/';
+    e.preventDefault();
+    localStorage.removeItem("token");
+    window.location.href = "/";
   };
 
   return (
-    <header className={`header user ${variant || ''}`}>
+    <header className={`header user ${variant || ""}`}>
       <div className="header-inner">
-
         {/* 좌측 */}
         <div className="header-left">
           <h1>
@@ -66,9 +75,7 @@ const HeaderUser = ({ variant }) => {
               <li>
                 <NavLink
                   to="/archive"
-                  className={({ isActive }) =>
-                    `btn-archive ${isActive ? 'active' : ''}`
-                  }
+                  className={({ isActive }) => `btn-archive ${isActive ? "active" : ""}`}
                 >
                   Archive
                 </NavLink>
@@ -76,9 +83,7 @@ const HeaderUser = ({ variant }) => {
               <li>
                 <NavLink
                   to="/upload"
-                  className={({ isActive }) =>
-                    `btn-upload ${isActive ? 'active' : ''}`
-                  }
+                  className={({ isActive }) => `btn-upload ${isActive ? "active" : ""}`}
                 >
                   Upload
                 </NavLink>
@@ -99,28 +104,27 @@ const HeaderUser = ({ variant }) => {
 
         {/* 우측 */}
         <div className="header-right">
+          <Link to="/mypage" className="profile">
+            <img
+              src={avatarSrc}
+              alt="user profile"
+              onError={(e) => {
+                e.currentTarget.src = DefaultAvatar;
+              }}
+            />
 
-
-          {/*  닉네임 클릭 시 로그아웃  임시 .*/}
-          <Link to="/mypage" className="profile" >
-            <img src={Avartar} alt="user profile" />
-
-            {user && (
-              <span className="nickname">
-                {user.user_nickname}
-              </span>
-            )}
+            {user && <span className="nickname">{user.user_nickname}</span>}
           </Link>
+
           <div className="btns">
-            <button className='alarm-btn'>
+            <button className="alarm-btn">
               <img src={Alarm} alt="알람" />
             </button>
-            <button onClick={handleLogout} className='logout-btn' >
+            <button onClick={handleLogout} className="logout-btn">
               <img src={logoutImg} alt="로그아웃 이미지" />
             </button>
           </div>
         </div>
-
       </div>
     </header>
   );

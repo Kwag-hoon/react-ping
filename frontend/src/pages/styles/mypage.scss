@@ -83,14 +83,35 @@ body {
     height: 96px;
     border-radius: 50%;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    cursor: pointer;
+    flex: 0 0 auto;
+    background: #f2f2f2;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
   }
+}
+
+.mypage-header .avatar-edit img {
+  position: absolute;
+  top: 70%;
+  left: 60%;
+  width: 24px;
+  height: 24px;
+  z-index: 10;
+}
+
+.avatar-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
 .profile-right {
@@ -347,6 +368,17 @@ body {
       color: $primary_mint;
     }
   }
+}
+
+.design-card__thumb {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.design-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* 핀 리스트 (반응형 그리드) */

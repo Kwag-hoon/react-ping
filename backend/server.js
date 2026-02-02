@@ -1,20 +1,21 @@
-const express = require('express');  //express 기본 라우팅
-// http를 통해 get, post, put, delete 등의 메소드를 통해서 데이터를 주고받을 수 있음
-const cors = require('cors');
-const path = require('path');
+const express = require("express");
+const cors = require("cors");
+const path = require("path");
 
-const authRoutes = require('./routes/auth');
-const uploadRoutes = require('./routes/upload'); //게시물 + 이미지
-const pinRoutes = require('./routes/pins'); // 핀 저장
-const designRoutes = require('./routes/designs'); //detail 페이지
-const categoryRoutes = require('./routes/category') //category 저장
-const mypageRouter = require("./routes/mypage");
-const postRoutes = require('./routes/posts'); //게시물 
+const authRoutes = require("./routes/auth");     // 로그인/회원가입 같은 auth
+const usersRoutes = require("./routes/users");   // ✅ 프로필/아바타 업로드 포함 (네가 수정한 파일)
+const mypageRoutes = require("./routes/mypage"); // ✅ 마이디자인 목록 등
+const uploadRoutes = require("./routes/upload"); // 게시물 + 이미지 업로드
+const pinRoutes = require("./routes/pins");      // 핀 저장
+const designRoutes = require("./routes/designs");// 공용 detail (imageUrl, pins)
+const categoryRoutes = require("./routes/category");
+const postRoutes = require("./routes/posts");
 const answerRoutes = require('./routes/answer'); //핀 답변 
 
 const app = express();
-const PORT = 9070;  // 통신 포트 설정
+const PORT = 9070;
 
+// ✅ 미들웨어(가장 위)
 app.use(cors());
 app.use(express.json());
 
@@ -43,10 +44,30 @@ app.listen(PORT, () => {
 });
 
 // 마이프로필 유저 라우터 연결
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/users", require("./routes/users"));
-// 마이페이지 연결
-app.use("/mypage", require("./routes/mypage"));
-app.use("/designs", require("./routes/designs"));
+// ✅ 업로드 이미지 정적 제공
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// ✅ 라우터 연결 (중복 없이!)
+app.use("/auth", authRoutes);         // 예: /auth/login, /auth/signup (너 authRoutes 실제 경로에 맞춰)
+app.use("/users", usersRoutes);       // 예: /users/me, /users/profile, /users/profile/avatar
+app.use("/mypage", mypageRoutes);     // 예: /mypage/designs
+app.use("/api/posts", uploadRoutes);
+app.use("/api/pins", pinRoutes);
+
+// ✅ 공용 디자인 상세 라우트는 하나로 통일 추천
+app.use("/designs", designRoutes);    // 예: /designs/:postNo
+
+app.use("/api", categoryRoutes);
+app.use(postRoutes);
+
+// 서버 상태 확인
+app.get("/", (req, res) => {
+  res.send("Ping backend running");
+});
+
+// ✅ listen은 맨 마지막
+app.listen(PORT, () => {
+  console.log(`🚀 Backend running on port ${PORT}`);
+});

@@ -3,6 +3,38 @@ const db = require("../db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+const path = require("path");
+const multer = require("multer");
+const fs = require("fs");
+
+// uploads 폴더 없으면 생성
+const uploadDir = path.join(__dirname, "..", "uploads");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, uploadDir),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const safeName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
+    cb(null, safeName);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (!file.mimetype.startsWith("image/")) {
+    return cb(new Error("이미지 파일만 업로드 가능합니다."), false);
+  }
+  cb(null, true);
+};
+
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+});
+
 const router = express.Router();
 const JWT_SECRET = "ping_secret_key";
 
@@ -153,16 +185,46 @@ router.put("/profile", auth, async (req, res) => {
  * (옵션) DELETE /users/me  회원탈퇴
  * - 실제 운영은 soft delete 권장하지만, 일단은 예시만.
  */
- router.delete("/me", auth, (req, res) => {
-   const userNo = req.user.user_no;
-   const sql = `DELETE FROM pin_users WHERE user_no = ?`;
-   db.query(sql, [userNo], (err) => {
-     if (err) {
-       console.error(err);
-       return res.status(500).json({ message: "회원 탈퇴 실패" });
-     }
-     return res.json({ success: true });
-   });
- });
+router.delete("/me", auth, (req, res) => {
+  const userNo = req.user.user_no;
+  const sql = `DELETE FROM pin_users WHERE user_no = ?`;
+  db.query(sql, [userNo], (err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "회원 탈퇴 실패" });
+    }
+    return res.json({ success: true });
+  });
+});
+
+
+/**
+* PUT /users/profile/avatar
+* form-data:
+*   - avatar: (file)
+* 응답:
+*   { success: true, user_image: "/uploads/파일명.png" }
+*/
+router.put("/profile/avatar", auth, upload.single("avatar"), (req, res) => {
+  const userNo = req.user.user_no;
+
+  if (!req.file) {
+    return res.status(400).json({ message: "파일이 없습니다." });
+  }
+
+  const savedPath = `/uploads/${req.file.filename}`;
+
+  db.query(
+    `UPDATE pin_users SET user_image = ? WHERE user_no = ?`,
+    [savedPath, userNo],
+    (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: "아바타 저장 실패" });
+      }
+      return res.json({ success: true, user_image: savedPath });
+    }
+  );
+});
 
 module.exports = router;

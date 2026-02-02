@@ -167,6 +167,10 @@ router.put("/profile", requireAuth, async (req, res) => {
 // 마이 디자인(내가 쓴 글) 조회
 // GET /mypage/designs
 // ======================
+// ======================
+// 마이 디자인(내가 쓴 글) 조회 + 썸네일 1장
+// GET /mypage/designs
+// ======================
 router.get("/designs", requireAuth, (req, res) => {
   const { user_no } = req.user;
   const limit = Number(req.query.limit || 20);
@@ -175,17 +179,24 @@ router.get("/designs", requireAuth, (req, res) => {
   db.query(
     `
     SELECT
-      post_no,
-      user_no,
-      post_title,
-      post_content,
-      view_count,
-      like_count,
-      dislike_count,
-      create_datetime
-    FROM pin_posts
-    WHERE user_no = ?
-    ORDER BY post_no DESC
+      p.post_no,
+      p.user_no,
+      p.post_title,
+      p.post_content,
+      p.view_count,
+      p.like_count,
+      p.dislike_count,
+      p.create_datetime,
+      (
+        SELECT image_path
+        FROM pin_post_images
+        WHERE post_no = p.post_no
+        ORDER BY image_no ASC
+        LIMIT 1
+      ) AS image_path
+    FROM pin_posts p
+    WHERE p.user_no = ?
+    ORDER BY p.post_no DESC
     LIMIT ? OFFSET ?
     `,
     [user_no, limit, offset],
@@ -199,35 +210,6 @@ router.get("/designs", requireAuth, (req, res) => {
   );
 });
 
-
-// 상세: GET /mypage/designs/:postNo  디자인 상세페이지 불러오기
-router.get("/designs/:postNo", requireAuth, (req, res) => {
-  const { user_no } = req.user;
-  const postNo = Number(req.params.postNo);
-
-  db.query(
-    `
-    SELECT
-      post_no,
-      user_no,
-      post_title,
-      post_content,
-      view_count,
-      like_count,
-      dislike_count,
-      create_datetime
-    FROM pin_posts
-    WHERE post_no = ? AND user_no = ?
-    LIMIT 1
-    `,
-    [postNo, user_no],
-    (err, rows) => {
-      if (err) return res.status(500).json({ message: "상세 조회 실패" });
-      if (!rows.length) return res.status(404).json({ message: "게시글 없음" });
-      return res.json(rows[0]);
-    }
-  );
-});
 
 
 module.exports = router;

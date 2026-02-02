@@ -7,6 +7,9 @@ import IconEye from "../../assets/icon-eye.svg";
 import IconLike from "../../assets/icon-like.svg";
 import IconMessage from "../../assets/icon-message.svg";
 
+const API_BASE = "http://localhost:9070";
+const PLACEHOLDER = `${process.env.PUBLIC_URL}/images/thumb-placeholder.png`;
+
 const MyDesigns = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,6 +22,8 @@ const MyDesigns = () => {
         const res = await Api.get("/mypage/designs", {
           params: { limit: 20, offset: 0 },
         });
+        console.log("마이디자인 첫 아이템:", res.data.items?.[0]);
+
         setItems(res.data.items || []);
       } catch (err) {
         console.error(err);
@@ -63,9 +68,11 @@ const MyDesigns = () => {
               className="design-card"
             >
               <div className="design-card__thumb">
+
                 <img
-                  src={`https://picsum.photos/400/300?random=${item.post_no}`}
+                  src={item.image_path ? `${API_BASE}${item.image_path}` : PLACEHOLDER}
                   alt={item.post_title}
+                  onError={(e) => { e.currentTarget.src = PLACEHOLDER; }}
                 />
               </div>
 
