@@ -1,14 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
 import DesignItem from "./DesignItem";
-import { useNavigate } from "react-router-dom";
 
 function DesignGallery(props) {
   const [items, setItems] = useState([]);
   const [isUnder1023, setIsUnder1023] = useState(
     typeof window !== "undefined" ? window.innerWidth <= 1023 : false
   );
-  const navigate = useNavigate();
 
+  /* 화면 리사이즈 감지 */
   useEffect(() => {
     const handleResize = () => {
       setIsUnder1023(window.innerWidth <= 1023);
@@ -27,70 +26,40 @@ function DesignGallery(props) {
       .catch((err) => console.error("갤러리 로딩 실패:", err));
   }, []);
 
-  // const items = useMemo(() => {
-  //   const ratios = ["4/5", "1/1", "3/4", "9/16"];
-
-  //   return [...testItems]
-  //     .sort(
-  //       (a, b) =>
-  //         new Date(b.create_datetime) - new Date(a.create_datetime)
-  //     )
-
-  //     .map((item) => ({
-  //       id: item.id,
-  //       image: item.image_path,
-  //       ratio: ratios[Math.floor(Math.random() * ratios.length)],
-  //       title: item.post_title,
-  //       date: item.create_datetime,
-  //       views: 25,
-  //       likes: 7,
-  //       comments: 2,
-  //     }));
-  // }, []);
-  // const visibleItems = isUnder1023 ? items.slice(0, 10) : items;
-  /* 화면에 뿌릴 데이터 가공 */
+   /* 화면에 뿌릴 데이터 가공 + 중복 제거 */
   const displayItems = useMemo(() => {
+    const map = new Map();
     const ratios = ["4/5", "1/1", "3/4", "9/16"];
 
-    const mapped = items.map((item) => ({
-      id: item.id,
-      title: item.title,
-      image: `http://localhost:9070${item.imagePath}`,
-      ratio: ratios[Math.floor(Math.random() * ratios.length)],
-      date: item.createdAt,
-      views: item.view_count ?? 0,
-      likes: item.like_count ?? 0,
-      comments: item.pins ?? 0,
-    }));
+    items.forEach(item => {
+      if (map.has(item.id)) return;
 
-    return isUnder1023 ? mapped.slice(0, 10) : mapped;
+      map.set(item.id, {
+        id: item.id,
+        title: item.title,
+        image: `http://localhost:9070${item.imagePath}`,
+        date: item.createdAt,
+        ratio: ratios[Math.floor(Math.random() * ratios.length)], 
+        views: item.view_count ?? 0,
+        likes: item.like_count ?? 0,
+        comments: item.pins ?? 0,
+      });
+    });
+
+    const result = Array.from(map.values());
+
+    return isUnder1023 ? result.slice(0, 10) : result;
   }, [items, isUnder1023]);
+
 
   return (
 
     <div className="gallery-masonry">
-      {/* {displayItems.map(item => (
-        <Link to={`/detail/${item.id}`} key={item.id}>
-          <DesignItem
-            item={{
-              title: item.title,
-              image: `http://localhost:9070${item.imagePath}`,
-              date: item.createdAt,
-              pins: item.pins
-            }}
-          />
-        </Link>
-      ))} */}
       {displayItems.map((item) => (
-        <div
-          key={item.id}
-          className="design-item-wrapper"
-          onClick={() => navigate(`/detail/${item.id}`)}
-        >
-          <DesignItem item={item} />
-        </div>
+        <DesignItem key={item.id} item={item} />
       ))}
     </div>
+
   );
 }
 

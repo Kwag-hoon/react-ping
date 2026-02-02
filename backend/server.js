@@ -11,6 +11,8 @@ const designRoutes = require("./routes/designs");// 공용 detail (imageUrl, pin
 const categoryRoutes = require("./routes/category");
 const postRoutes = require("./routes/posts");
 const answerRoutes = require('./routes/answer'); //핀 답변 
+const mypageRouter = require('./routes/mypage');
+
 
 const app = express();
 const PORT = 9070;

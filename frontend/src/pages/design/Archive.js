@@ -2,10 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import DesignItem from "../DesignItem";
 // import testItems from '../../test/archive.json';
 import '../styles/archive.scss'
-import { Link } from 'react-router-dom';
 
-function Archive() {
-
+function Archive(props) {
+  //카테고리 / 처음 활성화된메뉴 / 
   const [categories, setCategories] = useState([]);
   const [active, setActive] = useState('전체');
   const [items, setItems] = useState([]);
@@ -44,7 +43,17 @@ function Archive() {
     // 2) 그 다음 필터된 결과에서만 중복 제거
     const map = new Map();
     filtered.forEach(item => {
-      if (!map.has(item.id)) map.set(item.id, item);
+      if (map.has(item.id)) return;
+
+      map.set(item.id, {
+        id: item.id,
+        title: item.title,
+        image: `http://localhost:9070${item.imagePath}`,
+        date: item.createdAt,
+        comments: item.pins ?? 0,
+        views: item.view_count ?? 0,
+        likes: item.like_count ?? 0,
+      });
     });
 
     return Array.from(map.values());
@@ -71,15 +80,6 @@ function Archive() {
                 전체
               </button>
             </li>
-
-            {/* {categories.map((tab) => (
-              <li key={tab}>
-                <button
-                  type='button'
-                  aria-pressed={active === tab}
-                  className={active === tab ? 'active' : ''}
-                  onClick={() => setActive(tab)}
-                >*/}
             {categories.map(name => (
               <li key={name}>
                 <button
@@ -94,34 +94,10 @@ function Archive() {
         </div>
 
         <div className="main_recent-archives col-full">
-          {/* <div className="gallery-grid">
-            {filteredItems.length > 0 ? (
-              filteredItems.map((item) => (
-                <Link to={`/detail/${item.id}`} key={item.id}>
-                  <DesignItem item={{
-                    title: item.post_title,
-                    image: item.image_path,
-                    date: item.create_datetime
-                  }} />
-                </Link>
-              ))
-            ) : (
-              <p className="empty">아카이브가 없습니다.</p>
-            )}
-          </div> */}
           <div className="gallery-grid">
             {displayItems.length > 0 ? (
               displayItems.map(item => (
-                <Link to={`/detail/${item.id}`} key={item.id}>
-                  <DesignItem
-                    item={{
-                      title: item.title,
-                      image: `http://localhost:9070${item.imagePath}`,
-                      date: item.createdAt,
-                      pins: item.pins
-                    }}
-                  />
-                </Link>
+                <DesignItem key={item.id} item={item} />
               ))
             ) : (
               <p className="empty">아카이브가 없습니다.</p>
