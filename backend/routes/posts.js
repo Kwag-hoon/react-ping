@@ -14,16 +14,23 @@ router.get('/api/posts', (req, res) => {
   COUNT(DISTINCT pq.pin_no) AS pins,
   p.create_datetime AS createdAt
 FROM pin_posts p
-LEFT JOIN pin_post_images img
+
+JOIN pin_post_images img
   ON img.post_no = p.post_no
+  AND img.order_index = 1 
+
+JOIN pin_questions pq
+  ON pq.post_no = p.post_no /* 핀있는 게시물만 업로드가능하도록 */
+
 JOIN pin_post_categories pc
   ON pc.post_no = p.post_no
+
 JOIN pin_categories c
   ON c.category_no = pc.category_no
+
 JOIN pin_category_groups g
   ON g.group_no = c.group_no
-LEFT JOIN pin_questions pq
-  ON pq.post_no = p.post_no
+
 GROUP BY p.post_no, g.group_no, c.category_no
 ORDER BY p.create_datetime DESC
   `;

@@ -63,9 +63,9 @@
 }
 
 .close_btn {
-  //position: absolute;
-  top: 8px;
-  right: 12px;
+  position: absolute;
+  top: 30px;
+  right: 15px;
   background: none;
   border: none;
   cursor: pointer;
@@ -145,29 +145,31 @@
       color: $main_gray_600;
       padding-bottom: 20px;
     }
-.user-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 12px;
-        font-size: 16px;
-        color: $main_gray_600;
 
-        img {
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          object-fit: cover;
-          display: block;
-        }
+    .user-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      font-size: 16px;
+      color: $main_gray_600;
+
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        display: block;
       }
+    }
+
     .desc-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
 
-      
+
     }
 
     .badge-btn {
@@ -431,21 +433,6 @@
       border: none;
       grid-column: 1 / -1;
 
-      .back_btn {
-        @include btn-shadow;
-        //position: absolute;
-        left: 10px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        border: none;
-        border-radius: 999px;
-        background: #fff;
-        font-size: 14px;
-        margin-bottom: 10px;
-        cursor: pointer;
-      }
-
       h2 {
         @include typo("displayMd", $bold);
       }
@@ -482,6 +469,7 @@
     }
 
     .detail-box_right {
+      border: none;
       margin: 0px;
       grid-column: 1 / -1;
     }
@@ -532,21 +520,6 @@
         padding: 0px;
       }
 
-      .back_btn {
-        @include btn-shadow;
-        //position: absolute;
-        left: 10px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        border: none;
-        border-radius: 999px;
-        background: #fff;
-        font-size: 14px;
-        margin-bottom: 10px;
-        cursor: pointer;
-      }
-
       h2 {
         @include typo("displaySm", $bold);
         // color: $main_gray_900;
@@ -585,6 +558,7 @@
     }
 
     .detail-box_right {
+      border: none;
       grid-column: 1 / -1;
       margin: 0px;
     }

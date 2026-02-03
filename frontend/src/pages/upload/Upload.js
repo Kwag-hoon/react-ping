@@ -53,12 +53,66 @@ function Upload(props) {
     setSelectedIssues([...selectedIssues, issue]);
   };
 
-  //린 
+  // 린 2/3 수정 pineditor 에 값만 넘기고 db에 최종 저장은 Pineditor에서 
+  // const handleNext = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!file) {
+  //     alert('이미지를 업로드해주세요.');
+  //     return;
+  //   }
+
+  //   if (!title.trim()) {
+  //     alert('제목을 입력해주세요.');
+  //     return;
+  //   }
+
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append('image', file);
+  //     formData.append('title', title);
+  //     formData.append('desc', desc);
+
+  //     // 🔹 문자열 기반 문제유형 전달
+  //     formData.append(
+  //       'issues',
+  //       JSON.stringify(selectedIssues)
+  //     );
+
+  //     const res = await axios.post(
+  //       'http://localhost:9070/api/posts',
+  //       formData,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //           'Content-Type': 'multipart/form-data',
+  //         },
+  //       }
+  //     );
+
+  //     const { postNo, imageNo, imagePath } = res.data;
+
+  //     // 👉 PinEditor로 이동 (🔥 title 반드시 넘김)
+  //     navigate('/upload/pineditor', {
+  //       state: {
+  //         postNo,
+  //         imageNo,
+  //         imagePath,
+  //         issues: selectedIssues,
+  //         title, // ✅ 이게 빠져 있었음
+  //       },
+  //     });
+
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert('업로드 실패');
+  //   }
+  // };
   const handleNext = async (e) => {
     e.preventDefault();
 
     if (!file) {
-      alert('이미지를 업로드해주세요.');
+      alert('이미지를 업로드 해주세요.');
       return;
     }
 
@@ -67,18 +121,18 @@ function Upload(props) {
       return;
     }
 
+    if (selectedIssues.length === 0) {
+      alert('최소 1개의 문제 유형을 선택해 주세요.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('title', title);
+    formData.append('desc', desc);
+    formData.append('issues', JSON.stringify(selectedIssues));
+
     try {
-      const formData = new FormData();
-      formData.append('image', file);
-      formData.append('title', title);
-      formData.append('desc', desc);
-
-      // 🔹 문자열 기반 문제유형 전달
-      formData.append(
-        'issues',
-        JSON.stringify(selectedIssues)
-      );
-
       const res = await axios.post(
         'http://localhost:9070/api/posts',
         formData,
@@ -90,22 +144,17 @@ function Upload(props) {
         }
       );
 
-      const { postNo, imageNo, imagePath } = res.data;
-
-      // 👉 PinEditor로 이동 (🔥 title 반드시 넘김)
       navigate('/upload/pineditor', {
         state: {
-          postNo,
-          imageNo,
-          imagePath,
+          postNo: res.data.postNo,
+          imageNo: res.data.imageNo,
+          imagePath: res.data.imagePath, title,
           issues: selectedIssues,
-          title, // ✅ 이게 빠져 있었음
         },
       });
-
     } catch (err) {
       console.error(err);
-      alert('업로드 실패');
+      alert('업로드 중 오류가 발생하였습니다.');
     }
   };
 
@@ -140,40 +189,40 @@ function Upload(props) {
               </p>
             </div>
 
-            <input 
-              type="file" 
-              className="upload_file" 
-              accept='.png,.jpg,.jpeg,.pdf' 
+            <input
+              type="file"
+              className="upload_file"
+              accept='.png,.jpg,.jpeg,.pdf'
               onChange={(e) => setFile(e.target.files[0])}
-              required 
+              required
             />
           </div>
 
           {/* 제목 */}
           <div className="upload_field">
             <label htmlFor="title" className='upload_label'>제목</label>
-            <input 
-              type="text" 
-              className="upload_input" 
-              id="title" 
+            <input
+              type="text"
+              className="upload_input"
+              id="title"
               placeholder='디자인에 명확한 제목을 입력하세요'
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              required 
+              required
             />
           </div>
 
           {/* 설명 */}
           <div className="upload_field">
             <label htmlFor="desc" className="upload_label">설명</label>
-            <textarea 
-              className="upload_textarea" 
-              id='desc' 
-              rows={4} 
-              placeholder='어떤 문제를 해결하려 하나요? 어떤 피드백을 원하시나요?' 
+            <textarea
+              className="upload_textarea"
+              id='desc'
+              rows={4}
+              placeholder='어떤 문제를 해결하려 하나요? 어떤 피드백을 원하시나요?'
               value={desc}
               onChange={(e) => setDesc(e.target.value)}
-              required 
+              required
             />
           </div>
 
@@ -200,9 +249,8 @@ function Upload(props) {
                       <button
                         key={`${groupName}-${item}`}
                         type="button"
-                        className={`upload_chip ${
-                          selectedIssues.includes(item) ? 'active' : ''
-                        }`}
+                        className={`upload_chip ${selectedIssues.includes(item) ? 'active' : ''
+                          }`}
                         onClick={() => handleCategoryClick(item)}
                       >
                         {item}

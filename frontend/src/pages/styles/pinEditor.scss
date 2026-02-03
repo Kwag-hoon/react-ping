@@ -149,6 +149,7 @@
   /* Canvas (좌측)                                                               */
   /* -------------------------------------------------------------------------- */
   .pineditor_canvas {
+    position:relative;
     height: 100%;
     min-height: 0; // 
     overflow: auto;
@@ -162,6 +163,7 @@
   }
 
   .canvas_outer {
+    height:100%;
     display: flex;
     justify-content: center;
     align-items: center;

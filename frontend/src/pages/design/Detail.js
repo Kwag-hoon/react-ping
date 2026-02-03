@@ -21,7 +21,7 @@ function Detail() {
   // 모바일 댓글 모달
   const [isOpen, setIsOpen] = useState(false);
 
-//비 로그인시 댓글 입력 막기 
+  //비 로그인시 댓글 입력 막기 
   const isLogin = !!localStorage.getItem('token');
 
   // 🔹 핀 답변 상태 (DB)
@@ -87,31 +87,31 @@ function Detail() {
   /* ===============================
      답변 작성
      =============================== */
-const handleAddAnswer = async () => {
-  const token = localStorage.getItem('token');
+  const handleAddAnswer = async () => {
+    const token = localStorage.getItem('token');
 
-  if (!token) {
-    alert('로그인 후 이용 가능합니다');
-    navigate('/login');
-    return;
-  }
-
-  if (!selectedPin) return;
-  if (!answerText.trim()) return;
-
-  await axios.post(
-    `http://localhost:9070/api/pins/${selectedPin.pin_no}/answers`,
-    { content: answerText },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    if (!token) {
+      alert('로그인 후 이용 가능합니다');
+      navigate('/login');
+      return;
     }
-  );
 
-  setAnswerText('');
-  fetchAnswers(selectedPin.pin_no);
-};
+    if (!selectedPin) return;
+    if (!answerText.trim()) return;
+
+    await axios.post(
+      `http://localhost:9070/api/pins/${selectedPin.pin_no}/answers`,
+      { content: answerText },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    setAnswerText('');
+    fetchAnswers(selectedPin.pin_no);
+  };
 
 
   /* ===============================
@@ -171,9 +171,8 @@ const handleAddAnswer = async () => {
                 {pins.map((pin, index) => (
                   <div
                     key={pin.pin_no}
-                    className={`pin_marker ${
-                      selectedPin?.pin_no === pin.pin_no ? 'active' : ''
-                    }`}
+                    className={`pin_marker ${selectedPin?.pin_no === pin.pin_no ? 'active' : ''
+                      }`}
                     style={{ left: `${pin.x}%`, top: `${pin.y}%` }}
                     onClick={() => handlePinClick(pin)}
                   >
@@ -183,6 +182,7 @@ const handleAddAnswer = async () => {
               </div>
             </div>
 
+            {/* 모바일 영역 모달버튼 */}
             <button
               className="mobile-comment-btn"
               onClick={() => setIsOpen(true)}
@@ -207,33 +207,33 @@ const handleAddAnswer = async () => {
             <hr />
             <span>{selectedPin?.question || '핀을 선택해주세요'}</span>
             <hr />
-            
+
             <div className="box-right_card">
 
-            
-            <ul>
-              <li>
-                Community Replies <span>({answers.length})</span>
-              </li>
 
-              {answers.length === 0 && (
-                <li className="empty">아직 댓글이 없습니다.</li>
-              )}
-
-              {answers.map(a => (
-                <li key={a.answer_no}>
-                  <strong>{a.user_nickname}</strong>
-                  <br />
-                  <span>
-                    {dayjs(a.create_datetime).format('YYYY.MM.DD HH:mm')}
-                  </span>
-                  <br />
-                  {a.answer_content}
+              <ul>
+                <li>
+                  Community Replies <span>({answers.length})</span>
                 </li>
-              ))}
-            </ul>
 
-            <textarea
+                {answers.length === 0 && (
+                  <li className="empty">아직 댓글이 없습니다.</li>
+                )}
+
+                {answers.map(a => (
+                  <li key={a.answer_no}>
+                    <strong>{a.user_nickname}</strong>
+                    <br />
+                    <span>
+                      {dayjs(a.create_datetime).format('YYYY.MM.DD HH:mm')}
+                    </span>
+                    <br />
+                    {a.answer_content}
+                  </li>
+                ))}
+              </ul>
+
+              <textarea
                 className="card-box"
                 disabled={!isLogin}
                 placeholder={
@@ -245,8 +245,8 @@ const handleAddAnswer = async () => {
                 onChange={(e) => setAnswerText(e.target.value)}
               />
 
-            <button onClick={handleAddAnswer}>댓글 게시</button>
-            <hr />
+              <button onClick={handleAddAnswer}>댓글 게시</button>
+              <hr />
             </div>
 
             <div className="box-right_memo">
@@ -277,12 +277,96 @@ const handleAddAnswer = async () => {
         className={`modal-dim ${isOpen ? 'is-open' : ''}`}
         onClick={() => setIsOpen(false)}
       >
-        <div className="modal-wrapper" onClick={(e) => e.stopPropagation()}>
-          <button className="close_btn" onClick={() => setIsOpen(false)}>
-            <img src={CloseIcon} alt="닫기" />
-          </button>
+        <div
+          className="modal-wrapper"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="detail-modal">
+            <button className="close_btn" onClick={() => setIsOpen(false)}>
+              <img src={CloseIcon} alt="닫기" />
+            </button>
+            <div className="detail-box_right">
+              <div className="sticky-inner">
+                <p className="pin-label">
+                  <span className="pin-badge">
+                    {selectedPin
+                      ? pins.findIndex(p => p.pin_no === selectedPin.pin_no) + 1
+                      : '-'}
+                  </span>
+                  Pin Question
+                </p>
+
+                <hr />
+                <span>{selectedPin?.question || '핀을 선택해주세요'}</span>
+                <hr />
+
+                <div className="box-right_card">
+
+                  <ul>
+                    <li>
+                      Community Replies <span>({answers.length})</span>
+                    </li>
+
+                    {answers.length === 0 && (
+                      <li className="empty">아직 댓글이 없습니다.</li>
+                    )}
+
+                    {answers.map(a => (
+                      <li key={a.answer_no}>
+                        <strong>{a.user_nickname}</strong>
+                        <br />
+                        <span>
+                          {dayjs(a.create_datetime).format('YYYY.MM.DD HH:mm')}
+                        </span>
+                        <br />
+                        {a.answer_content}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <textarea
+                    className="card-box"
+                    disabled={!isLogin}
+                    placeholder={
+                      isLogin
+                        ? '공개 댓글을 작성하세요'
+                        : '로그인 후 댓글 작성이 가능합니다'
+                    }
+                    value={answerText}
+                    onChange={(e) => setAnswerText(e.target.value)}
+                  />
+
+                  <button className='mobile-comment-btn'
+                  onClick={handleAddAnswer}>댓글 게시</button>
+                  <hr />
+                </div>
+
+                <div className="box-right_memo">
+                  <p>My Memo (Private)</p>
+                  {memo.map(m => (
+                    <div key={m.id}>
+                      {m.content}
+                      <br />
+                      <span>{m.date}</span>
+                    </div>
+                  ))}
+
+                  <textarea
+                    className="card-box"
+                    placeholder="이 질문에 대한 개인 메모"
+                    value={memoText}
+                    onChange={(e) => setMemoText(e.target.value)}
+                  />
+
+                  <button className='mobile-comment-btn'
+                  onClick={handleAddMemo}>메모 저장</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
     </section>
   );
 }

@@ -1,12 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/pinEditor.scss';
-import axios from 'axios';
 import left from '../../assets/icon-chevron-left.svg';
+import axios from 'axios';
 
 function PinEditor() {
   /* ===============================
-     상태
+    상태
   =============================== */
   const [pins, setPins] = useState([]);
   const [activePinId, setActivePinId] = useState(null);
@@ -26,7 +26,7 @@ function PinEditor() {
   } = location.state || {};
 
   /* ===============================
-     게시물 정보 조회 (새로고침 대비)
+    게시물 정보 조회 (새로고침 대비)
   =============================== */
   useEffect(() => {
     if (!postNo) return;
@@ -43,7 +43,7 @@ function PinEditor() {
   }, [postNo]);
 
   /* ===============================
-     핀 추가
+    핀 추가
   =============================== */
   const handleAddPin = (e) => {
     if (!imgRef.current) return;
@@ -70,7 +70,7 @@ function PinEditor() {
   const hasPin = pins.length > 0;
 
   /* ===============================
-     핀 삭제
+    핀 삭제
   =============================== */
   const handleDeletePin = () => {
     if (!activePinId) return;
@@ -82,7 +82,7 @@ function PinEditor() {
   };
 
   /* ===============================
-     핀 전체 저장 (완료 버튼)
+    핀 전체 저장 (완료 버튼)
   =============================== */
   const handleComplete = async () => {
     if (!postNo) {
@@ -131,7 +131,7 @@ function PinEditor() {
   };
 
   /* ===============================
-     렌더
+    렌더
   =============================== */
   return (
     <main className="pineditor container">
