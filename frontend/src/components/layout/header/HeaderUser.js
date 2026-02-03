@@ -92,7 +92,7 @@ const HeaderUser = ({ variant }) => {
           </nav>
         </div>
 
-        {/* 중앙 */}
+        {/* 중앙 : 검색 */}
         <div className="header-center">
           <form className="search-form">
             <input type="text" placeholder="Search..." />

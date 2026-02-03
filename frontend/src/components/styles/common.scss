@@ -190,10 +190,12 @@ body {
         }
       }
 .btns{
+  
   display: flex;
   gap: 10px;
 }
       button{
+        cursor: pointer;
         border: none;
         background: none;
         img{

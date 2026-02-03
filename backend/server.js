@@ -12,6 +12,7 @@ const designRoutes = require("./routes/designs");// 공용 detail
 const categoryRoutes = require("./routes/category");
 const postRoutes = require("./routes/posts");
 const answerRoutes = require('./routes/answer'); //핀 답변 
+const feedbackRoutes = require("./routes/feedback");  // ✅ 피드백 조회
 
 const app = express();
 const PORT = 9070;
@@ -33,7 +34,10 @@ app.use('/api/posts', uploadRoutes); //업로드 관련
 app.use('/api/pins', pinRoutes); //핀에디터 관련
 app.use('/api/designs', designRoutes); //디테일 페이지 관련
 app.use('/api/categories', categoryRoutes);
-app.use(postRoutes); 
+app.use("/api/feedback", feedbackRoutes);  // ✅ 피드백 조회
+
+app.use(postRoutes);
+
 app.use(answerRoutes);
 
 // 서버 상태 확인용
@@ -44,4 +48,6 @@ app.get('/', (req, res) => {
 // 서버 실행시 
 app.listen(PORT, () => {
   console.log(`🚀 Backend running on port ${PORT}`);
+
 });
+

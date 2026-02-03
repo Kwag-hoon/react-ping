@@ -26,6 +26,7 @@ import MyPageLayout from './pages/mypage/MyPageLayout';
 import MyDesigns from './pages/mypage/MyDesigns';
 import MyPins from './pages/mypage/MyPins';
 import MyFeedback from './pages/mypage/MyFeedback';
+import FeedbackDetail from "./pages/mypage/FeedbackDetail";
 import MyProfile from './pages/mypage/MyProfile';
 import MyAlarm from './pages/mypage/MyAlarm';
 
@@ -64,6 +65,7 @@ function App() {
             <Route path="designs/:id" element={<Detail />} />
             <Route path="pins" element={<MyPins />} />
             <Route path="feedback" element={<MyFeedback />} />
+            <Route path="/mypage/feedback/:answer_no" element={<FeedbackDetail />} />
             <Route path="profile" element={<MyProfile />} />
             <Route path="alarm" element={<MyAlarm />} />
           </Route>

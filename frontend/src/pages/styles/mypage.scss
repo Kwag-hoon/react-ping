@@ -536,6 +536,9 @@ body {
         font-size: 14px;
         color: $main_gray_600;
         line-height: 1.5;
+        p{
+          font-size: 16px;
+        }
 
         .label {
           color: $primary_pink;

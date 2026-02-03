@@ -206,6 +206,53 @@ router.get("/designs", requireAuth, (req, res) => {
   );
 });
 
+// ======================
+// 4) 마이 피드백(내가 남긴 답변) 조회
+// GET /api/mypage/feedback
+// ======================
+// ======================
+// 4) 마이 피드백 (내가 남긴 핀 답변)
+// GET /api/mypage/feedback
+// ======================
+router.get("/feedback", requireAuth, (req, res) => {
+  const { user_no } = req.user;
+
+  db.query(
+    `
+    SELECT
+      a.answer_no,
+      a.pin_no,
+      a.answer_content,
+      a.create_datetime AS answer_datetime,
+
+      q.post_no,
+      q.image_no,
+      q.question_content,
+
+      p.post_title,
+
+      img.image_path
+    FROM pin_answers a
+    JOIN pin_questions q
+      ON a.pin_no = q.pin_no
+    JOIN pin_posts p
+      ON q.post_no = p.post_no
+    JOIN pin_post_images img
+      ON q.image_no = img.image_no
+    WHERE a.user_no = ?
+    ORDER BY a.answer_no DESC
+    `,
+    [user_no],
+    (err, rows) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: "마이피드백 조회 실패" });
+      }
+      return res.json(rows);
+    }
+  );
+});
+
 
 
 module.exports = router;
