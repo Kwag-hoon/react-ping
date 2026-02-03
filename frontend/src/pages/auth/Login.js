@@ -27,7 +27,7 @@ function Login(props) {
 
     try {
       const res = await axios.post(
-        'http://localhost:9070/users/login',
+        'http://localhost:9070/api/auth/login',
         form
       );
 

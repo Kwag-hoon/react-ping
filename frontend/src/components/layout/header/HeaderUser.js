@@ -21,7 +21,7 @@ const HeaderUser = ({ variant }) => {
     const fetchMe = async () => {
       try {
         // ✅ 토큰은 Api 인터셉터가 자동으로 붙임
-        const res = await Api.get("/users/me");
+        const res = await Api.get("/api/users/me");
         setUser(res.data);
       } catch (err) {
         console.log("[HeaderUser] /users/me 실패:", err?.response?.status);

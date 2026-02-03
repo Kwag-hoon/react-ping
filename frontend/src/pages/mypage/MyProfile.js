@@ -67,7 +67,7 @@ function MyProfile() {
           return;
         }
 
-        const res = await axios.get(`${API_BASE}/users/me`, authConfig);
+        const res = await axios.get(`${API_BASE}/api/users/me`, authConfig);
 
         setForm((prev) => ({
           ...prev,
@@ -163,7 +163,7 @@ function MyProfile() {
         payload.new_pw = form.new_pw;
       }
 
-      await axios.put(`${API_BASE}/users/profile`, payload, authConfig);
+      await axios.put(`${API_BASE}/api/users/profile`, payload, authConfig);
 
       alert("프로필이 수정되었습니다.");
 
@@ -212,7 +212,7 @@ function MyProfile() {
     try {
       setDeleting(true);
 
-      await axios.delete(`${API_BASE}/users/me`, authConfig);
+      await axios.delete(`${API_BASE}/api/users/me`, authConfig);
 
       // 토큰 제거
       localStorage.removeItem("token");

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const connection = require('../db');
 
-router.get('/categories', (req, res) => {
+router.get('/', (req, res) => {
   const sql = `
     SELECT g.group_name, c.category_name
     FROM pin_category_groups g

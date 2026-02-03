@@ -24,7 +24,7 @@ export default function MyPageHeader() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await Api.get("/users/me");
+        const res = await Api.get("/api/users/me");
         setProfile(res.data);
       } catch (err) {
         console.error("프로필 불러오기 실패:", err);
@@ -120,7 +120,7 @@ export default function MyPageHeader() {
       formData.append("avatar", selectedFile);
 
       // ✅ 토큰은 Api 인터셉터가 자동 첨부
-      const res = await Api.put("/users/profile/avatar", formData, {
+      const res = await Api.put("/api/users/profile/avatar", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

@@ -10,7 +10,7 @@ const JWT_SECRET = 'ping_secret_key';
 
 
   //  회원가입
-  //  POST /users/signup
+  //  POST /auth/signup
 router.post('/signup', async (req, res) => {
   const {
     user_id,
@@ -74,7 +74,7 @@ router.post('/signup', async (req, res) => {
 
 
   //  로그인
-  //  POST /users/login
+  //  POST /auth/login
 router.post('/login', (req, res) => {
   const { user_id, user_pw } = req.body;
 
@@ -132,7 +132,7 @@ router.post('/login', (req, res) => {
 
 
   //  로그인 유지 / 내 정보
-  //  GET /users/me
+  //  GET /auth/me
 
 router.get('/me', (req, res) => {
   const authHeader = req.headers.authorization;

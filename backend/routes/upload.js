@@ -8,7 +8,7 @@ const JWT_SECRET = 'ping_secret_key';
 const router = express.Router();
 
 /* ===============================
-   파일 업로드 설정
+  파일 업로드 설정
 =============================== */
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 /* ===============================
-   게시물 업로드
+  게시물 업로드
 =============================== */
 router.post(
   '/',

@@ -37,9 +37,9 @@ function requireAuth(req, res, next) {
 
 // ======================
 // 1) 마이페이지용 프로필 조회
-// GET /users/mypage
+// GET /api/mypage
 // ======================
-router.get("/mypage", requireAuth, (req, res) => {
+router.get("/", requireAuth, (req, res) => {
   const { user_no } = req.user;
 
   db.query(
@@ -73,7 +73,7 @@ router.get("/mypage", requireAuth, (req, res) => {
 
 // ======================
 // 2) 프로필 수정 + 비번 변경
-// PUT /users/profile
+// PUT /api/mypage/profile
 // ======================
 router.put("/profile", requireAuth, async (req, res) => {
   const { user_no } = req.user;
@@ -164,12 +164,8 @@ router.put("/profile", requireAuth, async (req, res) => {
 });
 
 // ======================
-// 마이 디자인(내가 쓴 글) 조회
-// GET /mypage/designs
-// ======================
-// ======================
-// 마이 디자인(내가 쓴 글) 조회 + 썸네일 1장
-// GET /mypage/designs
+// 3) 마이 디자인(내가 쓴 글) 조회 + 썸네일 1장
+// GET /api/mypage/designs
 // ======================
 router.get("/designs", requireAuth, (req, res) => {
   const { user_no } = req.user;

@@ -84,7 +84,7 @@ function Signup() {
       };
 
       const res = await axios.post(
-        "http://localhost:9070/users/signup",
+        "http://localhost:9070/api/auth/signup",
         payload
       );
 

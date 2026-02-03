@@ -19,7 +19,7 @@ const MyDesigns = () => {
     const fetchMyDesigns = async () => {
       try {
         setLoading(true);
-        const res = await Api.get("/mypage/designs", {
+        const res = await Api.get("/api/mypage/designs", {
           params: { limit: 20, offset: 0 },
         });
         console.log("마이디자인 첫 아이템:", res.data.items?.[0]);
