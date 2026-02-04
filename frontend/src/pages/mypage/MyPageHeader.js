@@ -5,7 +5,6 @@ import IconEdit2 from "../../assets/icon-edit-2.svg";
 import IconId from "../../assets/icon-user.svg";     // 없으면 IconEdit2로 교체 가능
 import IconEdit from "../../assets/icon-edit.svg";   // 아바타 위 작은 편집 아이콘
 
-const FALLBACK_AVATAR = "https://i.pravatar.cc/150?img=32";
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 export default function MyPageHeader() {
@@ -19,6 +18,7 @@ export default function MyPageHeader() {
 
   // Api 인스턴스의 baseURL(=http://localhost:9070)
   const API_BASE = Api.defaults.baseURL || "http://localhost:9070";
+  const DEFAULT_AVATAR = `${API_BASE}/uploads/default.png`;
 
   // 1) 프로필 조회: /users/me 로 통일
   useEffect(() => {
@@ -50,23 +50,17 @@ export default function MyPageHeader() {
 
   // 4) 아바타 URL 안전하게 만들기
   const resolveAvatarSrc = () => {
-    // (1) 새 파일 선택 중이면 미리보기 우선
     if (previewUrl) return previewUrl;
 
-    const img = profile.user_image;
+    const img = profile.user_image?.trim();
 
-    // (2) 값이 없으면 fallback
-    if (!img) return FALLBACK_AVATAR;
+    // ✅ 값이 없으면 서버 default.png
+    if (!img) return DEFAULT_AVATAR;
 
-    // (3) 이미 절대 URL이면 그대로
-    if (typeof img === "string" && img.startsWith("http")) return img;
+    if (img.startsWith("http")) return img;
 
-    // (4) "/uploads/xxx.png" 같이 슬래시로 시작하면 API_BASE 붙이기
-    if (typeof img === "string" && img.startsWith("/")) {
-      return `${API_BASE}${img}`;
-    }
+    if (img.startsWith("/")) return `${API_BASE}${img}`;
 
-    // (5) "default.png" 처럼 파일명만 있으면 /uploads 경로로 가정
     return `${API_BASE}/uploads/${img}`;
   };
 
@@ -158,10 +152,9 @@ export default function MyPageHeader() {
             src={avatarSrc}
             alt="프로필"
             onError={(e) => {
-              // 무한 루프 방지: fallback으로 한 번만 교체
-              if (e.currentTarget.src !== FALLBACK_AVATAR) {
-                e.currentTarget.src = FALLBACK_AVATAR;
-              }
+              // ✅ 무한 루프 완전 방지
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = DEFAULT_AVATAR;
             }}
           />
           <div className="avatar-edit" aria-hidden="true">
