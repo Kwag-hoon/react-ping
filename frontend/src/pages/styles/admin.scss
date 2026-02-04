@@ -86,9 +86,9 @@ body {
   position: absolute;
   left: 14px;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-70%);
   color: #9ca3af;
-  font-size: 14px;
+  font-size: 24px;
   line-height: 1;
 }
 
@@ -103,6 +103,63 @@ body {
   &::placeholder {
     color: #9ca3af;
   }
+}
+
+// 검색바와 셀렉트 박스를 감싸는 컨테이너
+.admin-card--search-bar {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 12px;
+
+  // 기존 검색바(.admin-search)가 남은 공간을 차지하도록
+  .admin-search {
+    flex: 1;
+  }
+}
+
+// 셀렉트 박스 스타일 (Wrapper 방식)
+.admin-select-wrapper {
+  position: relative;
+  display: inline-block;
+  min-width: 120px; // 최소 너비 확보
+}
+
+.admin-select {
+  width: 100%;
+  padding: 0 36px 0 16px; // 오른쪽 여백은 화살표 공간
+  height: 46px; 
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  
+  // 브라우저 기본 화살표 제거
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  &:focus {
+    border-color: #2563eb; 
+  }
+}
+
+// 아이콘 위치 잡기 (포인터 이벤트 통과시켜서 클릭 시 셀렉트 열리게 함)
+.admin-select-arrow {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; // 클릭이 뒤에 있는 select로 전달됨
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 //  어드민 디자인

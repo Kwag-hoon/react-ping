@@ -163,25 +163,39 @@ export default function AdminPins() {
       </div>
 
       {/* 검색 + 필터 */}
-      <div className="admin-card admin-card--search-row">
+      <div className="admin-card admin-card--search-bar">
         <AdminSearchBar value={q} onChange={setQ} placeholder="질문 검색..." />
 
-        <select className="admin-select" value={status} onChange={(e) => setStatus(e.target.value)}>
-          {statusOptions.map((o) => (
-            <option key={o.value} value={o.value}>
-              {o.label}
-            </option>
-          ))}
-        </select>
+        <div className="admin-select-wrapper">
+          <select className="admin-select" value={status} onChange={(e) => setStatus(e.target.value)}>
+            {statusOptions.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+          <span className="admin-select-arrow">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L5 5L9 1" stroke="#111827" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </span>
+        </div>
 
-        <select className="admin-select" value={issue} onChange={(e) => setIssue(e.target.value)}>
-          <option value="all">사용자 제어</option>
-          {issueOptions.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
+        <div className="admin-select-wrapper">
+          <select className="admin-select" value={issue} onChange={(e) => setIssue(e.target.value)}>
+            <option value="all">사용자 제어</option>
+            {issueOptions.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+          <span className="admin-select-arrow">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L5 5L9 1" stroke="#111827" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </span>
+        </div>
       </div>
 
       {/* 카드 리스트 */}

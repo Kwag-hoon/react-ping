@@ -5,6 +5,7 @@ import UserModal from "../modals/UserModal";
 
 export default function AdminUsers() {
   const [q, setQ] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
   const [openMenuId, setOpenMenuId] = useState(null);
   const menuRef = useRef(null);
 
@@ -99,16 +100,25 @@ export default function AdminUsers() {
 
   // ✅ 검색 필터
   const filtered = useMemo(() => {
+    let result = users;
+
+    // 1. 키워드 검색
     const keyword = q.trim().toLowerCase();
-    if (!keyword) return users;
-    return users.filter((u) => {
-      return (
+    if (keyword) {
+      result = result.filter((u) =>
         u.name.toLowerCase().includes(keyword) ||
         u.email.toLowerCase().includes(keyword) ||
         u.id.toLowerCase().includes(keyword)
       );
-    });
-  }, [q, users]);
+    }
+
+    // 2. 상태 필터
+    if (statusFilter !== "all") {
+      result = result.filter((u) => u.status === statusFilter);
+    }
+
+    return result;
+  }, [q, statusFilter, users]);
 
   // ✅ 바깥 클릭 시 메뉴 닫기
   useEffect(() => {
@@ -189,8 +199,27 @@ export default function AdminUsers() {
       </div>
 
       {/* 검색 */}
-      <div className="admin-card admin-card--search-row">
+      <div className="admin-card admin-card--search-bar">
         <AdminSearchBar value={q} onChange={setQ} placeholder="사용자 이름 또는 ID 검색..." />
+        
+        <div className="admin-select-wrapper">
+          <select
+            className="admin-select"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="all">모든 상태</option>
+            <option value="active">활성</option>
+            <option value="warned">경고됨</option>
+            <option value="suspended">정지됨</option>
+            <option value="inactive">비활성</option>
+          </select>
+          <span className="admin-select-arrow">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L5 5L9 1" stroke="#111827" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </span>
+        </div>
       </div>
 
       {/* 테이블 */}

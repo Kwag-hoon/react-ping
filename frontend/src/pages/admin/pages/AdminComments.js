@@ -103,15 +103,22 @@ export default function AdminComments() {
       </div>
 
       {/* 검색 + 상태 */}
-      <div className="admin-card admin-card--search-row">
+      <div className="admin-card admin-card--search-bar">
         <AdminSearchBar value={q} onChange={setQ} placeholder="댓글 검색..." />
 
-        <select className="admin-select" value={status} onChange={(e) => setStatus(e.target.value)}>
-          <option value="all">모든 상태</option>
-          <option value="active">활성</option>
-          <option value="hidden">숨김</option>
-          <option value="deleted">삭제됨</option>
-        </select>
+        <div className="admin-select-wrapper">
+          <select className="admin-select" value={status} onChange={(e) => setStatus(e.target.value)}>
+            <option value="all">모든 상태</option>
+            <option value="active">활성</option>
+            <option value="hidden">숨김</option>
+            <option value="deleted">삭제됨</option>
+          </select>
+          <span className="admin-select-arrow">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L5 5L9 1" stroke="#111827" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </span>
+        </div>
       </div>
 
       {/* 리스트 */}

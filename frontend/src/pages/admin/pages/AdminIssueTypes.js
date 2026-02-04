@@ -4,11 +4,15 @@ import AdminSearchBar from "../components/AdminSearchBar";
 import IssueTypeCreateModal from "../modals/IssueTypeCreateModal";
 import IssueTypeEditModal from "../modals/IssueTypeEditModal";
 import IssueTypeMergeModal from "../modals/IssueTypeMergeModal";
+import ConfirmDeleteModal from "../modals/ConfirmDeleteModal";
+import { deleteIssueType } from "../../../api/Admin_Api";
 
 import { ISSUE_TAXONOMY, GROUP_COLOR } from "../data/issueTaxonomy";
 
 export default function AdminIssueTypes() {
   const [q, setQ] = useState("");
+  const [theme, setTheme] = useState("all");
+  const [status, setStatus] = useState("all");
 
   // ⋮ 메뉴
   const [openMenuId, setOpenMenuId] = useState(null);
@@ -18,6 +22,7 @@ export default function AdminIssueTypes() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editTarget, setEditTarget] = useState(null);
   const [mergeTarget, setMergeTarget] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   // ✅ 실제 사용하는 “문제유형”을 타이핑 데이터로 초기 구성
   const [types, setTypes] = useState(() => {
@@ -65,16 +70,31 @@ export default function AdminIssueTypes() {
 
   // 검색
   const filtered = useMemo(() => {
+    let result = types;
+
+    // 1. 키워드
     const keyword = q.trim().toLowerCase();
-    if (!keyword) return types;
-    return types.filter((t) => {
-      return (
+    if (keyword) {
+      result = result.filter((t) =>
         t.name.toLowerCase().includes(keyword) ||
         (t.desc || "").toLowerCase().includes(keyword) ||
         (t.groupKo || "").toLowerCase().includes(keyword)
       );
-    });
-  }, [q, types]);
+    }
+
+    // 2. 테마
+    if (theme !== "all") {
+      result = result.filter((t) => t.groupKo === theme);
+    }
+
+    // 3. 상태
+    if (status !== "all") {
+      const isActive = status === "active";
+      result = result.filter((t) => t.isActive === isActive);
+    }
+
+    return result;
+  }, [q, types, theme, status]);
 
   // 메뉴 바깥 클릭 닫기
   useEffect(() => {
@@ -97,6 +117,10 @@ export default function AdminIssueTypes() {
 
   const openMerge = (t) => {
     setMergeTarget(t);
+    setOpenMenuId(null);
+  };
+  const openDelete = (t) => {
+    setDeleteTarget(t);
     setOpenMenuId(null);
   };
 
@@ -216,8 +240,44 @@ export default function AdminIssueTypes() {
       </div>
 
       {/* 검색 */}
-      <div className="admin-card admin-card--search-row">
+      <div className="admin-card admin-card--search-bar">
         <AdminSearchBar value={q} onChange={setQ} placeholder="문제 유형 검색..." />
+
+        <div className="admin-select-wrapper">
+          <select
+            className="admin-select"
+            value={theme}
+            onChange={(e) => setTheme(e.target.value)}
+          >
+            <option value="all">모든 테마</option>
+            <option value="정보구조">정보구조</option>
+            <option value="인터렉션">인터렉션</option>
+            <option value="사용성">사용성</option>
+            <option value="비주얼디자인">비주얼디자인</option>
+          </select>
+          <span className="admin-select-arrow">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L5 5L9 1" stroke="#111827" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </span>
+        </div>
+
+        <div className="admin-select-wrapper">
+          <select
+            className="admin-select"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option value="all">모든 상태</option>
+            <option value="active">활성</option>
+            <option value="inactive">비활성</option>
+          </select>
+          <span className="admin-select-arrow">
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 1L5 5L9 1" stroke="#111827" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </span>
+        </div>
       </div>
 
       {/* 리스트 */}
@@ -251,6 +311,9 @@ export default function AdminIssueTypes() {
                       </button>
                       <button className="issue-menu__item" onClick={() => toggleActive(t)}>
                         👁‍🗨 비활성화
+                      </button>
+                      <button className="issue-menu__item danger" onClick={() => openDelete(t)}>
+                        🗑 삭제
                       </button>
                     </div>
                   )}
@@ -311,6 +374,29 @@ export default function AdminIssueTypes() {
           candidates={types.filter((x) => x.id !== mergeTarget.id && x.isActive)}
           onClose={() => setMergeTarget(null)}
           onSubmit={onMergeApply}
+        />
+      )}
+      {deleteTarget && (
+        <ConfirmDeleteModal
+          title="삭제하시겠습니까?"
+          message={`"${deleteTarget.name}" 유형을 삭제합니다.`}
+          confirmText="삭제"
+          cancelText="취소"
+          onConfirm={() => {
+            const groupName = deleteTarget.groupKo;
+            const categoryName = deleteTarget.name;
+            deleteIssueType(groupName, categoryName)
+              .then(() => {
+                setTypes((prev) => prev.filter((x) => x.id !== deleteTarget.id));
+              })
+              .catch((err) => {
+                alert((err && err.response && err.response.data && err.response.data.message) || "삭제 실패");
+              })
+              .finally(() => {
+                setDeleteTarget(null);
+              });
+          }}
+          onClose={() => setDeleteTarget(null)}
         />
       )}
     </section>

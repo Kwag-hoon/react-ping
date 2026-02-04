@@ -13,6 +13,7 @@ const categoryRoutes = require("./routes/category");
 const postRoutes = require("./routes/posts");
 const answerRoutes = require('./routes/answer'); //핀 답변 
 const feedbackRoutes = require("./routes/feedback");  // ✅ 피드백 조회
+const adminRoutes = require("./routes/admin");   // 어드민 라우터
 
 const app = express();
 const PORT = 9070;
@@ -35,6 +36,8 @@ app.use('/api/pins', pinRoutes); //핀에디터 관련
 app.use('/api/designs', designRoutes); //디테일 페이지 관련
 app.use('/api/categories', categoryRoutes);
 app.use("/api/feedback", feedbackRoutes);  // ✅ 피드백 조회
+app.use("/admin", adminRoutes);
+
 app.use(postRoutes);// 게시물 관련
 app.use(answerRoutes);//핀 질문당 댓글 관련
 
