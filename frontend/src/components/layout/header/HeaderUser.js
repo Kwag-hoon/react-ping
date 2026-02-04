@@ -10,12 +10,16 @@ import Alarm from "../../../assets/icon-bell.svg";
 const HeaderUser = ({ variant }) => {
   const [user, setUser] = useState(null);
 
+  // 🔍 검색 키워드 (✅ 반드시 컴포넌트 안)
+  const [keyword, setKeyword] = useState("");
+
   // ✅ Api baseURL
   const API_BASE = Api.defaults.baseURL || "http://localhost:9070";
-
-  // ✅ API_BASE 선언 이후에 만들어야 함 (에러 방지)
   const DEFAULT_AVATAR_SRC = `${API_BASE}/uploads/default.png`;
 
+  /* ===============================
+     로그인 유저 정보 로딩
+     =============================== */
   useEffect(() => {
     const fetchMe = async () => {
       try {
@@ -33,23 +37,36 @@ const HeaderUser = ({ variant }) => {
     fetchMe();
   }, []);
 
+  /* ===============================
+     프로필 이미지 처리
+     =============================== */
   const avatarSrc = useMemo(() => {
     const img = user?.user_image?.trim();
 
-    // ✅ user_image 없으면 서버 default.png
     if (!img) return DEFAULT_AVATAR_SRC;
-
     if (img.startsWith("http")) return img;
     if (img.startsWith("/")) return `${API_BASE}${img}`;
 
-    // "default.png" 같은 파일명만 오면 uploads로
     return `${API_BASE}/uploads/${img}`;
   }, [user, API_BASE, DEFAULT_AVATAR_SRC]);
 
+  /* ===============================
+     로그아웃
+     =============================== */
   const handleLogout = (e) => {
     e.preventDefault();
     localStorage.removeItem("token");
     window.location.href = "/";
+  };
+
+  /* ===============================
+     검색 처리
+     =============================== */
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (!keyword.trim()) return;
+
+    window.location.href = `/archive?q=${encodeURIComponent(keyword)}`;
   };
 
   return (
@@ -89,8 +106,14 @@ const HeaderUser = ({ variant }) => {
         </div>
 
         <div className="header-center">
-          <form className="search-form">
-            <input type="text" placeholder="Search..." />
+          <form className="search-form" onSubmit={handleSearch}>
+            <input
+              type="text"
+              placeholder="아카이브 
+              제목 또는 문제유형으로 탐색하세요"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+            />
             <button type="submit" className="search-btn">
               <img src={SearchIcon} alt="search" />
             </button>

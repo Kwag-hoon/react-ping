@@ -224,8 +224,8 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        @include typo("headingMd", $bold);
-        color: $main_gray_800;
+        @include typo("headingSm", $bold);
+        color: $main_gray_500;
 
         .pin-badge {
           width: 32px;
@@ -244,9 +244,9 @@
         }
       }
 
-      span {
-        @include typo("bodytextLg", $regular);
-        color: $main_gray_600
+      .selected-pin_qna {
+        @include typo("headingSm", $bold);
+        color: $main_gray_700
       }
 
       .box-right_card {
@@ -256,7 +256,7 @@
           width: 100%;
 
           li:first-child {
-            @include typo("bodytextLg", $bold);
+            @include typo("bodytextLg", $regular);
             color: $main_gray_600;
             margin-bottom: 30px;
           }
@@ -267,7 +267,7 @@
             color: $main_gray_800;
 
             span {
-              font-size: 13px;
+              font-size: 10px;
             }
           }
         }
@@ -277,7 +277,7 @@
           min-height: 120px;
 
           font-family: inherit;
-          font-size: inherit;
+          @include typo("bodytextMd", $regular);
           line-height: 1.6;
 
           resize: none;
@@ -307,21 +307,21 @@
         padding: 0px 10px;
 
         p {
-          @include typo("bodytextLg", $bold);
-          color: $main_gray_600
+          @include typo("bodytextLg", $regular);
+          color: $main_gray_400;
         }
 
-        ul {
-          li {
-            @extend .card-box;
-            @include typo("bodytextMd", $regular);
-            color: $main_gray_800;
+        // ul {
+        //   li {
+        //     @extend .card-box;
+        //     @include typo("bodytextMd", $regular);
+        //     color: $main_gray_800;
 
-            span {
-              font-size: 13px;
-            }
-          }
-        }
+        //     span {
+        //       font-size: 13px;
+        //     }
+        //   }
+        // }
 
         textarea {
           margin-top: 30px;
@@ -329,29 +329,34 @@
           min-height: 120px;
 
           font-family: inherit;
-          font-size: inherit;
+          @include typo("bodytextMd", $regular);
           line-height: 1.6;
 
           resize: none;
           outline: none;
           background: transparent;
 
-          border: 1px solid $main_gray_400;
+          border: 1px solid $main_gray_300;
+
+          &::placeholder {
+            color: $main_gray_300;
+          }
         }
 
         button {
           @include btn($type: "fixed",
             $shadow: true,
-          );
+            $hover: false);
+
           @include sns-shadow;
-          background-color: $primary_pink;
+          background-color: #fdb7bd;
           width: 100%;
           height: 60px;
-          //border: 1px solid $main-white;
           border-radius: 12px;
 
           @include typo("bodytextXl", $bold);
         }
+
       }
     }
   }
@@ -488,7 +493,6 @@
       @include btn('md'
       );
       @include sns-shadow;
-      background-color: $primary_pink !important;
       width: 100%;
     }
 
@@ -522,14 +526,11 @@
 
       h2 {
         @include typo("displaySm", $bold);
-        // color: $main_gray_900;
-        // padding: 10px 0px;
+
       }
 
       p {
         @include typo("bodytextXl", $regular);
-        // color: $main_gray_600;
-        // padding-bottom: 20px;
       }
 
       .desc-row {
