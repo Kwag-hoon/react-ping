@@ -130,9 +130,9 @@ $typo-styles: (
   $shadow: true, // 그림자 유무
   $bg: null, // 배경색 직접 지정
   $color: null, // 글자색 직접 지정
-  $border: null // border 색 직접 지정
-
-) {
+  $border: null, // border 색 직접 지정
+  $hover: true //hover 기본값 안쓸경우 fasle
+  ) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -160,9 +160,12 @@ $typo-styles: (
     color: if($color !=null, $color, $main-white);
     border: 1px solid if($border !=null, $border, transparent);
 
-    &:hover,
-    &:focus-visible {
-      background: $primary_mint;
+    @if $hover {
+
+      &:hover,
+      &:focus-visible {
+        background: $primary_mint;
+      }
     }
   }
 
@@ -176,9 +179,12 @@ $typo-styles: (
     color: if($color !=null, $color, $main-white);
     border: 1px solid if($border !=null, $border, transparent);
 
-    &:hover,
-    &:focus-visible {
-      background: $primary_mint;
+    @if $hover {
+
+      &:hover,
+      &:focus-visible {
+        background: $primary_mint;
+      }
     }
   }
 
@@ -209,9 +215,12 @@ $typo-styles: (
       color: if($color !=null, $color, $main-white);
       border: 1px solid if($border !=null, $border, transparent);
 
-      &:hover,
-      &:focus-visible {
-        background: $primary_mint;
+      @if $hover {
+
+        &:hover,
+        &:focus-visible {
+          background: $primary_mint;
+        }
       }
     }
 
@@ -221,8 +230,10 @@ $typo-styles: (
       color: if($color !=null, $color, $primary_pink);
       border: 1px solid if($border !=null, $border, $primary_pink);
 
-      &:hover {
-        background: rgba($primary_pink, 0.1);
+      @if $hover {
+        &:hover {
+          background: rgba($primary_pink, 0.1);
+        }
       }
     }
 

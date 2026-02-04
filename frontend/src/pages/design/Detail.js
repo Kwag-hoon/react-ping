@@ -21,19 +21,19 @@ function Detail() {
   // 모바일 댓글 모달
   const [isOpen, setIsOpen] = useState(false);
 
-  //비 로그인시 댓글 입력 막기 
+  // 비 로그인시 댓글 입력 막기 
   const isLogin = !!localStorage.getItem('token');
 
-  // 🔹 핀 답변 상태 (DB)
+  // 핀 답변 상태 (DB)
   const [answers, setAnswers] = useState([]);
   const [answerText, setAnswerText] = useState('');
 
-  // 🔹 개인 메모 (로컬)
-  const [memo, setMemo] = useState([]);
-  const [memoText, setMemoText] = useState('');
+  // 개인 메모 (로컬) -- 기능 disabled
+  // const [memo, setMemo] = useState([]);
+  // const [memoText, setMemoText] = useState('');
 
   /* ===============================
-     상세 데이터 로딩
+    상세 데이터 로딩
      =============================== */
   useEffect(() => {
     if (!id) return;
@@ -58,7 +58,7 @@ function Detail() {
   }, [id]);
 
   /* ===============================
-     핀 답변 조회
+    핀 답변 조회
      =============================== */
   const fetchAnswers = async (pinNo) => {
     try {
@@ -73,7 +73,7 @@ function Detail() {
   };
 
   /* ===============================
-     핀 클릭
+    핀 클릭
      =============================== */
   const handlePinClick = (pin) => {
     setSelectedPin(pin);
@@ -85,7 +85,7 @@ function Detail() {
   };
 
   /* ===============================
-     답변 작성
+    답변 작성
      =============================== */
   const handleAddAnswer = async () => {
     const token = localStorage.getItem('token');
@@ -115,23 +115,23 @@ function Detail() {
 
 
   /* ===============================
-     개인 메모 (로컬)
+    개인 메모 (로컬) -- 기능 disabled
      =============================== */
-  const handleAddMemo = () => {
-    if (!memoText.trim()) return;
+  // const handleAddMemo = () => {
+  //   if (!memoText.trim()) return;
 
-    const newMemo = {
-      id: Date.now(),
-      content: memoText,
-      date: new Date().toLocaleDateString('ko-KR', {
-        month: 'long',
-        day: 'numeric',
-      }),
-    };
+  //   const newMemo = {
+  //     id: Date.now(),
+  //     content: memoText,
+  //     date: new Date().toLocaleDateString('ko-KR', {
+  //       month: 'long',
+  //       day: 'numeric',
+  //     }),
+  //   };
 
-    setMemo(prev => [...prev, newMemo]);
-    setMemoText('');
-  };
+  //   setMemo(prev => [...prev, newMemo]);
+  //   setMemoText('');
+  // };
 
   return (
     <section className="detail container">
@@ -205,12 +205,10 @@ function Detail() {
             </p>
 
             <hr />
-            <span>{selectedPin?.question || '핀을 선택해주세요'}</span>
+            <span className='selected-pin_qna'>{selectedPin?.question || '핀을 선택해주세요'}</span>
             <hr />
 
             <div className="box-right_card">
-
-
               <ul>
                 <li>
                   Community Replies <span>({answers.length})</span>
@@ -224,9 +222,7 @@ function Detail() {
                   <li key={a.answer_no}>
                     <strong>{a.user_nickname}</strong>
                     <br />
-                    <span>
-                      {dayjs(a.create_datetime).format('YYYY.MM.DD HH:mm')}
-                    </span>
+                    {dayjs(a.create_datetime).format('YYYY.MM.DD HH:mm')}
                     <br />
                     {a.answer_content}
                   </li>
@@ -251,22 +247,27 @@ function Detail() {
 
             <div className="box-right_memo">
               <p>My Memo (Private)</p>
-              {memo.map(m => (
+              {/* {memo.map(m => (
                 <div key={m.id}>
                   {m.content}
                   <br />
                   <span>{m.date}</span>
                 </div>
-              ))}
+              ))} */}
 
               <textarea
                 className="card-box"
                 placeholder="이 질문에 대한 개인 메모"
-                value={memoText}
-                onChange={(e) => setMemoText(e.target.value)}
+                disabled
+              //value={memoText}
+              //onChange={(e) => setMemoText(e.target.value)}
               />
 
-              <button onClick={handleAddMemo}>메모 저장</button>
+              <button
+              // onClick={handleAddMemo}
+              >
+                메모 저장
+              </button>
             </div>
           </div>
         </div>
@@ -297,11 +298,10 @@ function Detail() {
                 </p>
 
                 <hr />
-                <span>{selectedPin?.question || '핀을 선택해주세요'}</span>
+                <span className='selected-pin_qna'>{selectedPin?.question || '핀을 선택해주세요'}</span>
                 <hr />
 
                 <div className="box-right_card">
-
                   <ul>
                     <li>
                       Community Replies <span>({answers.length})</span>
@@ -337,29 +337,33 @@ function Detail() {
                   />
 
                   <button className='mobile-comment-btn'
-                  onClick={handleAddAnswer}>댓글 게시</button>
+                    onClick={handleAddAnswer}>댓글 게시</button>
                   <hr />
                 </div>
 
                 <div className="box-right_memo">
                   <p>My Memo (Private)</p>
-                  {memo.map(m => (
+                  {/* {memo.map(m => (
                     <div key={m.id}>
                       {m.content}
                       <br />
                       <span>{m.date}</span>
                     </div>
-                  ))}
+                  ))} */}
 
                   <textarea
                     className="card-box"
                     placeholder="이 질문에 대한 개인 메모"
-                    value={memoText}
-                    onChange={(e) => setMemoText(e.target.value)}
+                    disabled
+                  //value={memoText}
+                  //onChange={(e) => setMemoText(e.target.value)}
                   />
 
                   <button className='mobile-comment-btn'
-                  onClick={handleAddMemo}>메모 저장</button>
+                  // onClick={handleAddMemo}
+                  >
+                    메모 저장
+                  </button>
                 </div>
               </div>
             </div>
