@@ -97,74 +97,82 @@ router.delete("/posts/:id", (req, res) => {
   console.log("[DELETE /admin/posts]", { id });
 
   // 먼저 존재 여부 확인
-  db.query("SELECT post_no FROM pin_posts WHERE post_no = ?", [id], (selErr, rows) => {
-    if (selErr) {
-      console.error(selErr);
-      return res.status(500).json({ message: "게시물 조회 실패" });
-    }
-    if (!rows || rows.length === 0) {
-      return res.status(404).json({ message: "대상 게시물을 찾을 수 없습니다." });
-    }
+  db.query(
+    "SELECT post_no FROM pin_posts WHERE post_no = ?",
+    [id],
+    (selErr, rows) => {
+      if (selErr) {
+        console.error(selErr);
+        return res.status(500).json({ message: "게시물 조회 실패" });
+      }
+      if (!rows || rows.length === 0) {
+        return res.status(404).json({ message: "대상 게시물을 찾을 수 없습니다." });
+      }
 
-    db.beginTransaction((err) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ message: "트랜잭션 시작 실패" });
-    }
+      db.beginTransaction((err) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ message: "트랜잭션 시작 실패" });
+        }
 
-    const steps = [
-      {
-        sql: `
-          DELETE a
-          FROM pin_answers a
-          JOIN pin_questions q ON a.pin_no = q.pin_no
-          WHERE q.post_no = ?
-        `,
-        params: [id],
-      },
-      { sql: "DELETE FROM pin_questions WHERE post_no = ?", params: [id] },
-      { sql: "DELETE FROM pin_images WHERE post_no = ?", params: [id] },
-      { sql: "DELETE FROM pin_post_categories WHERE post_no = ?", params: [id] },
-      { sql: "DELETE FROM pin_posts WHERE post_no = ?", params: [id] },
-    ];
+        const steps = [
+          {
+            sql: `
+              DELETE a
+              FROM pin_answers a
+              JOIN pin_questions q ON a.pin_no = q.pin_no
+              WHERE q.post_no = ?
+            `,
+            params: [id],
+          },
+          { sql: "DELETE FROM pin_questions WHERE post_no = ?", params: [id] },
+          { sql: "DELETE FROM pin_images WHERE post_no = ?", params: [id] },
+          { sql: "DELETE FROM pin_post_categories WHERE post_no = ?", params: [id] },
+          { sql: "DELETE FROM pin_posts WHERE post_no = ?", params: [id] },
+        ];
 
-    const runStep = (i) => {
-      if (i >= steps.length) {
-        return db.commit((commitErr) => {
-          if (commitErr) {
-            console.error(commitErr);
-            return db.rollback(() => {
-              res.status(500).json({ message: "커밋 실패" });
+        const runStep = (i) => {
+          if (i >= steps.length) {
+            return db.commit((commitErr) => {
+              if (commitErr) {
+                console.error(commitErr);
+                return db.rollback(() => {
+                  res.status(500).json({ message: "커밋 실패" });
+                });
+              }
+              return res.json({ success: true });
             });
           }
-          res.json({ success: true });
-        });
-      }
-      const { sql, params } = steps[i];
-      db.query(sql, params, (qErr, result) => {
-        if (qErr) {
-          console.error(qErr);
-          return db.rollback(() => {
-            res.status(500).json({
-              message: "삭제 실패",
-              step: i,
-              error: qErr.message || String(qErr),
-              code: qErr.code || undefined,
-            });
-          });
-        }
-        if (i === steps.length - 1 && result && result.affectedRows === 0) {
-          // 마지막 단계에서 대상 게시물이 없으면 롤백
-          return db.rollback(() => {
-            res.status(404).json({ message: "대상 게시물을 찾을 수 없습니다." });
-          });
-        }
-        runStep(i + 1);
-      });
-    };
 
-      runStep(0);
-    });
+          const { sql, params } = steps[i];
+          db.query(sql, params, (qErr, result) => {
+            if (qErr) {
+              console.error(qErr);
+              return db.rollback(() => {
+                res.status(500).json({
+                  message: "삭제 실패",
+                  step: i,
+                  error: qErr.message || String(qErr),
+                  code: qErr.code || undefined,
+                });
+              });
+            }
+
+            // 마지막 단계에서 대상 게시물이 없으면 롤백
+            if (i === steps.length - 1 && result && result.affectedRows === 0) {
+              return db.rollback(() => {
+                res.status(404).json({ message: "대상 게시물을 찾을 수 없습니다." });
+              });
+            }
+
+            runStep(i + 1);
+          });
+        };
+
+        runStep(0);
+      });
+    }
+  );
 });
 
 
