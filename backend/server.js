@@ -35,10 +35,8 @@ app.use('/api/pins', pinRoutes); //핀에디터 관련
 app.use('/api/designs', designRoutes); //디테일 페이지 관련
 app.use('/api/categories', categoryRoutes);
 app.use("/api/feedback", feedbackRoutes);  // ✅ 피드백 조회
-
-app.use(postRoutes);
-
-app.use(answerRoutes);
+app.use(postRoutes);// 게시물 관련
+app.use(answerRoutes);//핀 질문당 댓글 관련
 
 // 서버 상태 확인용
 app.get('/', (req, res) => {
