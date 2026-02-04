@@ -1,47 +1,63 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import DesignItem from "../DesignItem";
-// import testItems from '../../test/archive.json';
-import '../styles/archive.scss'
+import '../styles/archive.scss';
 
-function Archive(props) {
-  //카테고리 / 처음 활성화된메뉴 / 
+function Archive() {
   const [categories, setCategories] = useState([]);
   const [active, setActive] = useState('전체');
   const [items, setItems] = useState([]);
 
-
-  //  카테고리 DB 로딩 (UI 용)
+  /* ===============================
+     카테고리 로딩 (UI용)
+     =============================== */
   useEffect(() => {
     fetch('http://localhost:9070/api/categories')
       .then(res => res.json())
       .then(data => {
-        // data = { 그룹명: [카테고리들] }
         const subs = Object.values(data).flat();
         setCategories(subs);
       })
       .catch(err => console.error('카테고리 로딩 실패:', err));
   }, []);
 
-  // 게시물 로딩 
-  useEffect(() => {
+  /* ===============================
+     게시물 로딩 함수
+     =============================== */
+  const fetchPosts = () => {
     fetch('http://localhost:9070/api/posts')
       .then(res => res.json())
       .then(data => {
         setItems(Array.isArray(data) ? data : []);
       })
       .catch(err => console.error('아카이브 로딩 실패:', err));
+  };
+
+  /* 최초 로딩 */
+  useEffect(() => {
+    fetchPosts();
   }, []);
 
-  //  필터 적용
+  /* 🔥 포커스 돌아올 때 다시 로딩 */
+  useEffect(() => {
+    const handleFocus = () => {
+      fetchPosts();
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, []);
+
+  /* ===============================
+     필터 + 중복 제거
+     =============================== */
   const displayItems = useMemo(() => {
-    // 1) 먼저 필터 적용
     const filtered =
       active === '전체'
         ? items
         : items.filter(item => item.subType === active);
 
-    // 2) 그 다음 필터된 결과에서만 중복 제거
     const map = new Map();
+
     filtered.forEach(item => {
       if (map.has(item.id)) return;
 
@@ -50,9 +66,10 @@ function Archive(props) {
         title: item.title,
         image: `http://localhost:9070${item.imagePath}`,
         date: item.createdAt,
-        comments: item.pins ?? 0,
-        views: item.view_count ?? 0,
-        likes: item.like_count ?? 0,
+
+        // 🔑 DesignItem 기준 필드명
+        view_count: item.viewCount ?? item.view_count ?? 0,
+        question_count: item.pins ?? 0,
       });
     });
 
@@ -73,13 +90,13 @@ function Archive(props) {
             <li>
               <button
                 type="button"
-                aria-pressed={active === '전체'}
                 className={active === '전체' ? 'active' : ''}
                 onClick={() => setActive('전체')}
               >
                 전체
               </button>
             </li>
+
             {categories.map(name => (
               <li key={name}>
                 <button
@@ -103,11 +120,10 @@ function Archive(props) {
               <p className="empty">아카이브가 없습니다.</p>
             )}
           </div>
-
         </div>
       </section>
     </main>
-  )
+  );
 }
 
 export default Archive;

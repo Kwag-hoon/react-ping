@@ -11,6 +11,7 @@ router.get('/api/posts', (req, res) => {
   g.group_name AS mainType,
   c.category_name AS subType,
   img.image_path AS imagePath,
+  p.view_count AS viewCount,
   COUNT(DISTINCT pq.pin_no) AS pins,
   p.create_datetime AS createdAt
 FROM pin_posts p
@@ -41,6 +42,25 @@ ORDER BY p.create_datetime DESC
       return res.status(500).json({ message: '게시물 조회 실패' });
     }
     res.json(rows);
+  });
+});
+
+// 조회수 증강 
+router.post('/api/posts/:id/view',(req, res)=>{
+  const{id} = req.params;
+
+  const sql = `
+  UPDATE pin_posts SET view_count = view_count + 1
+  WHERE post_no = ? 
+  `;
+
+  db.query(sql, [id], (err)=>{
+    if(err){
+      console.error('조회수 증가 오류:', err);
+      return res.status(500).json({message: '조회수 증가 실패'});
+    }
+
+    res.json({ success: true});
   });
 });
 
