@@ -109,7 +109,8 @@ const HeaderUser = ({ variant }) => {
           <form className="search-form" onSubmit={handleSearch}>
             <input
               type="text"
-              placeholder="아카이브 제목 또는 문제유형으로 탐색하세요"
+              placeholder="아카이브 
+              제목 또는 문제유형으로 탐색하세요"
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
             />
