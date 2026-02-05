@@ -5,7 +5,7 @@
 .custom-select {
   position: relative;
   width: 100%;
-  padding: 16px 16px;
+  padding: 14px 16px;
   border-radius: 10px;
   cursor: pointer;
   background: #fff;
@@ -16,7 +16,7 @@
   align-items: center;
 
   .selected {
-    @include typo("headingSm", $regular);
+    @include typo("bodytextLg", $regular);
     color: $main_gray_800;
   }
 
@@ -43,7 +43,7 @@
     li {
       margin: 12px 20px;
       cursor: pointer;
-      @include typo("headingSm", $regular);
+      @include typo("bodytextLg", $regular);
       color: $main_gray_700;
 
       &:hover {
