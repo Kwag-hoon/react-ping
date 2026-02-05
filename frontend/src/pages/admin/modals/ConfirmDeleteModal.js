@@ -8,6 +8,7 @@ export default function ConfirmDeleteModal({
   onConfirm,
   onClose,
 }) {
+  
   return (
     <ModalBase
       title={title}

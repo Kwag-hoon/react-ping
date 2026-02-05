@@ -4,6 +4,10 @@ body {
   font-family: $font-family-inter;
 }
 
+//모바일 로그아웃
+.m-logout-btn{
+  display: none;
+}
 // 헤더
 .header {
   position: relative;
@@ -265,6 +269,16 @@ body {
       .header-right {
         display: none; // 모바일에서는 탭바 사용 예정이므로 프로필 숨김
       }
+      
+      //모바일 로그아웃
+      .m-logout-btn{
+        display:block;
+        position:absolute;
+        right:10px;
+        border:none;
+        background:none;
+        cursor: pointer;
+      }
     }
 
     // HeaderGuest
@@ -352,5 +366,11 @@ body {
   img {
     width: 64px;
     height: auto;
+  }
+}
+
+@media screen and (max-width: 767px){
+  .footer{
+    opacity:0;
   }
 }

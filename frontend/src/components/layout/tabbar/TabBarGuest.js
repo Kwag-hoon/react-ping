@@ -27,10 +27,6 @@ const TabBarGuest = () => {
         <img src={LoginIcon} alt="로그인으로 바로가기" />
         <span>Login</span>
       </NavLink>
-
-
-
-
     </nav>
   );
 };

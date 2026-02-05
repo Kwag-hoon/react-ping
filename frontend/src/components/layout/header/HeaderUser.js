@@ -141,6 +141,11 @@ const HeaderUser = ({ variant }) => {
             </button>
           </div>
         </div>
+
+        {/* 모바일 로그아웃 */}
+        <button onClick={handleLogout} className="m-logout-btn">
+          <img src={logoutImg} alt="로그아웃 이미지" />
+        </button>
       </div>
     </header>
   );

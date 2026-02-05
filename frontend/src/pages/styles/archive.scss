@@ -63,6 +63,13 @@ header.guest+.archive section .top-text {
         gap: 36px;
         padding-top: 20px;
         width: 100%;
+
+        grid-auto-columns: minmax(0, 1fr);
+
+      }
+
+      .gallery-grid>* {
+        min-width: 0;
       }
     }
   }
@@ -114,9 +121,6 @@ header.guest+.archive section .top-text {
 @media screen and (max-width: 767px) {
   .archive {
     section {
-      .top-text {
-        padding-top: 50px;
-      }
 
       p {
         @include typo ("bodytextLg", $regular);

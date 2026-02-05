@@ -59,7 +59,6 @@ function App() {
           <Route path="/upload/pineditor" element={<PinEditor />} />
 
           {/* 마이페이지 레이아웃 */}
-         
           <Route path="/mypage" element={<MyPageLayout />}>
             <Route index element={<MyDesigns />} />
             <Route path="designs/:id" element={<Detail />} />
@@ -69,6 +68,7 @@ function App() {
             <Route path="profile" element={<MyProfile />} />
             <Route path="alarm" element={<MyAlarm />} />
           </Route>
+          
           {/* 관리자 레이아웃 */}
           <Route path="/admin" element={<AdminLayout />}>
             {/*  /admin -> /admin/design 로 URL을 바꿔줌 */}

@@ -348,7 +348,7 @@ function Detail() {
                     onChange={(e) => setAnswerText(e.target.value)}
                   />
 
-                  <button className='mobile-comment-btn'
+                  <button 
                     onClick={handleAddAnswer}>댓글 게시</button>
                   <hr />
                 </div>
@@ -371,7 +371,7 @@ function Detail() {
                   //onChange={(e) => setMemoText(e.target.value)}
                   />
 
-                  <button className='mobile-comment-btn'
+                  <button 
                   // onClick={handleAddMemo}
                   >
                     메모 저장

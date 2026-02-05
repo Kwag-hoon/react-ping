@@ -175,7 +175,6 @@ router.delete("/posts/:id", (req, res) => {
   );
 });
 
-
 /**
 /**
  * DELETE /admin/issue-types

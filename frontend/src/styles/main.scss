@@ -346,6 +346,9 @@ main {
   h3 {
     @include typo("headingSm", $bold);
     margin-bottom: 6px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     min-height: 52px;
     overflow: hidden;
     text-overflow: ellipsis;
