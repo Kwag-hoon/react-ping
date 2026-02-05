@@ -37,6 +37,7 @@ import AdminPins from './pages/admin/pages/AdminPins';
 import AdminComments from './pages/admin/pages/AdminComments';
 import AdminUsers from './pages/admin/pages/AdminUsers';
 import AdminIssueTypes from './pages/admin/pages/AdminIssueTypes';
+import Question from "./pages/questions/Question";
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
           <Route path='/detail/:id' element={<Detail />} />
           <Route path='/archive' element={<Archive />} />
           <Route path="/upload/pineditor" element={<PinEditor />} />
+          <Route path='/qna' element={<Question/>} />
 
           {/* 마이페이지 레이아웃 */}
           <Route path="/mypage" element={<MyPageLayout />}>
