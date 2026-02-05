@@ -40,9 +40,36 @@ router.use(requireAdmin);
  */
 router.get("/users", (req, res) => {
   db.query(
-    `SELECT user_no, user_id, user_nickname, user_intro, user_grade, user_role, create_datetime
-     FROM pin_users
-     ORDER BY user_no DESC`,
+    `SELECT
+      u.user_no,
+      u.user_id,
+      u.user_nickname,
+      u.user_intro,
+      u.user_grade,
+      u.create_datetime,
+
+      COUNT(DISTINCT p.post_no)        AS designs,
+      COUNT(DISTINCT q.pin_no)         AS pins,
+      COUNT(DISTINCT a.answer_no)      AS comments
+
+    FROM pin_users u
+    LEFT JOIN pin_posts p
+      ON p.user_no = u.user_no
+    LEFT JOIN pin_questions q
+      ON q.post_no = p.post_no
+    LEFT JOIN pin_answers a
+      ON a.pin_no = q.pin_no
+
+    GROUP BY
+      u.user_no,
+      u.user_id,
+      u.user_nickname,
+      u.user_intro,
+      u.user_grade,
+      u.create_datetime
+
+    ORDER BY u.user_no DESC;
+    `,
     (err, rows) => {
       if (err) {
         console.error(err);
@@ -126,7 +153,7 @@ router.delete("/posts/:id", (req, res) => {
             params: [id],
           },
           { sql: "DELETE FROM pin_questions WHERE post_no = ?", params: [id] },
-          { sql: "DELETE FROM pin_images WHERE post_no = ?", params: [id] },
+          { sql: "DELETE FROM pin_post_images WHERE post_no = ?", params: [id] },
           { sql: "DELETE FROM pin_post_categories WHERE post_no = ?", params: [id] },
           { sql: "DELETE FROM pin_posts WHERE post_no = ?", params: [id] },
         ];
@@ -203,6 +230,40 @@ router.delete("/issue-types", (req, res) => {
       return res.status(404).json({ message: "대상 카테고리를 찾을 수 없습니다." });
     }
     res.json({ success: true });
+  });
+});
+
+/**
+ * DELETE /admin/users/:id
+ * - 회원 완전 삭제 (ON DELETE CASCADE 전제)
+ */
+router.delete("/users/:id", (req, res) => {
+  const userNo = parseInt(req.params.id, 10);
+
+  if (!userNo) {
+    return res.status(400).json({ message: "유효하지 않은 사용자 ID" });
+  }
+
+  // 🔒 자기 자신 삭제 방지
+  if (String(req.user.user_no) === String(userNo)) {
+    return res
+      .status(403)
+      .json({ message: "본인 계정은 삭제할 수 없습니다." });
+  }
+
+  const sql = `DELETE FROM pin_users WHERE user_no = ?`;
+
+  db.query(sql, [userNo], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "회원 삭제 실패" });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "사용자를 찾을 수 없습니다." });
+    }
+
+    return res.json({ success: true });
   });
 });
 

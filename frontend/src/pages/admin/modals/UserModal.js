@@ -1,6 +1,7 @@
 import { useEffect } from "react";
+import axios from "axios";
 
-export default function UserModal({ user, onClose }) {
+export default function UserModal({ user, onClose, onDeleted }) {
   useEffect(() => {
     const onKeyDown = (e) => e.key === "Escape" && onClose?.();
     window.addEventListener("keydown", onKeyDown);
@@ -14,6 +15,31 @@ export default function UserModal({ user, onClose }) {
     };
   }, [onClose]);
 
+  /* ===============================
+     🔥 영구 비활성화 (삭제)
+     =============================== */
+  const handleDeactivate = async () => {
+    const ok = window.confirm(
+      `${user.name} (${user.email}) 계정을 영구 비활성화 하시겠습니까?\n이 작업은 되돌릴 수 없습니다.`
+    );
+    if (!ok) return;
+
+    try {
+      await axios.delete(`http://localhost:9070/admin/users/${user.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      // 부모(AdminUsers)에 삭제 완료 알림
+      onDeleted?.(user.id);
+      onClose();
+    } catch (err) {
+      console.error("회원 삭제 실패", err);
+      alert("회원 삭제에 실패했습니다.");
+    }
+  };
+
   return (
     <div className="user-modal__overlay" onMouseDown={onClose}>
       <div className="user-modal" onMouseDown={(e) => e.stopPropagation()}>
@@ -21,9 +47,15 @@ export default function UserModal({ user, onClose }) {
         <div className="user-modal__head">
           <div>
             <div className="user-modal__title">사용자 상세 정보</div>
-            <div className="user-modal__subtitle">효율적인 중재를 위한 종합 정보</div>
+            <div className="user-modal__subtitle">
+              효율적인 중재를 위한 종합 정보
+            </div>
           </div>
-          <button type="button" className="user-modal__close" onClick={onClose}>
+          <button
+            type="button"
+            className="user-modal__close"
+            onClick={onClose}
+          >
             ✕
           </button>
         </div>
@@ -32,13 +64,17 @@ export default function UserModal({ user, onClose }) {
         <div className="user-modal__body">
           {/* top profile */}
           <div className="user-profile">
-            <div className="user-profile__avatar">{user.name.slice(0, 1)}</div>
+            <div className="user-profile__avatar">
+              {user.name.slice(0, 1)}
+            </div>
 
             <div className="user-profile__info">
               <div className="user-profile__name-row">
                 <div className="user-profile__name">{user.name}</div>
                 <span className="user-profile__status">
-                  <span className="user-status-pill">{user.status === "active" ? "활성" : user.status}</span>
+                  <span className="user-status-pill">
+                    {user.status === "active" ? "활성" : user.status}
+                  </span>
                 </span>
               </div>
 
@@ -90,7 +126,9 @@ export default function UserModal({ user, onClose }) {
           <div className="user-recent">
             {(user.recent || []).map((r, idx) => (
               <div className="user-recent-item" key={idx}>
-                <div className={`user-recent-icon user-recent-icon--${r.type}`} />
+                <div
+                  className={`user-recent-icon user-recent-icon--${r.type}`}
+                />
                 <div className="user-recent-text">
                   <div className="user-recent-title">{r.title}</div>
                   <div className="user-recent-date">{r.date}</div>
@@ -106,7 +144,12 @@ export default function UserModal({ user, onClose }) {
             <button className="user-action-btn">🛡 경고 발송</button>
             <button className="user-action-btn">⛔ 일시 정지</button>
             <button className="user-action-btn">✉ 이메일 보내기</button>
-            <button className="user-action-btn danger">🚫 영구 비활성화</button>
+            <button
+              className="user-action-btn danger"
+              onClick={handleDeactivate}
+            >
+              🚫 영구 비활성화
+            </button>
           </div>
         </div>
 

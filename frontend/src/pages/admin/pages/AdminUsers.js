@@ -2,92 +2,22 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import AdminSearchBar from "../components/AdminSearchBar";
 import StatusBadge from "../components/StatusBadge";
 import UserModal from "../modals/UserModal";
+import axios from "axios";
+
 
 export default function AdminUsers() {
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [openMenuId, setOpenMenuId] = useState(null);
   const menuRef = useRef(null);
-
   const [selectedUser, setSelectedUser] = useState(null);
 
-  // ✅ 더미 데이터 (API로 교체)
-  const users = useMemo(
-    () => [
-      {
-        id: "u1",
-        name: "김서연",
-        email: "kim@example.com",
-        role: "PRO",
-        joinDate: "2025년 11월 3일",
-        lastActive: "2026년 1월 17일 오후 11:30",
-        activeDays: 85,
-        designs: 15,
-        pins: 23,
-        comments: 47,
-        reports: 0,
-        activity: "High",
-        status: "active",
-        recent: [
-          { type: "design", title: "모바일 뱅킹 앱 - 거래 플로우", date: "2026년 1월 16일 오후 11:30" },
-          { type: "comment", title: "대시보드 리디자인에 댓글 작성", date: "2026년 1월 15일 오후 08:20" },
-          { type: "pin", title: "이커머스 제품 페이지에 핀 생성", date: "2026년 1월 14일 오후 06:45" },
-          { type: "design", title: "SaaS 대시보드 UI", date: "2026년 1월 13일 오전 01:00" },
-        ],
-      },
-      {
-        id: "u2",
-        name: "박민준",
-        email: "park@example.com",
-        role: "JUNIOR",
-        joinDate: "2025년 10월 15일",
-        lastActive: "2026년 1월 16일 오후 09:10",
-        activeDays: 52,
-        designs: 23,
-        pins: 34,
-        comments: 89,
-        reports: 2,
-        activity: "High",
-        status: "warned",
-        recent: [],
-      },
-      {
-        id: "u3",
-        name: "이지은",
-        email: "lee@example.com",
-        role: "JUNIOR",
-        joinDate: "2025년 9월 1일",
-        lastActive: "2026년 1월 16일 오후 05:45",
-        activeDays: 41,
-        designs: 8,
-        pins: 45,
-        comments: 156,
-        reports: 0,
-        activity: "High",
-        status: "active",
-        recent: [],
-      },
-      {
-        id: "u6",
-        name: "익명123",
-        email: "anon@example.com",
-        role: "GENERAL",
-        joinDate: "2026년 1월 15일",
-        lastActive: "2026년 1월 17일 오후 04:20",
-        activeDays: 3,
-        designs: 1,
-        pins: 2,
-        comments: 15,
-        reports: 8,
-        activity: "Medium",
-        status: "suspended",
-        recent: [],
-      },
-    ],
-    []
-  );
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // ✅ 상단 통계
+  /* ===============================
+     상단 통계
+     =============================== */
   const stats = useMemo(() => {
     const total = users.length;
     const active = users.filter((u) => u.status === "active").length;
@@ -98,21 +28,22 @@ export default function AdminUsers() {
     return { total, active, warned, suspended, high, reported };
   }, [users]);
 
-  // ✅ 검색 필터
+  /* ===============================
+     검색 필터
+     =============================== */
   const filtered = useMemo(() => {
     let result = users;
 
-    // 1. 키워드 검색
     const keyword = q.trim().toLowerCase();
     if (keyword) {
-      result = result.filter((u) =>
-        u.name.toLowerCase().includes(keyword) ||
-        u.email.toLowerCase().includes(keyword) ||
-        u.id.toLowerCase().includes(keyword)
+      result = result.filter(
+        (u) =>
+          u.name.toLowerCase().includes(keyword) ||
+          u.email.toLowerCase().includes(keyword) ||
+          u.id.toLowerCase().includes(keyword)
       );
     }
 
-    // 2. 상태 필터
     if (statusFilter !== "all") {
       result = result.filter((u) => u.status === statusFilter);
     }
@@ -120,7 +51,54 @@ export default function AdminUsers() {
     return result;
   }, [q, statusFilter, users]);
 
-  // ✅ 바깥 클릭 시 메뉴 닫기
+  /* ===============================
+     회원 목록 조회 (정규화 포함)
+     =============================== */
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get("http://localhost:9070/admin/users", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        console.log("ADMIN USERS:", res.data);
+
+        // 🔥 퍼블리싱에 맞게 데이터 정규화
+        const normalized = res.data.map((u) => ({
+          id: String(u.user_no),
+          name: u.user_nickname || u.user_id,
+          email: u.user_id,
+          role: u.user_grade || "GENERAL",
+          status: "active",
+
+          joinDate: new Date(u.create_datetime).toLocaleString("ko-KR"),
+
+          // 🔥 이제 DB에서 오는 실제 값
+          designs: u.designs ?? 0,
+          pins: u.pins ?? 0,
+          comments: u.comments ?? 0,
+
+          // UI 전용 값만 유지
+          activity: "Low",
+          reports: 0,
+        }));
+
+        setUsers(normalized);
+      } catch (err) {
+        console.error("유저 목록 조회 실패", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  /* ===============================
+     바깥 클릭 시 메뉴 닫기
+     =============================== */
   useEffect(() => {
     const onDown = (e) => {
       if (!openMenuId) return;
@@ -131,40 +109,18 @@ export default function AdminUsers() {
     return () => window.removeEventListener("mousedown", onDown);
   }, [openMenuId]);
 
-  const toggleMenu = (id) => setOpenMenuId((prev) => (prev === id ? null : id));
+  const toggleMenu = (id) => {
+    setOpenMenuId((prev) => (prev === id ? null : id));
+  };
 
   const openUserModal = (user) => {
     setSelectedUser(user);
     setOpenMenuId(null);
   };
 
-  const actionWarn = (user) => {
-    console.log("경고 발송", user.id);
-    setOpenMenuId(null);
-    setSelectedUser(user); // 모달에서 처리하는 방식도 OK
-  };
-
-  const actionSuspend = (user) => {
-    console.log("일시 정지", user.id);
-    setOpenMenuId(null);
-    setSelectedUser(user);
-  };
-
-  const actionEmail = (user) => {
-    console.log("이메일 보내기", user.id);
-    setOpenMenuId(null);
-    setSelectedUser(user);
-  };
-
-  const actionDeactivate = (user) => {
-    console.log("영구 비활성화", user.id);
-    setOpenMenuId(null);
-    setSelectedUser(user);
-  };
-
   return (
     <section className="admin-page">
-      {/* 상단 타이틀 카드 */}
+      {/* 상단 타이틀 */}
       <div className="admin-card admin-card--header">
         <h2>사용자 관리</h2>
         <p>명확하고 데이터 중심적인 중재 효율성</p>
@@ -200,8 +156,12 @@ export default function AdminUsers() {
 
       {/* 검색 */}
       <div className="admin-card admin-card--search-bar">
-        <AdminSearchBar value={q} onChange={setQ} placeholder="사용자 이름 또는 ID 검색..." />
-        
+        <AdminSearchBar
+          value={q}
+          onChange={setQ}
+          placeholder="사용자 이름 또는 ID 검색..."
+        />
+
         <div className="admin-select-wrapper">
           <select
             className="admin-select"
@@ -214,115 +174,117 @@ export default function AdminUsers() {
             <option value="suspended">정지됨</option>
             <option value="inactive">비활성</option>
           </select>
-          <span className="admin-select-arrow">
-            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1 1L5 5L9 1" stroke="#111827" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </span>
         </div>
       </div>
 
       {/* 테이블 */}
       <div className="users-table-wrap">
-        <table className="users-table">
-          <thead>
-            <tr>
-              <th>사용자</th>
-              <th>가입일</th>
-              <th>디자인</th>
-              <th>핀</th>
-              <th>댓글</th>
-              <th>신고당함</th>
-              <th>활동</th>
-              <th>상태</th>
-              <th>작업</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {filtered.map((u) => (
-              <tr key={u.id}>
-                <td>
-                  <div className="user-cell">
-                    <div className="user-avatar">{u.name.slice(0, 1)}</div>
-                    <div className="user-info">
-                      <div className="user-name-row">
-                        <span className="user-name">{u.name}</span>
-                        <span className={`user-chip user-chip--${u.role.toLowerCase()}`}>
-                          {u.role}
-                        </span>
-                      </div>
-                      <div className="user-id">{u.id}</div>
-                    </div>
-                  </div>
-                </td>
-
-                <td className="muted">{u.joinDate}</td>
-                <td className="center">{u.designs}</td>
-                <td className="center">{u.pins}</td>
-                <td className="center">{u.comments}</td>
-
-                <td className="center">
-                  {u.reports > 0 ? <span className="report-num">{u.reports}</span> : 0}
-                </td>
-
-                <td>
-                  <div className={`activity activity--${u.activity.toLowerCase()}`}>
-                    <span className="activity-dot" />
-                    {u.activity}
-                  </div>
-                </td>
-
-                <td>
-                  <StatusBadge value={u.status} />
-                </td>
-
-                <td className="center">
-                  <div className="users-menu-wrap">
-                    <button
-                      type="button"
-                      className="icon-btn users-menu-btn"
-                      onClick={() => toggleMenu(u.id)}
-                      aria-label="메뉴"
-                    >
-                      ⋮
-                    </button>
-
-                    {openMenuId === u.id && (
-                      <div className="users-menu" ref={menuRef}>
-                        <button className="users-menu__item" onClick={() => openUserModal(u)}>
-                          👤 상세 보기
-                        </button>
-                        <button className="users-menu__item" onClick={() => actionWarn(u)}>
-                          🛡 경고 발송
-                        </button>
-                        <button className="users-menu__item" onClick={() => actionSuspend(u)}>
-                          ⛔ 일시 정지
-                        </button>
-                        <button className="users-menu__item" onClick={() => actionEmail(u)}>
-                          ✉ 이메일 보내기
-                        </button>
-
-                        <div className="users-menu__divider" />
-
-                        <button
-                          className="users-menu__item users-menu__item--danger"
-                          onClick={() => actionDeactivate(u)}
-                        >
-                          🚫 영구 비활성화
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </td>
+        {loading ? (
+          <div className="admin-empty">불러오는 중...</div>
+        ) : (
+          <table className="users-table">
+            <thead>
+              <tr>
+                <th>사용자</th>
+                <th>가입일</th>
+                <th>디자인</th>
+                <th>핀</th>
+                <th>댓글</th>
+                <th>신고당함</th>
+                <th>활동</th>
+                <th>상태</th>
+                <th>작업</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {filtered.map((u) => (
+                <tr key={u.id}>
+                  <td>
+                    <div className="user-cell">
+                      <div className="user-avatar">
+                        {u.name.slice(0, 1)}
+                      </div>
+                      <div className="user-info">
+                        <div className="user-name-row">
+                          <span className="user-name">{u.name}</span>
+                          <span
+                            className={`user-chip user-chip--${u.role.toLowerCase()}`}
+                          >
+                            {u.role}
+                          </span>
+                        </div>
+                        {/* <div className="user-id">{u.id}</div> */}
+                      </div>
+                    </div>
+                  </td>
+
+                  <td className="muted">{u.joinDate}</td>
+                  <td className="center">{u.designs}</td>
+                  <td className="center">{u.pins}</td>
+                  <td className="center">{u.comments}</td>
+
+                  <td className="center">
+                    {u.reports > 0 ? (
+                      <span className="report-num">{u.reports}</span>
+                    ) : (
+                      0
+                    )}
+                  </td>
+
+                  <td>
+                    <div
+                      className={`activity activity--${u.activity.toLowerCase()}`}
+                    >
+                      <span className="activity-dot" />
+                      {u.activity}
+                    </div>
+                  </td>
+
+                  <td>
+                    <StatusBadge value={u.status} />
+                  </td>
+
+                  <td className="center">
+                    <div className="users-menu-wrap">
+                      <button
+                        type="button"
+                        className="icon-btn users-menu-btn"
+                        onClick={() => toggleMenu(u.id)}
+                      >
+                        ⋮
+                      </button>
+
+                      {openMenuId === u.id && (
+                        <div className="users-menu" ref={menuRef}>
+                          <button
+                            className="users-menu__item"
+                            onClick={() => openUserModal(u)}
+                          >
+                            👤 상세 보기
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
       {/* 사용자 상세 모달 */}
-      {selectedUser && <UserModal user={selectedUser} onClose={() => setSelectedUser(null)} />}
+      {selectedUser && (
+        <UserModal
+          user={selectedUser}
+          onClose={() => setSelectedUser(null)}
+          onDeleted={(deletedId) => {
+            setUsers((prev) => prev.filter((u) => u.id !== deletedId));
+            setSelectedUser(null);
+          }}
+        />
+      )}
     </section>
   );
 }
