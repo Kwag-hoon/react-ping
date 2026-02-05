@@ -26,7 +26,7 @@ const TabBarUser = () => {
         <span>Upload</span>
       </NavLink>
 
-      <NavLink to="/alarm" className={({ isActive }) => isActive ? 'tab-item active' : 'tab-item'}>
+      <NavLink to="/mypage/alarm" className={({ isActive }) => isActive ? 'tab-item active' : 'tab-item'}>
         <img src={BellIcon} alt="알림" />
         <span>Alarm</span>
       </NavLink>

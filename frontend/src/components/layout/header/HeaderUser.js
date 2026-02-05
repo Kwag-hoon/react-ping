@@ -133,9 +133,9 @@ const HeaderUser = ({ variant }) => {
           </Link>
 
           <div className="btns">
-            <button className="alarm-btn">
+            <Link to="/mypage/alarm" className="alarm-btn">
               <img src={Alarm} alt="알람" />
-            </button>
+            </Link>
             <button onClick={handleLogout} className="logout-btn">
               <img src={logoutImg} alt="로그아웃 이미지" />
             </button>
