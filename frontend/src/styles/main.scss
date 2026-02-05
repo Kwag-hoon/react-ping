@@ -1,5 +1,9 @@
 @use './base.scss' as *;
 
+header.guest+main .main_hero-section .grid {
+  padding-top: 280px;
+}
+
 /* =========================================================
   Typography (main / section)
   - main 안의 article/section 기본 타이포 세팅
@@ -9,6 +13,7 @@ main {
   article {
     h2 {
       @include typo("displayXl", $bold);
+      white-space: nowrap; 
     }
 
     p {
@@ -341,6 +346,12 @@ main {
   h3 {
     @include typo("headingSm", $bold);
     margin-bottom: 6px;
+    min-height: 52px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 
   .date {
@@ -418,6 +429,10 @@ main {
 
 /* -------------------- 1440 ~ 1919 -------------------- */
 @media screen and (min-width: 1440px) and (max-width: 1919px) {
+  header.guest+main .main_hero-section .grid {
+    padding: 180px 0 100px 0;
+  }
+
   .main_feedback-explorer {
     .col-4 {
       grid-column: span 4;
@@ -441,6 +456,9 @@ main {
 
 /* -------------------- 1024 ~ 1439 -------------------- */
 @media screen and (min-width: 1024px) and (max-width: 1439px) {
+  header.guest+main .main_hero-section .grid {
+    padding: 180px 0 100px 0;
+  }
 
   /* 섹션 타이포만 변경(디자인 유지) */
   main {
@@ -516,6 +534,10 @@ main {
 
 /* -------------------- 768 ~ 1023 -------------------- */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
+  header.guest+main .main_hero-section .grid {
+    padding: 180px 0 100px 0;
+  }
+
   main {
     article {
       h2 {
@@ -659,6 +681,10 @@ main {
 
 /* -------------------- 0 ~ 767 (Mobile) -------------------- */
 @media screen and (max-width: 767px) {
+  header.guest+main .main_hero-section .grid {
+    padding-top: 120px;
+  }
+
   main {
     article {
 

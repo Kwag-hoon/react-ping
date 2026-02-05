@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import useAuth from '../hooks/useAuth';
 function HeroSection(props) {
+  const isLogin = useAuth();
   return (
     <article className="main_hero-section container">
       <div className="grid">
@@ -21,9 +22,15 @@ function HeroSection(props) {
             아카이브 시작하기
           </Link>
 
-          <Link to="/signup" className="sample-btn">
-            회원 가입
-          </Link>
+          {isLogin ? (
+            <Link to="/mypage" className="sample-btn">
+              마이 페이지
+            </Link>
+          ) : (
+            <Link to="/signup" className="sample-btn">
+              회원 가입
+            </Link>
+          )}
         </div>
 
       </div>
