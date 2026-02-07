@@ -21,6 +21,7 @@ import Detail from './pages/design/Detail';
 import Upload from "./pages/upload/Upload";
 import Archive from './pages/design/Archive';
 import PinEditor from "./pages/upload/PinEditor";
+
 // 마이페이지
 import MyPageLayout from './pages/mypage/MyPageLayout';
 import MyDesigns from './pages/mypage/MyDesigns';
@@ -38,6 +39,7 @@ import AdminComments from './pages/admin/pages/AdminComments';
 import AdminUsers from './pages/admin/pages/AdminUsers';
 import AdminIssueTypes from './pages/admin/pages/AdminIssueTypes';
 import Question from "./pages/questions/Question";
+import QuestionForm from "./pages/questions/QuestionForm";
 
 
 function App() {
@@ -59,6 +61,7 @@ function App() {
           <Route path='/archive' element={<Archive />} />
           <Route path="/upload/pineditor" element={<PinEditor />} />
           <Route path='/qna' element={<Question/>} />
+          <Route path='/qna/form' element={<QuestionForm/>} />
 
           {/* 마이페이지 레이아웃 */}
           <Route path="/mypage" element={<MyPageLayout />}>
