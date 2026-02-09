@@ -4,7 +4,8 @@ import HomeIcon from '../../../assets/icon-home.svg';
 
 import ArchiveIcon from '../../../assets/icon-archive.svg';
 import UploadIcon from '../../../assets/icon-plus.svg';
-import BellIcon from '../../../assets/icon-bell.svg';
+// import BellIcon from '../../../assets/icon-bell.svg';
+import QnaIcon from '../../../assets/icon-question.svg'
 import UserIcon from '../../../assets/icon-user.svg';
 import '../../styles/tabbar.scss';
 
@@ -26,9 +27,9 @@ const TabBarUser = () => {
         <span>Upload</span>
       </NavLink>
 
-      <NavLink to="/mypage/alarm" className={({ isActive }) => isActive ? 'tab-item active' : 'tab-item'}>
-        <img src={BellIcon} alt="알림" />
-        <span>Alarm</span>
+      <NavLink to="/qna" className={({ isActive }) => isActive ? 'tab-item active' : 'tab-item'}>
+        <img src={QnaIcon} alt="알림" />
+        <span>Q&#x0026;A</span>
       </NavLink>
 
       <NavLink to="/mypage" className={({ isActive }) => isActive ? 'tab-item active' : 'tab-item'}>
