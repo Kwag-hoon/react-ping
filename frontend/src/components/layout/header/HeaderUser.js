@@ -5,7 +5,7 @@ import Api from "../../../api/Api";
 import logoutImg from "../../../assets/icon-login.svg";
 import Logogray from "../../../assets/Logo_gray.svg";
 import SearchIcon from "../../../assets/icon-search.svg";
-import Alarm from "../../../assets/icon-bell.svg";
+// import Alarm from "../../../assets/icon-bell.svg";
 
 const HeaderUser = ({ variant }) => {
   const [user, setUser] = useState(null);
@@ -133,9 +133,9 @@ const HeaderUser = ({ variant }) => {
           </Link>
 
           <div className="btns">
-            <Link to="/mypage/alarm" className="alarm-btn">
+            {/* <Link to="/mypage/alarm" className="alarm-btn">
               <img src={Alarm} alt="알람" />
-            </Link>
+            </Link> */}
             <button onClick={handleLogout} className="logout-btn">
               <img src={logoutImg} alt="로그아웃 이미지" />
             </button>
