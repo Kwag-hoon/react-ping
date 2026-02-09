@@ -196,9 +196,13 @@ body {
       }
 
       .btns {
-
         display: flex;
         gap: 10px;
+        align-items: center;
+
+        img {
+          width: 36px;
+        }
       }
 
       button {

@@ -3,7 +3,19 @@
 header.guest+main .main_hero-section .grid {
   padding-top: 280px;
 }
+html, body {
+  height: 100%;
+}
 
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1; /* 핵심 */
+}
 /* =========================================================
   Typography (main / section)
   - main 안의 article/section 기본 타이포 세팅

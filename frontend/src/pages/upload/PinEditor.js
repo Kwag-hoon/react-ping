@@ -154,7 +154,7 @@ function PinEditor() {
           </div>
         </div>
 
-        <div className="col-12">
+        <div className="pineditor_body col-12">
           <div className="grid">
 
             {/* 캔버스 */}
