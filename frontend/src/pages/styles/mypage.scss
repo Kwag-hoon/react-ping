@@ -9,6 +9,25 @@ body {
   padding: 60px 0;
 }
 
+/* MyPageLayout 아래에서만 텍스트가 flex 때문에 안 줄어드는 문제 방지 */
+.mypage-layout * {
+  min-width: 0;
+}
+
+/* 제목류 줄바꿈 강제 */
+.mypage-layout h1,
+.mypage-layout h2,
+.mypage-layout h3 {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+
+.pin-content h3 {
+  white-space: normal;
+  word-break: break-word;
+}
 /* ---------- Tabs ---------- */
 .mypage-tabs {
   display: flex;
