@@ -252,7 +252,7 @@ body {
 
 @media screen and (max-width: 767px) {
   .header {
-    display: none;
+    // display: none;
 
     // HeaderUser
     .header-inner {
@@ -287,6 +287,7 @@ body {
 
     // HeaderGuest
     .header-wrapper {
+      display: none;
       width: calc(100% - 48px);
       justify-content: center;
 
