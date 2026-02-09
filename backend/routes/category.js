@@ -8,6 +8,7 @@ router.get('/', (req, res) => {
     FROM pin_category_groups g
     JOIN pin_categories c
       ON g.group_no = c.group_no
+       WHERE c.is_active = 1
     ORDER BY g.group_no, c.category_no
   `;
 

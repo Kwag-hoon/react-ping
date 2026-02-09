@@ -13,6 +13,8 @@ router.get('/api/pins/:pinNo/answers', (req, res) => {
   const sql = `
     SELECT
       a.answer_no,
+      a.pin_no,
+      a.user_no, 
       a.answer_content,
       a.create_datetime,
       u.user_nickname

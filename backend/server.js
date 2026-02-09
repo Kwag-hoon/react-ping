@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
+// const db = require("./db");
+
 //routes
 const authRoutes = require("./routes/auth"); // 로그인/회원가입 같은 auth
 const usersRoutes = require("./routes/users"); //프로필/아바타 업로드 포함
@@ -14,7 +16,11 @@ const postRoutes = require("./routes/posts");
 const answerRoutes = require('./routes/answer'); //핀 답변 
 const feedbackRoutes = require("./routes/feedback");  // ✅ 피드백 조회
 const adminRoutes = require("./routes/admin");   // 어드민 라우터
+
 const qnaRoutes = require("./routes/qna"); //질문과 답변 질문 등록
+
+const adminCategoriesRoutes = require("./routes/adminCategories");  // 관리자 문제 유형
+
 
 const app = express();
 const PORT = 9070;
@@ -38,7 +44,11 @@ app.use('/api/designs', designRoutes); //디테일 페이지 관련
 app.use('/api/categories', categoryRoutes);
 app.use("/api/feedback", feedbackRoutes);  // ✅ 피드백 조회
 app.use("/admin", adminRoutes);
+
 app.use("/qna", qnaRoutes) //질문과 답변
+
+app.use("/admin/categories", adminCategoriesRoutes); //어드민 카테고리라우터
+
 
 app.use(postRoutes);// 게시물 관련
 app.use(answerRoutes);//핀 질문당 댓글 관련

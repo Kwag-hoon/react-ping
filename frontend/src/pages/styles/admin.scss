@@ -2077,6 +2077,12 @@ body {
   background: #fff;
   display: flex;
   overflow: visible;
+  transition: z-index 0s;
+
+  &.is-menu-open {
+    z-index: 50;
+    position: relative;
+  }
 }
 
 .issue-item.is-inactive {
@@ -2147,6 +2153,11 @@ body {
   color: #111;
 
   &:hover { background: #f9fafb; }
+
+  &.danger {
+    color: #ef4444;
+    &:hover { background: #fef2f2; }
+  }
 }
 
 .issue-item__meta {
