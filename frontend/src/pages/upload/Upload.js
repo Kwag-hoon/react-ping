@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/upload.scss';
+import upload from "../../assets/icon-upload.svg";
 import { useNavigate } from 'react-router-dom';
-import imageIcon from '../../assets/icon-image.svg';
 import axios from 'axios';
 
 function Upload(props) {
@@ -176,7 +176,7 @@ function Upload(props) {
           <div className="upload_dropzone" role='button' tabIndex={0}>
             <div className="upload_dropzoneInner">
               <div className="upload_icon" aria-hidden="true">
-                <img src={imageIcon} alt="이미지 아이콘" />
+                <img src={upload} alt="이미지 아이콘" />
               </div>
 
               <p className="upload_dropText">
