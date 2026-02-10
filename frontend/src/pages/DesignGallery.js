@@ -64,7 +64,7 @@ function DesignGallery() {
         ratio: ratios[Math.floor(Math.random() * ratios.length)],
 
         // 🔑 서버 기준 값
-        view_count: item.viewCount ?? 0,
+        viewCount: item.viewCount ?? 0,
         question_count: item.pins ?? 0,
       });
     });
